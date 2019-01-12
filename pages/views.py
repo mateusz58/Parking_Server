@@ -1,4 +1,39 @@
 from django.views.generic import TemplateView
+from django.conf.urls import url
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.http import HttpResponse
+from django.shortcuts import render
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.shortcuts import render
+from django.conf import settings
+##from snippets.models import Location
+from django.contrib.auth.models import User
+##from snippets.serializers import LocationSerializer,UserSerializer
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.authtoken.models import Token
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_202_ACCEPTED
+from oauth2client import client, crypt
+from rest_framework import routers
+
+
+
+#
+from rest_framework import viewsets, permissions, filters, generics, authentication, status, routers
+from rest_framework.generics import CreateAPIView, ListAPIView, get_object_or_404, RetrieveUpdateDestroyAPIView
+
+from pages.models import Parking,Booking
+
+
+from django.views.generic import TemplateView
+
+from pages.serializers import User_Serializer, Booking_Serializer, Parking_Serializer, Parking_Serializer_Coordinates
+from users.models import CustomUser
 
 
 class HomePageView(TemplateView):
@@ -7,3 +42,82 @@ class HomePageView(TemplateView):
 
 class AboutPageView(TemplateView):
     template_name = 'pages/about.html'
+
+
+
+class User_View_Email_login(CreateAPIView, ListAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = User_Serializer
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+class Parking_View_Coordinates(CreateAPIView, ListAPIView):
+    queryset = Parking.objects.all()
+    serializer_class = Parking_Serializer_Coordinates
+
+class User_View_Search(generics.ListAPIView):
+    serializer_class = User_Serializer
+    def get_queryset(self):
+        queryset =  CustomUser.objects.all()
+        parking_name_v = self.request.query_params.get('email', None)
+
+        if parking_name_v is not None:
+            queryset = queryset.filter(login=parking_name_v)
+        return queryset
+class Booking_View_Search(generics.ListAPIView):
+    serializer_class = Booking_Serializer
+
+    def get_queryset(self):
+        queryset =  Booking.objects.all()
+        code_v = self.request.query_params.get('code', None)
+
+        if code_v is not None:
+            queryset = queryset.filter(code=code_v)
+        return queryset
+
+class Parking_View_Search(generics.ListAPIView):
+    serializer_class = Parking_Serializer
+
+    def get_queryset(self):
+        queryset =  Parking.objects.all()
+        parking_name_v = self.request.query_params.get('parking_name', None)
+
+        if parking_name_v is not None:
+            queryset = queryset.filter(parking_name=parking_name_v)
+        return queryset
+
+
+class Parking_View(CreateAPIView, ListAPIView):
+    queryset = Parking.objects.all()
+    serializer_class = Parking_Serializer
+
+class Delete_Parking_View(RetrieveUpdateDestroyAPIView):
+        queryset = Parking.objects.all()
+        serializer_class = Parking_Serializer
+
+class User_View(CreateAPIView, ListAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = User_Serializer
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+class Delete_User_View(RetrieveUpdateDestroyAPIView):
+        queryset = CustomUser.objects.all()
+        serializer_class = User_Serializer
+
+class Booking_View(CreateAPIView, ListAPIView):
+    queryset = Booking.objects.all()
+    serializer_class = Booking_Serializer
+
+
+class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdateDestroyAPIView):
+        queryset = Booking.objects.all()
+        serializer_class = Booking_Serializer
+        model = Booking
+        fields = ['code']
+
+        def test_func(self):
+            obj = self.get_object()
+            return obj.code == self.request.user
+
