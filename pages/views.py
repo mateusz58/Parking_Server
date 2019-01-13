@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.conf.urls import url
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
@@ -43,6 +44,17 @@ class HomePageView(TemplateView):
 class AboutPageView(TemplateView):
     template_name = 'pages/about.html'
 
+
+
+### FUNCTION THAT RETURNS LOGIN
+# @login_required
+# def index_view(request):
+#    p = Model.objects.filter(user=request.user)
+#    return render(request, 'app/index.html', {'objects': p})
+
+
+
+## JSON VIEWS
 
 
 class User_View_Email_login(CreateAPIView, ListAPIView):
