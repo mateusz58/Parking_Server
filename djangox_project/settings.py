@@ -44,8 +44,9 @@ INSTALLED_APPS = [
     # Third-party
     'allauth',  # new
     'allauth.account',  # new
+    'allauth.socialaccount',
     'crispy_forms',  # new
-
+    'widget_tweaks',
     # Local
     'users',
     'pages',

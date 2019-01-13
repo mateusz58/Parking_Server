@@ -1,0 +1,57 @@
+{% extends '_base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+  <form method="get">
+    <div class="well">
+      <h4 style="margin-top: 0">Filter</h4>
+      <div class="row">
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.code.label_tag }}
+          {% render_field filter.form.code class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.parking.label_tag }}
+          {% render_field filter.form.parking class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.user.label_tag }}
+          {% render_field filter.form.user class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.Date_From.label_tag }}
+          {% render_field filter.form.Date_From class="form-control" %}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Search
+      </button>
+    </div>
+  </form>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Parking</th>
+        <th>User</th>
+        <th>Date_From</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for booking in filter.qs %}
+        <tr>
+          <td>{{ booking.code }}</td>
+          <td>{{ booking.parking }}</td>
+          <td>{{ booking.user }}</td>
+          <td>{{ booking.Date_From }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No data</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -21,9 +21,14 @@ from django.core import validators
 from django.utils import timezone
 
 STATUS_CHOICES = (
-    ('a', 'active'),
-    ('e', 'expired'),
+    ('ACTIVE', 'active'),
+    ('EXPIRED', 'expired'),
 )
+
+
+
+
+
 
 
 class Parking(models.Model):
@@ -36,6 +41,8 @@ class Parking(models.Model):
     free_places = models.IntegerField(default=0)
     class Meta:
         unique_together = ('parking_Street', 'parking_City',)
+        unique_together = ('x', 'y',)
+
     ##pub_date = models.DateTimeField('date published')
     def __str__(self):
         return self.parking_name
@@ -51,12 +58,19 @@ class Booking(models.Model):
     Date_From = models.DateTimeField()
     Date_To = models.DateTimeField()
     Cost = models.FloatField(default=0)
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='a', editable=False)
-    active = models.BooleanField(default=False, editable=False)
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='ACTIVE', editable=False)
+    active = models.BooleanField(default=True, editable=False)
+    added = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        self.active = self.Date_To.strftime("%Y-%m-%d %H:%M:%S") > datetime.datetime.utcnow().strftime(
-            "%Y-%m-%d %H:%M:%S")
-        super().save()
-        print(self.Date_To.strftime("%Y-%m-%d %H:%M:%S"))
-        print(datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"))
+    def __int__(self):
+         return self.code
+
+
+    #
+    # def save(self, *args, **kwargs):
+    #     self.active = self.Date_To.strftime("%Y-%m-%d %H:%M:%S") > datetime.datetime.utcnow().strftime(
+    #         "%Y-%m-%d %H:%M:%S")
+    #     super().save()
+    #     print(self.Date_To.strftime("%Y-%m-%d %H:%M:%S"))
+    #     print(datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"))

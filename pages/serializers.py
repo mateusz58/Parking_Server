@@ -24,22 +24,22 @@ class User_Serializer(serializers.ModelSerializer):
         class Meta:
             model = CustomUser
             fields = ('email')
-            # extra_kwargs = {'password': {'write_only': True}}
+            extra_kwargs = {'password': {'write_only': True}}
 
-            # def create(self, validated_data):   ###Walidacja hasla
-            #     user = User_Client(
-            #         email=validated_data['email'],
-            #         login=validated_data['login']
-            #     )
-            #     user.set_password(validated_data['password'])
-            #     user.save()
-            #     return user
-            #
+            def create(self, validated_data):   ###Walidacja hasla
+                user = CustomUser(
+                    email=validated_data['email'],
+                    login=validated_data['login']
+                )
+                user.set_password(validated_data['password'])
+                user.save()
+                return user
+
 
 class User_Serializer_Login_Email(serializers.ModelSerializer):
         class Meta:
             model = CustomUser
-            fields = ('email')
+            fields = ('__all__')
 
 
 class Booking_Serializer(serializers.ModelSerializer):
