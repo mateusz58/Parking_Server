@@ -41,7 +41,6 @@ class Parking(models.Model):
     free_places = models.IntegerField(default=0)
     class Meta:
         unique_together = ('parking_Street', 'parking_City',)
-        unique_together = ('x', 'y',)
 
     ##pub_date = models.DateTimeField('date published')
     def __str__(self):

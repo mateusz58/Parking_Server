@@ -64,7 +64,7 @@ class BookingFilter(django_filters.FilterSet):
 
         model = Booking
 
-        fields = ['code', 'parking','user', 'Date_From','Date_To','Cost','registration_plate','status']
+        fields = ['code', 'parking','user', 'Date_From','Date_To','Cost','registration_plate','status',]
         # fields = {
         #     'code': ['exact',],
         #     'parking': ['icontains',],

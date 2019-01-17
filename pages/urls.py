@@ -3,19 +3,22 @@ from django.urls import path, include
 
 from pages import views
 from .views import HomePageView, AboutPageView, Parking_View_Coordinates, Parking_View, Booking_View, User_View, \
-    Delete_User_View, Delete_Booking_View, Parking_View_Search, User_View_Search, Booking_View_Search,filter_user_view
-
+    Delete_User_View, Delete_Booking_View, Parking_View_Search, User_View_Search, Booking_View_Search, filter_user_view, \
+    Delete_Parking_View, SnippetViewSet
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
     path('about/', AboutPageView.as_view(), name='about'),
-
     url(r'^users/search/$', views.filter_user_view, name='search'),
-    url(r'^booking/search/$', views.filter_booking_view, name='search'),
-
+    url(r'^booking/search/$', views.filter_booking_view, name='booking'),
 
 ###JSON serializers
+
+
+    url(r'^api/snippet/', views.SnippetViewSet),
+
     path('api/parking/', Parking_View.as_view()),
+    path('api/parking/<int:pk>', Delete_Parking_View.as_view()),
     path('api/parking_wsp/', Parking_View_Coordinates.as_view()),
     path('api/booking/', Booking_View.as_view()),
     path('api/users/', User_View.as_view()),
@@ -23,10 +26,8 @@ urlpatterns = [
     url(r'api/users/search$', User_View_Search.as_view()),
     path('api/booking/<int:pk>', Delete_Booking_View.as_view()),
     url(r'api/parking/search$', Parking_View_Search.as_view()),
-
     url(r'api/booking/search$', Booking_View_Search.as_view()),
     ######
-
     # path('test/', views.HelloView.as_view(), name='hello'),
     ##Users system
 ### AUTHENTICATION
@@ -37,8 +38,6 @@ urlpatterns = [
 ########
 
 ## PARKINGER VIEW
-
-
 
 
 

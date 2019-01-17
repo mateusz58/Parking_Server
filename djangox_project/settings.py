@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # 'snippets',
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.admin',
@@ -50,17 +51,27 @@ INSTALLED_APPS = [
     # Local
     'users',
     'pages',
+
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
 
 ],
 'DEFAULT_AUTHENTICATION_CLASSES':[
-    'rest_framework.authentication.TokenAuthentication'
+     'rest_framework.authentication.SessionAuthentication',
+    'rest_framework.authentication.TokenAuthentication',
 ]
 }
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.BasicAuthentication',
+#         'rest_framework.authentication.SessionAuthentication',
+#     )
+# }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -167,3 +178,19 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+FILTERS_DISABLE_HELP_TEXT=False
+
+
+def FILTERS_VERBOSE_LOOKUPS():
+    from django_filters.conf import DEFAULTS
+
+    verbose_lookups = DEFAULTS['VERBOSE_LOOKUPS'].copy()
+    verbose_lookups.update({
+        'exact': (''),
+        'iexact': (''),
+        'contains': (''),
+        'icontains': (''),
+    })
+    return verbose_lookups
