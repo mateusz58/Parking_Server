@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-import datetime
+from datetime import datetime
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -54,8 +54,8 @@ class Booking(models.Model):
     ##choice_text = models.CharField(max_length=200)
     ##votes = models.IntegerField(default=0)
     registration_plate = models.CharField(max_length=20)
-    Date_From = models.DateTimeField()
-    Date_To = models.DateTimeField()
+    Date_From = models.DateTimeField(default=datetime.now)
+    Date_To = models.DateTimeField(default=datetime.now)
     Cost = models.FloatField(default=0)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='ACTIVE', editable=False)
     active = models.BooleanField(default=True, editable=False)

@@ -7,7 +7,7 @@ data={
     "Date_To": "2019-01-13T16:46:20Z",
     "parking": 1,
     "registration_plate": "plate1234",
-    "user": 2
+    "user": '3'
 }
 
 url = 'http://127.0.0.1:8000/api/booking/'

@@ -46,6 +46,6 @@ class Booking_Serializer(serializers.ModelSerializer):
         class Meta:
                 model = Booking
                 fields = ('code', 'parking', 'Date_From', 'Date_To', 'Cost', 'user','registration_plate')
-                read_only_fields = ('parking', 'Date_From', 'Date_To','user','registration_plate')
+                # read_only_fields = ('parking', 'Date_From', 'Date_To','user','registration_plate')
 
 

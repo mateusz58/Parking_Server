@@ -1,21 +1,28 @@
 from django.conf.urls import url
 from django.urls import path, include
 
+from decorators import group_required
 from pages import views
+from users.views import login_view, signup_view
 from .views import HomePageView, AboutPageView, Parking_View_Coordinates, Parking_View, Booking_View, User_View, \
-    Delete_User_View, Delete_Booking_View, Parking_View_Search, User_View_Search, Booking_View_Search, filter_user_view, \
-    Delete_Parking_View, SnippetViewSet
+    Delete_User_View, Delete_Booking_View, Parking_View_Search, User_View_Search, Booking_View_Search,  \
+    Delete_Parking_View
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
     path('about/', AboutPageView.as_view(), name='about'),
-    url(r'^users/search/$', views.filter_user_view, name='search'),
-    url(r'^booking/search/$', views.filter_booking_view, name='booking'),
+    # path('accounts/login/', LoginPageView.as_view(), name='login'),
+    url(r'login/$',login_view, name="account_login"),
+    url(r'signup/$',signup_view, name="account_signup"),
 
+
+    url(r'^booking/search/', views.filter_booking_view, name='booking'),
+
+# group_required('Parking_manager'),
 ###JSON serializers
 
-
-    url(r'^api/snippet/', views.SnippetViewSet),
+    # path('api/test/', views.test_detail,name='test'),
+   # url(r'^api/snippet/', views.booking_list),
 
     path('api/parking/', Parking_View.as_view()),
     path('api/parking/<int:pk>', Delete_Parking_View.as_view()),

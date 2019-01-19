@@ -97,6 +97,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'templatetags': 'templatetags.templatetag',
+
+            }
         },
     },
 ]
@@ -165,7 +169,7 @@ ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
+    # "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 SITE_ID = 1
@@ -181,6 +185,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 FILTERS_DISABLE_HELP_TEXT=False
+
+
 
 
 def FILTERS_VERBOSE_LOOKUPS():
