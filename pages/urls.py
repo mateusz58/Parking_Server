@@ -3,6 +3,7 @@ from django.urls import path, include
 
 from decorators import group_required
 from pages import views
+from users.email_acctivation import activate
 from users.views import login_view, signup_view
 from .views import HomePageView, AboutPageView, Parking_View_Coordinates, Parking_View, Booking_View, User_View, \
     Delete_User_View, Delete_Booking_View, Parking_View_Search, User_View_Search, Booking_View_Search,  \
@@ -14,6 +15,10 @@ urlpatterns = [
     # path('accounts/login/', LoginPageView.as_view(), name='login'),
     url(r'login/$',login_view, name="account_login"),
     url(r'signup/$',signup_view, name="account_signup"),
+
+    ##aktywacja maila
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        activate, name='activate'),
 
 
     url(r'^booking/search/', views.filter_booking_view, name='booking'),

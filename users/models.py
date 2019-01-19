@@ -8,7 +8,7 @@ class CustomUserManager(UserManager):
 
 class CustomUser(AbstractUser):
 
-    objects = CustomUserManager()
+    # objects = CustomUserManager()
 
     def __str__(self):
         return self.username
