@@ -84,7 +84,6 @@ class SnippetViewSet(viewsets.ModelViewSet):
 class HomePageView(TemplateView):
     template_name = 'pages/home.html'
 
-
 class AboutPageView(TemplateView):
     template_name = 'pages/about.html'
 
@@ -130,13 +129,13 @@ class User_View_Email_login(CreateAPIView, ListAPIView):
 # @permission_required('GET_Users_API', raise_exception=True)
 class User_View_Search(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = User_Serializer
+    serializer_class = User_Serializer_Login_Email
     def get_queryset(self):
         queryset =  CustomUser.objects.all()
         parking_name_v = self.request.query_params.get('email', None)
 
         if parking_name_v is not None:
-            queryset = queryset.filter(login=parking_name_v)
+            queryset = queryset.filter(email=parking_name_v)
         return queryset
 
 # @permission_required('GET_Parking_API', raise_exception=True)
@@ -164,8 +163,7 @@ class Parking_View_Coordinates(CreateAPIView, ListAPIView):
     serializer_class = Parking_Serializer_Coordinates
     def get(self, request, *args, **kwargs):
      return self.list(request, *args, *kwargs)
-    def post(self, request, *args, **kwargs):
-     return self.create(request, *args, **kwargs)
+
 
 
 class Delete_Parking_View(RetrieveUpdateDestroyAPIView):
@@ -179,13 +177,13 @@ class Booking_View(CreateAPIView, ListAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = Booking.objects.all()
     serializer_class = Booking_Serializer
-    permission_classes = [HasGroupPermission]
-    permission_groups = {
-        'create': ['Client_mobile'],  # Client_mobile can POST
-        # 'partial_update': ['Client_mobile'],  # Designers and Developers can PATCH
-        'retrieve': ['_Public'],  # retrieve can be accessed without credentials (GET 'site.com/api/foo/1')
-        # list returns None and is therefore NOT accessible by anyone (GET 'site.com/api/foo')
-    }
+    # permission_classes = [HasGroupPermission]
+    # permission_groups = {
+    #     'create': ['Client_mobile'],  # Client_mobile can POST
+    #     # 'partial_update': ['Client_mobile'],  # Designers and Developers can PATCH
+    #     'retrieve': ['_Public'],  # retrieve can be accessed without credentials (GET 'site.com/api/foo/1')
+    #     # list returns None and is therefore NOT accessible by anyone (GET 'site.com/api/foo')
+    # }
 
     # # @permission_required('GET_booking_API', raise_exception=False)
     # ##@group_required('permission_required')

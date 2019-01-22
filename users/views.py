@@ -13,6 +13,7 @@ from templatetags.templatetag import has_group
 from django.contrib.auth.models import Group
 
 from users.forms import CustomUserCreationForm
+from users.models import CustomUser
 from users.tokens import account_activation_token
 from django.core.mail import EmailMessage
 
@@ -43,11 +44,17 @@ def signup_view(request):
          form = CustomUserCreationForm(request.POST)
          if form.is_valid():
              print(" REGISTER Condition satisfied")
+             # hashed_password = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt())
+             # print("Primary key of user"+str(pk))
              user = form.save()
              user.is_active = False
+
+
+
              # print("USER ACTIVE"+user.is_active)
              group = Group.objects.get(name='Parking_manager')
              user.groups.add(group)
+             user.save()
              current_site = get_current_site(request)
              message = render_to_string('account/email/acc_active_email.html', {
                         'user': user,
@@ -62,6 +69,8 @@ def signup_view(request):
                       )
              email.send()
              request.session['id'] = user.id
+             user.is_active = False
+             print("Primary key of user" + str(user.id))
              return HttpResponse('Please confirm your email address to complete the registration')
              ## log the user in
              # login(request, user)

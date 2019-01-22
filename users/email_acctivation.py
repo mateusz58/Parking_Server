@@ -66,6 +66,7 @@ def index(request):
 def activate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64)
+        print(uid)
         user = CustomUser.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
         user = None
@@ -73,7 +74,7 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        return HttpResponse('Dziekujemy za potwierdzenie maila link aktywacyjny zostal wyslany.')
+        return HttpResponse('Dziekujemy za potwierdzenie maila konto zostało aktywowane.')
     else:
-        return HttpResponse('Activation link is invalid!')
+        return HttpResponse('Link aktywacyjny jest nie poprawny!')
 

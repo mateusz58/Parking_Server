@@ -57,6 +57,11 @@ urlpatterns = [
   ##path(r'parking/(?P<parking>\w+)/$', Parking_View_Search.as_view(),name='parking_name')
     # url(r'^parking/(?P.+)/$', Parking_View_Search.as_view()
 # r'parking/(?P<parking>\w+)/$','yourviewname',name='parking_search'
+
+
 ####Query for searching parking name :http://127.0.0.1:8000/api/parking/search?parking_name=Parking1
 ##http://127.0.0.1:8000/hello/?format=json
+
+##Query for searching username
+##http://127.0.0.1:8000/api/users/search?email=matp321@gmail.com
 
