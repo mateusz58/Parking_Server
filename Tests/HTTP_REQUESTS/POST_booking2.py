@@ -1,20 +1,21 @@
+
 import requests
 
-auth_token='0b8c3f040c0703fea24743824793dacb23f0c496'
+auth_token='6b7b8af0af5bbd3b0a59dd106faffccf2ad9f50d'
 hed = {'Authorization': 'Token ' + auth_token}
+user="matp321@mail.com"
+Parking="Parking1"
 data={
     "Date_From": "2019-01-13T16:46:19Z",
     "Date_To": "2019-01-13T16:46:20Z",
-    "parking": 1,
+    "parking": "Parking1",
     "registration_plate": "plate1234",
-    "user": '3'
+    "user":"matp321@mail.com"
 }
-
-url = 'http://127.0.0.1:8000/api/booking/'
+base="http://192.168.8.106:8000"
+end_point='/api/booking/'
+url = base+end_point
 response = requests.post(url, json=data, headers=hed)
 print(response)
 print(response.json())
 
-
-
-##user1- 0b8c3f040c0703fea24743824793dacb23f0c496

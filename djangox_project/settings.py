@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-
+from django.conf.global_settings import DATETIME_INPUT_FORMATS
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -26,7 +26,7 @@ SECRET_KEY = '43)%4yx)aa@a=+_c(fn&kf3g29xax+=+a&key9i=!98zyim=8j'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+DATETIME_INPUT_FORMATS += ('%Y-%m-%d %H:%M %p',)
 
 # Application definition
 
@@ -55,14 +55,19 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
+
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
 
 ],
+
 'DEFAULT_AUTHENTICATION_CLASSES':[
      'rest_framework.authentication.SessionAuthentication',
     'rest_framework.authentication.TokenAuthentication',
 ]
+
+
+
 }
 
 # REST_FRAMEWORK = {

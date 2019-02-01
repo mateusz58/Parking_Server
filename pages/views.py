@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic import TemplateView, CreateView
 from django.conf.urls import url
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, request
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -28,12 +28,13 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import ListModelMixin
 from decorators import group_required
 from pages.api_group_permission import HasGroupPermission
+from templatetags.templatetag import has_group
 from .filters import UserFilter, BookingFilter
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
 from rest_framework.decorators import authentication_classes, permission_classes
 #
 from rest_framework import viewsets, permissions, filters, generics, authentication, status, routers
-from rest_framework.generics import CreateAPIView, ListAPIView, get_object_or_404, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, get_object_or_404, RetrieveUpdateDestroyAPIView,RetrieveUpdateAPIView
 from django.utils.decorators import method_decorator
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -64,19 +65,6 @@ from rest_framework.decorators import api_view
 # @user_passes_test(lambda u: u.groups.filter(name='companyGroup').exists())
 
 ###SNIPPET VIEWSET
-
-class SnippetViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
-    serializer_class = User_Serializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
-
-    @action(methods=['get'], detail=False)
-    def newest(self, request):
-        newest = self.get_queryset().order_by('created').last()
-        serializer = self.get_serializer_class()(newest)
-        return Response(serializer.data)
-
 
 
 ##HOME PAGE VIEW
@@ -146,7 +134,7 @@ class Parking_View(CreateAPIView, ListAPIView):
 
 # @permission_required('GET_Parking_API', raise_exception=True)
 class Parking_View_Search(generics.ListAPIView):
-    permission_classes = (IsAuthenticated | ReadOnly,)
+    permission_classes = (ReadOnly,)
     serializer_class = Parking_Serializer
     def get_queryset(self):
         queryset =  Parking.objects.all()
@@ -165,67 +153,54 @@ class Parking_View_Coordinates(CreateAPIView, ListAPIView):
      return self.list(request, *args, *kwargs)
 
 
-
-class Delete_Parking_View(RetrieveUpdateDestroyAPIView):
-        permission_classes = (IsAuthenticated | ReadOnly,)
+class Delete_Parking_View(RetrieveUpdateAPIView):
+        permission_classes = (IsAuthenticated,)
         queryset = Parking.objects.all()
         serializer_class = Parking_Serializer
+        def test_func(self):
+            user=self.request.user
+            print("Delete_Parking_View"+user)
+            return has_group(user, "Parking_manager")
 
 
-class Booking_View(CreateAPIView, ListAPIView):
+class Booking_View(CreateAPIView,ListAPIView):
 
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated | ReadOnly,)
     queryset = Booking.objects.all()
     serializer_class = Booking_Serializer
-    # permission_classes = [HasGroupPermission]
-    # permission_groups = {
-    #     'create': ['Client_mobile'],  # Client_mobile can POST
-    #     # 'partial_update': ['Client_mobile'],  # Designers and Developers can PATCH
-    #     'retrieve': ['_Public'],  # retrieve can be accessed without credentials (GET 'site.com/api/foo/1')
-    #     # list returns None and is therefore NOT accessible by anyone (GET 'site.com/api/foo')
-    # }
 
-    # # @permission_required('GET_booking_API', raise_exception=False)
-    # ##@group_required('permission_required')
-    # # @method_decorator(permission_required, name='GET_booking_API')
-    # # @action(methods=['get'], detail=False)
-    # # def get(self, request):
-    # #     newest = self.get_queryset().order_by('Date_From').last()
-    # #     serializer = self.get_serializer_class()(newest)
-    # #     return Response(serializer.data)
-    #
+class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdateAPIView):
 
 
-
-# @permission_required('UPDATE_booking_API', raise_exception=True)
-class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdateDestroyAPIView):
-        queryset = Booking.objects.all()
+        permission_classes = (IsAuthenticated | ReadOnly,)
         serializer_class = Booking_Serializer
         model = Booking
         fields = ['code']
-
+        queryset = Booking.objects.all()
         def test_func(self):
             obj = self.get_object()
-            return obj.code == self.request.user
+            print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
+            return str(obj.user) == str(CustomUser.objects.get(email=self.request.user).email)
 
 # @permission_required('GET_booking_API', raise_exception=True)
 class Booking_View_Search(generics.ListAPIView):
     serializer_class = Booking_Serializer
     def get_queryset(self):
         queryset =  Booking.objects.all()
-        code_v = self.request.query_params.get('code', None)
-
-        if code_v is not None:
-            queryset = queryset.filter(code=code_v)
+        user_v = self.request.query_params.get('user', None)
+        if user_v is not None:
+            queryset = queryset.filter(user__email=user_v)
         return queryset
 
+class Booking_View_logged(generics.CreateAPIView,generics.ListAPIView):
+        serializer_class = Booking_Serializer
+        model = Booking
+        def get_queryset(self):
+            user=self.request.user
+            queryset = Booking.objects.all()
+            return queryset.filter(user__email=self.request.user)
 
-
-
-
-
-
-
+#
 
 
 
