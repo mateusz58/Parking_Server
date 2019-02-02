@@ -163,11 +163,21 @@ class Delete_Parking_View(RetrieveUpdateAPIView):
             return has_group(user, "Parking_manager")
 
 
+
+
 class Booking_View(CreateAPIView,ListAPIView):
 
     permission_classes = (IsAuthenticated | ReadOnly,)
     queryset = Booking.objects.all()
     serializer_class = Booking_Serializer
+
+
+
+
+
+
+
+
 
 class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdateAPIView):
 

@@ -31,6 +31,11 @@ STATUS_CHOICES = (
 
 
 
+
+
+
+
+
 class Parking(models.Model):
     id = models.BigAutoField(primary_key=True, editable=False)
     parking_name = models.CharField(max_length=200,unique=True)
@@ -60,8 +65,9 @@ class Booking(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ACTIVE', editable=True)
     added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    number_of_cars = models.PositiveIntegerField(default=1)
     def __int__(self):
-         return self.code
+         return self.registration_plate
     def save(self, *args, **kwargs):
 
 
