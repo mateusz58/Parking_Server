@@ -94,7 +94,7 @@ Parking.objects.filter(pk=1).update(free_places=parking_free_places)
 
 
 
-Parking.objects.filter(pk=1).update(free_places=98)
+# Parking.objects.filter(pk=1).update(free_places=98)
 
 
 
@@ -104,17 +104,30 @@ Parking.objects.filter(pk=1).update(free_places=98)
 # _p = re.sub("\D", "", str(_b))
 
 
+print("BEFORE Parking.objects.get(pk=1).free_places:"+str(Parking.objects.get(pk=1).free_places))
+
+_b1 = Booking.objects
+_b1 = _b1.filter(Q(Date_From__lt=datetime.now()) & Q(Date_To__gt=datetime.now()) & Q(parking=1) & (
+    Q(status='ACTIVE') | Q(status='RESERVED')))
+_b1 = (_b1.all().aggregate(Sum('number_of_cars')))
+_b1 = re.sub("\D", "", str(_b1))
+_b1 = int(_b1)
+parking_free_places = Parking.objects.get(id=1).number_of_places - _b1
+Parking.objects.filter(pk=1).update(free_places=parking_free_places)
+
+print("FILTER TRIGGER TESTING:"+str(parking_free_places))
+
+
+print("AFTER Parking.objects.get(pk=1).free_places:"+str(Parking.objects.get(pk=1).free_places))
 
 
 
 
-print(_q)
 
 
 
 
 
-print("ASSERT TEST")
 
 
 

@@ -114,14 +114,14 @@ class Booking(models.Model):
             # self.Date_From=self.Date_From.replace(tzinfo=None)
             # self.Date_To=self.Date_To.replace(tzinfo=None)
             print("TRIGGER BOOKING FREE PLACES")
-            _b = Booking.objects
-            _b = _b.filter(Q(Date_From__lt=dt.datetime.now()) & Q(Date_To__gt=dt.datetime.now()) & Q(parking=self.parking.id) & (
-                Q(status='ACTIVE') | Q(status='RESERVED')))
-            _b = (_b.all().aggregate(Sum('number_of_cars')))
-            _b = re.sub("\D", "", str(_b))
-            _b = int(_b)
-            parking_free_places = Parking.objects.get(id=self.parking.id).number_of_places - _b
-            Parking.objects.filter(pk=self.parking.id).update(free_places=parking_free_places)
+            # _b = Booking.objects
+            # _b = _b.filter(Q(Date_From__lt=dt.datetime.now()) & Q(Date_To__gt=dt.datetime.now()) & Q(parking=self.parking.id) & (
+            #     Q(status='ACTIVE') | Q(status='RESERVED')))
+            # _b = (_b.all().aggregate(Sum('number_of_cars')))
+            # _b = re.sub("\D", "", str(_b))
+            # _b = int(_b)
+            # parking_free_places = Parking.objects.get(id=self.parking.id).number_of_places - _b
+            # Parking.objects.filter(pk=self.parking.id).update(free_places=parking_free_places)
             # self.Date_To=self.Date_To.replace('Z','')
             # self.Date_From=self.Date_From.replace('Z', '')
 
