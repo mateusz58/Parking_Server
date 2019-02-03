@@ -72,17 +72,7 @@ class Booking_Serializer(serializers.ModelSerializer):
 
     HOURS = serializers.SerializerMethodField(method_name='get_HOURS_custom')
 
-    def get_Cost_Custom(self, instance):
-        time1 = instance.Date_From
-        time2 = instance.Date_To
-        duration = time2 - time1
-        duration_in_s = duration.total_seconds()
-        hours = divmod(duration_in_s, 3600)[0]  ## HOURS DURATION
-        minutes = divmod(duration_in_s, 60)[0]
-        HOURS = float("{0:.2f}".format(hours + ((minutes / 60) - hours)))
-        Cost = instance.parking.HOUR_COST * HOURS*instance.number_of_cars
-        return Cost
-    Cost=serializers.SerializerMethodField(method_name='get_Cost_Custom')
+
 
     class Meta:
                 model = Booking

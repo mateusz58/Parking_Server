@@ -93,6 +93,11 @@ parking_free_places=Parking.objects.get(id=1).free_places-_b
 Parking.objects.filter(pk=1).update(free_places=parking_free_places)
 
 
+
+Parking.objects.filter(pk=1).update(free_places=98)
+
+
+
 # _p = Parking.objects
 # _p = _p.filter(Q(id=1))
 # _p =_p.update(Q(free_places=_p_free_places-int(_b)))

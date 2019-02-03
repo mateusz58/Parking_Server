@@ -61,7 +61,6 @@ class Parking(models.Model):
 class Booking(models.Model):
 
 
-
     code = models.BigAutoField(primary_key=True, editable=False)
     parking = models.ForeignKey(Parking, related_name='parking', on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, related_name='user', on_delete=models.CASCADE)
@@ -75,8 +74,24 @@ class Booking(models.Model):
     added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     number_of_cars = models.PositiveIntegerField(default=1)
+
+
+    def get_Cost_Custom(self):
+        time1 = self.Date_From
+        time2 = self.Date_To
+        duration = time2 - time1
+        duration_in_s = duration.total_seconds()
+        hours = divmod(duration_in_s, 3600)[0]  ## HOURS DURATION
+        minutes = divmod(duration_in_s, 60)[0]
+        HOURS = float("{0:.2f}".format(hours + ((minutes / 60) - hours)))
+        Cost = self.parking.HOUR_COST * HOURS*self.number_of_cars
+        return Cost
+
+
     def __int__(self):
          return self.registration_plate
+
+
 
     def save(self, *args, **kwargs):
 
@@ -91,7 +106,6 @@ class Booking(models.Model):
             HOURS = float("{0:.2f}".format(hours + ((minutes / 60) - hours)))
             Cost_new = self.parking.HOUR_COST * HOURS * self.number_of_cars
             Booking.objects.filter(pk=self.code).update(Cost=Cost_new)
-
             # date_to=self.Date_To.strftime("%Y-%m-%d %H:%M:%S")
             # date_from = self.Date_From.strftime("%Y-%m-%d %H:%M:%S")
             # self.Date_From = dt.datetime.strptime(date_from, '%Y-%m-%d %H:%M:%S')
@@ -108,9 +122,6 @@ class Booking(models.Model):
             _b = int(_b)
             parking_free_places = Parking.objects.get(id=self.parking.id).number_of_places - _b
             Parking.objects.filter(pk=self.parking.id).update(free_places=parking_free_places)
-
-
-
             # self.Date_To=self.Date_To.replace('Z','')
             # self.Date_From=self.Date_From.replace('Z', '')
 
@@ -125,4 +136,5 @@ class Booking(models.Model):
             # Date_From1= self.Date_From.strftime("%Y-%m-%d %H:%M:%S")
             # added1 =self.added.strftime("%Y-%m-%d %H:%M:%S")
             # updated1 = self.updated.strftime("%Y-%m-%d %H:%M:%S")
+            self.Cost = str(self.get_Cost_Custom())
             super().save(*args, **kwargs)
