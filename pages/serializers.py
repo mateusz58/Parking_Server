@@ -1,5 +1,7 @@
 
 import pytz
+import re
+from django.db.models import Q, Sum
 from rest_framework import serializers
 
 from pages.models import Parking, Booking, CustomUser
@@ -14,9 +16,10 @@ class Parking_Serializer_Coordinates(serializers.ModelSerializer):
 
 
 class Parking_Serializer(serializers.ModelSerializer):
+
     class Meta:
         model = Parking
-        fields = ('id', 'parking_name', 'parking_Street', 'parking_City', 'x','y','free_places','HOUR_COST')
+        fields = ('id', 'parking_name', 'parking_Street', 'parking_City', 'x','y','free_places','HOUR_COST','number_of_places')
         read_only_fields = ('id','x','y','parking_name','parking_City','free_places','parking_Street')
 
 

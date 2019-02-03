@@ -1,3 +1,4 @@
+import re
 from django.db import models
 
 # Create your models here.
@@ -7,6 +8,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 ##from park.tasks  import set_race_as_inactive
+from django.db.models import Q, Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -49,10 +51,17 @@ class Parking(models.Model):
     class Meta:
         unique_together = ('parking_Street', 'parking_City',)
     ##pub_date = models.DateTimeField('date published')
+
+    def save(self, *args, **kwargs):
+        super(Parking, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.parking_name
 
 class Booking(models.Model):
+
+
+
     code = models.BigAutoField(primary_key=True, editable=False)
     parking = models.ForeignKey(Parking, related_name='parking', on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, related_name='user', on_delete=models.CASCADE)
@@ -61,23 +70,45 @@ class Booking(models.Model):
     registration_plate = models.CharField(max_length=20)
     Date_From = models.DateTimeField(default=dt.datetime.now())
     Date_To = models.DateTimeField(default=dt.datetime.now())
-    Cost = models.FloatField(default=0)
+    Cost = models.FloatField(editable=False,default=-0)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ACTIVE', editable=True)
     added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     number_of_cars = models.PositiveIntegerField(default=1)
     def __int__(self):
          return self.registration_plate
+
     def save(self, *args, **kwargs):
 
+            print("TRIGGER BOOKING COST")
 
-            date_to=self.Date_To.strftime("%Y-%m-%d %H:%M:%S")
-            date_from = self.Date_From.strftime("%Y-%m-%d %H:%M:%S")
-            self.Date_From = dt.datetime.strptime(date_from, '%Y-%m-%d %H:%M:%S')
-            self.Date_To = dt.datetime.strptime(date_to, '%Y-%m-%d %H:%M:%S')
+            time1 = self.Date_From
+            time2 = self.Date_To
+            duration = time2 - time1
+            duration_in_s = duration.total_seconds()
+            hours = divmod(duration_in_s, 3600)[0]  ## HOURS DURATION
+            minutes = divmod(duration_in_s, 60)[0]
+            HOURS = float("{0:.2f}".format(hours + ((minutes / 60) - hours)))
+            Cost_new = self.parking.HOUR_COST * HOURS * self.number_of_cars
+            Booking.objects.filter(pk=self.code).update(Cost=Cost_new)
 
-            self.Date_From=self.Date_From.replace(tzinfo=None)
-            self.Date_To=self.Date_To.replace(tzinfo=None)
+            # date_to=self.Date_To.strftime("%Y-%m-%d %H:%M:%S")
+            # date_from = self.Date_From.strftime("%Y-%m-%d %H:%M:%S")
+            # self.Date_From = dt.datetime.strptime(date_from, '%Y-%m-%d %H:%M:%S')
+            # self.Date_To = dt.datetime.strptime(date_to, '%Y-%m-%d %H:%M:%S')
+            #
+            # self.Date_From=self.Date_From.replace(tzinfo=None)
+            # self.Date_To=self.Date_To.replace(tzinfo=None)
+            print("TRIGGER BOOKING FREE PLACES")
+            _b = Booking.objects
+            _b = _b.filter(Q(Date_From__lt=dt.datetime.now()) & Q(Date_To__gt=dt.datetime.now()) & Q(parking=self.parking.id) & (
+                Q(status='ACTIVE') | Q(status='RESERVED')))
+            _b = (_b.all().aggregate(Sum('number_of_cars')))
+            _b = re.sub("\D", "", str(_b))
+            _b = int(_b)
+            parking_free_places = Parking.objects.get(id=self.parking.id).number_of_places - _b
+            Parking.objects.filter(pk=self.parking.id).update(free_places=parking_free_places)
+
 
 
             # self.Date_To=self.Date_To.replace('Z','')
@@ -94,4 +125,4 @@ class Booking(models.Model):
             # Date_From1= self.Date_From.strftime("%Y-%m-%d %H:%M:%S")
             # added1 =self.added.strftime("%Y-%m-%d %H:%M:%S")
             # updated1 = self.updated.strftime("%Y-%m-%d %H:%M:%S")
-            super(Booking, self).save(*args, **kwargs)
+            super().save(*args, **kwargs)
