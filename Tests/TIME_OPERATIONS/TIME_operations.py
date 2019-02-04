@@ -4,7 +4,7 @@ from datetime import datetime
 import time
 
 
-time1 = datetime(2019, 2, 1, 12, 8, 15)
+time1 = datetime(2019, 2, 4, 4, 8, 15)
 time2 = datetime.now()
 
 duration = time2 - time1                         # For build-in functions
@@ -16,8 +16,8 @@ minutes = divmod(duration_in_s, 60)[0]        # MINUTE DURATION
 
 
 
-print(hours)
-print(minutes)
+print("HOURS:"+str(hours))
+print("MINUTES:"+str(int(minutes)))
 print(hours+((minutes/60)-hours))
 
 g = float("{0:.2f}".format(hours+((minutes/60)-hours)))

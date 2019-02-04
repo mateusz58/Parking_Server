@@ -26,6 +26,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import ListModelMixin
+
 from decorators import group_required
 from pages.api_group_permission import HasGroupPermission
 from templatetags.templatetag import has_group
@@ -43,13 +44,20 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from pages.models import Parking,Booking
 from django.contrib.auth.decorators import login_required, permission_required
-
+from rest_framework.parsers import JSONParser
 from django.views.generic import TemplateView
-
+from rest_framework.exceptions import APIException
 from pages.serializers import User_Serializer, Booking_Serializer, Parking_Serializer, Parking_Serializer_Coordinates, \
-    User_Serializer_Login_Email
+    User_Serializer_Login_Email, Booking_Serializer_delete
 from users.models import CustomUser
 from rest_framework.decorators import api_view
+from datetime import datetime
+
+from django.db.models import Q, Sum
+import re
+
+
+#
 # class Filter_booking_view(CreateView):
 #
 #     def filter_booking_view(request):
@@ -61,11 +69,11 @@ from rest_framework.decorators import api_view
 # def is_member(user):
 #     return user.groups.filter(name='Parking_manager').exists()
 # class IsParking_Manager(permissions.BasePermission):
-
+#
 # @user_passes_test(lambda u: u.groups.filter(name='companyGroup').exists())
-
-###SNIPPET VIEWSET
-
+#
+# ##SNIPPET VIEWSET
+#
 
 ##HOME PAGE VIEW
 
@@ -171,26 +179,62 @@ class Booking_View(CreateAPIView,ListAPIView):
     queryset = Booking.objects.all()
     serializer_class = Booking_Serializer
 
+    def perform_create(self, serializer):
+
+        ## CHECK ALL PLACES ###########
+        # _b1 = Booking.objects
+        # _b1 = _b1.filter(Q(Date_From__lt=datetime.now()) & Q(Date_To__gt=datetime.now()) & Q(parking=self.request.data['parking']) & (
+        #     Q(status='ACTIVE') | Q(status='RESERVED')))
+        # _b1 = (_b1.all().aggregate(Sum('number_of_cars')))
+        # _b1 = re.sub("\D", "", str(_b1))
+        # _b1 = int(_b1)
+        # free_places = Parking.objects.get(pk=self.request.data['parking']).number_of_places - _b1
+        # print("Booking_View free_places:" + str(free_places))
+        # Parking.objects.filter(pk=self.request.data['parking']).update(free_places=free_places)
+        #### FREE PLACES  ALGORITHM NOW
 
 
 
-
-
-
-
+        serializer.save()
 
 class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdateAPIView):
 
-
         permission_classes = (IsAuthenticated | ReadOnly,)
-        serializer_class = Booking_Serializer
+        serializer_class = Booking_Serializer_delete
         model = Booking
         fields = ['code']
         queryset = Booking.objects.all()
         def test_func(self):
             obj = self.get_object()
             print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
+            print("obj.status  VALUE:" + str(obj.status))
             return str(obj.user) == str(CustomUser.objects.get(email=self.request.user).email)
+        def perform_update(self, serializer):
+            obj = self.get_object()
+            #### FREE PLACES UPDATE ALGORITHM NOW
+            _b1 = Booking.objects
+            _b1 = _b1.filter(Q(Date_From__lt=datetime.now()) & Q(Date_To__gt=datetime.now()) & Q(
+                parking=self.request.data['parking']) & (
+                                 Q(status='ACTIVE') | Q(status='RESERVED')))
+            _b1 = (_b1.all().aggregate(Sum('number_of_cars')))
+            _b1 = re.sub("\D", "", str(_b1))
+            _b1 = int(_b1)
+            free_places = Parking.objects.get(pk=self.request.data['parking']).number_of_places - _b1
+            print("Booking_View free_places:" + str(free_places))
+            Parking.objects.filter(pk=self.request.data['parking']).update(free_places=free_places)
+            #### FREE PLACES  ALGORITHM NOW
+            print("UPDATE status:"+str(self.request.data['status']))
+            if str(self.request.data['status'])=="CANCELLED":
+                if str(obj.status)=="CANCELLED":
+                    raise APIException("Error cannot cancel that reservation ")
+                if str(obj.status) == "EXPIRED":
+                    raise APIException("Error cannot cancel that reservation ")
+                if str(obj.status) == "RESERVED":
+                    raise APIException("Error cannot cancel that reservation ")
+                else:
+                    serializer.save()
+            else:
+                raise APIException("Internal error: wrong body request  ")
 
 # @permission_required('GET_booking_API', raise_exception=True)
 class Booking_View_Search(generics.ListAPIView):
@@ -202,13 +246,17 @@ class Booking_View_Search(generics.ListAPIView):
             queryset = queryset.filter(user__email=user_v)
         return queryset
 
-class Booking_View_logged(generics.CreateAPIView,generics.ListAPIView):
+class Booking_View_logged(generics.ListAPIView):
         serializer_class = Booking_Serializer
         model = Booking
         def get_queryset(self):
             user=self.request.user
             queryset = Booking.objects.all()
             return queryset.filter(user__email=self.request.user)
+
+
+
+
 
 #
 

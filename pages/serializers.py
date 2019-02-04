@@ -45,21 +45,18 @@ class User_Serializer_Login_Email(serializers.ModelSerializer):
             fields = ('__all__')
 
 
+class Booking_Serializer_delete(serializers.ModelSerializer):
+
+    class Meta:
+                model = Booking
+                fields = ('code', 'parking', 'Date_From', 'Date_To', 'Cost', 'user', 'registration_plate',
+                          'number_of_cars','status')
+                read_only_fields = ('code', 'parking', 'Date_From', 'Date_To', 'Cost', 'user', 'registration_plate',
+                          'number_of_cars')
 
 
 
 class Booking_Serializer(serializers.ModelSerializer):
-    # read_only_fields = ('parking', 'Date_From', 'Date_To','user','registration_plate')
-
-
-    # Date_To = serializers.SerializerMethodField()
-    #
-    # def get_Date_From(self, obj):
-    #         if obj.Date_From!='0':return str(obj.Date_From).replace('Z'," ").replace('+00:00','')
-    # def get_Date_To(self, obj):
-    #     if obj.Date_To != '0': return str(obj.Date_To).replace('Z', " ").replace('+00:00', '')
-
-
     def get_HOURS_custom(self, instance):
         time1 = instance.Date_From
         time2 = instance.Date_To
@@ -72,12 +69,11 @@ class Booking_Serializer(serializers.ModelSerializer):
 
     HOURS = serializers.SerializerMethodField(method_name='get_HOURS_custom')
 
-
-
     class Meta:
                 model = Booking
-                fields = ('code', 'parking', 'Date_From', 'Date_To', 'Cost', 'user', 'registration_plate','status','HOURS','number_of_cars')
-                read_only_fields = ('code','Cost','HOURS')
+                fields = ('code', 'parking', 'Date_From', 'Date_To', 'Cost', 'user', 'registration_plate','number_of_cars','HOURS','status')
+                read_only_fields = ('code','Cost','HOURS','status','HOURS')
+
 
 
 

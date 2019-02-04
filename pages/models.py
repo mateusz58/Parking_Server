@@ -28,6 +28,7 @@ STATUS_CHOICES = (
     ('EXPIRED', 'expired'),
     ('RESERVED', 'reserved'),
     ('CANCELLED', 'cancelled'),
+    ('RESERVED_L', 'reserved_l'),
 )
 
 
@@ -75,8 +76,10 @@ class Booking(models.Model):
     updated = models.DateTimeField(auto_now=True)
     number_of_cars = models.PositiveIntegerField(default=1)
 
-
     def get_Cost_Custom(self):
+
+
+        print("TRIGGER BOOKING COST")
         time1 = self.Date_From
         time2 = self.Date_To
         duration = time2 - time1
@@ -88,6 +91,7 @@ class Booking(models.Model):
         return Cost
 
 
+
     def __int__(self):
          return self.registration_plate
 
@@ -95,17 +99,7 @@ class Booking(models.Model):
 
     def save(self, *args, **kwargs):
 
-            print("TRIGGER BOOKING COST")
 
-            time1 = self.Date_From
-            time2 = self.Date_To
-            duration = time2 - time1
-            duration_in_s = duration.total_seconds()
-            hours = divmod(duration_in_s, 3600)[0]  ## HOURS DURATION
-            minutes = divmod(duration_in_s, 60)[0]
-            HOURS = float("{0:.2f}".format(hours + ((minutes / 60) - hours)))
-            Cost_new = self.parking.HOUR_COST * HOURS * self.number_of_cars
-            Booking.objects.filter(pk=self.code).update(Cost=Cost_new)
             # date_to=self.Date_To.strftime("%Y-%m-%d %H:%M:%S")
             # date_from = self.Date_From.strftime("%Y-%m-%d %H:%M:%S")
             # self.Date_From = dt.datetime.strptime(date_from, '%Y-%m-%d %H:%M:%S')
@@ -113,28 +107,7 @@ class Booking(models.Model):
             #
             # self.Date_From=self.Date_From.replace(tzinfo=None)
             # self.Date_To=self.Date_To.replace(tzinfo=None)
-            print("TRIGGER BOOKING FREE PLACES")
-            # _b = Booking.objects
-            # _b = _b.filter(Q(Date_From__lt=dt.datetime.now()) & Q(Date_To__gt=dt.datetime.now()) & Q(parking=self.parking.id) & (
-            #     Q(status='ACTIVE') | Q(status='RESERVED')))
-            # _b = (_b.all().aggregate(Sum('number_of_cars')))
-            # _b = re.sub("\D", "", str(_b))
-            # _b = int(_b)
-            # parking_free_places = Parking.objects.get(id=self.parking.id).number_of_places - _b
-            # Parking.objects.filter(pk=self.parking.id).update(free_places=parking_free_places)
-            # self.Date_To=self.Date_To.replace('Z','')
-            # self.Date_From=self.Date_From.replace('Z', '')
 
 
-            # /self.Date_To = self.Date_To.toISOString().replace('Z', '').replace('T', '');
-            # updated=self.updated.strftime("%Y-%m-%d %H:%M:%S")
-            # Date_From1= self.Date_From.strftime("%Y-%m-%d %H:%M:%S")
-            # added1 =self.added.strftime("%Y-%m-%d %H:%M:%S")
-            # updated1 = self.updated.strftime("%Y-%m-%d %H:%M:%S")
-
-            # updated=self.updated.strftime("%Y-%m-%d %H:%M:%S")
-            # Date_From1= self.Date_From.strftime("%Y-%m-%d %H:%M:%S")
-            # added1 =self.added.strftime("%Y-%m-%d %H:%M:%S")
-            # updated1 = self.updated.strftime("%Y-%m-%d %H:%M:%S")
             self.Cost = str(self.get_Cost_Custom())
             super().save(*args, **kwargs)
