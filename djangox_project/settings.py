@@ -15,7 +15,7 @@ from django.conf.global_settings import DATETIME_INPUT_FORMATS
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SILENCED_SYSTEM_CHECKS = ["auth.W004"]
+SILENCED_SYSTEM_CHECKS = ["auth.1421"]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 

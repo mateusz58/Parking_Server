@@ -11,6 +11,14 @@ from django.db.models import Q, Sum
 from pages.models import Booking, Parking
 
 
+
+import warnings
+
+warnings.filterwarnings("ignore", category=RuntimeWarning)
+
+
+
+
 def update_parking():
     for x in Parking.objects.raw('SELECT pages_parking.id FROM pages_parking'):
         _b1 = Booking.objects
@@ -30,11 +38,11 @@ def update_parking():
 
 def update_booking():
     for x in Booking.objects.raw('SELECT pages_booking.code FROM pages_booking'):
-        duration_date_to = Booking.objects.get(pk=x.code).Date_To - datetime.now()
+        duration_date_to = Booking.objects.get(pk=x.code).Date_To.replace(tzinfo=None) - datetime.now()
         duration_date_to_in_s = duration_date_to.total_seconds()
         minutes_date_to = divmod(duration_date_to_in_s, 60)[0]
         minutes_date_to = int(minutes_date_to)
-        duration_date_from = Booking.objects.get(pk=x.code).Date_From \
+        duration_date_from = Booking.objects.get(pk=x.code).Date_From.replace(tzinfo=None) \
                              - datetime.now()  # For build-in functions
         duration_date_from_in_s = duration_date_from.total_seconds()
         minutes_date_from = divmod(duration_date_from_in_s, 60)[0]
@@ -51,8 +59,8 @@ def update_booking():
                 Booking.objects.filter(pk=x.code
                                           ).update(Date_To=datetime.now())
                 Booking.objects.filter(pk=x.code).refresh_from_db()
-                time1 = Booking.objects.get(pk=x.code).Date_From
-                time2 = Booking.objects.get(pk=x.code).Date_To
+                time1 = Booking.objects.get(pk=x.code).Date_From.replace(tzinfo=None)
+                time2 = Booking.objects.get(pk=x.code).Date_To.replace(tzinfo=None)
                 duration = time2 - time1
                 duration_in_s = duration.total_seconds()
                 hours = divmod(duration_in_s, 3600)[0]  # # HOURS DURATION
@@ -68,8 +76,8 @@ def update_booking():
                 Booking.objects.filter(pk=x.code
                                           ).update(Date_To=datetime.now())
                 Booking.objects.filter(pk=x.code).refresh_from_db()
-                time1 = Booking.objects.get(pk=x.code).Date_From
-                time2 = Booking.objects.get(pk=x.code).Date_To
+                time1 = Booking.objects.get(pk=x.code).Date_From.replace(tzinfo=None)
+                time2 = Booking.objects.get(pk=x.code).Date_To.replace(tzinfo=None)
                 duration = time2 - time1
                 duration_in_s = duration.total_seconds()
                 hours = divmod(duration_in_s, 3600)[0]  # # HOURS DURATION
@@ -86,8 +94,6 @@ def update_booking():
 
 
 
-
-
-
 update_parking()
 update_booking()
+
