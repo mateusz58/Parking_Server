@@ -48,9 +48,6 @@ def signup_view(request):
              # print("Primary key of user"+str(pk))
              user = form.save()
              user.is_active = False
-
-
-
              # print("USER ACTIVE"+user.is_active)
              group = Group.objects.get(name='Parking_manager')
              user.groups.add(group)

@@ -2,6 +2,7 @@ from datetime import datetime,tzinfo
 
 from django.db.models import Q, Sum
 
+from templatetags.templatetag import has_group
 from users.models import CustomUser
 
 from django.db import connection
@@ -83,28 +84,55 @@ parking1=1
 # print(datetime.now()<time3)
 
 
-print("BEFORE Parking.objects.get(pk=1).free_places:"+str(Parking.objects.get(pk=1).free_places))
-
-_b1 = Booking.objects
-_b1 = _b1.filter(Q(Date_From__lt=datetime.now()) & Q(Date_To__gt=datetime.now()) & Q(parking=1) & (
-    Q(status='ACTIVE') | Q(status='RESERVED')))
-_b1 = (_b1.all().aggregate(Sum('number_of_cars')))
-_b1 = re.sub("\D", "", str(_b1))
-_b1 = int(_b1)
-parking_free_places = Parking.objects.get(id=1).number_of_places - _b1
-Parking.objects.filter(pk=1).update(free_places=parking_free_places)
-
-print("AFTER Parking.objects.get(pk=1).free_places:"+str(Parking.objects.get(pk=1).free_places))
+# print("BEFORE Parking.objects.get(pk=1).free_places:"+str(Parking.objects.get(pk=1).free_places))
+#
+# _b1 = Booking.objects
+# _b1 = _b1.filter(Q(Date_From__lt=datetime.now()) & Q(Date_To__gt=datetime.now()) & Q(parking=1) & (
+#     Q(status='ACTIVE') | Q(status='RESERVED')))
+# _b1 = (_b1.all().aggregate(Sum('number_of_cars')))
+# _b1 = re.sub("\D", "", str(_b1))
+# _b1 = int(_b1)
+# parking_free_places = Parking.objects.get(id=1).number_of_places - _b1
+# Parking.objects.filter(pk=1).update(free_places=parking_free_places)
+#
+# print("AFTER Parking.objects.get(pk=1).free_places:"+str(Parking.objects.get(pk=1).free_places))
 
 
 # for p in Parking.objects.raw('SELECT pages_parking.id FROM pages_parking'):
 #     print(p.id)
 #
 
-for x in Booking.objects.raw('SELECT pages_booking.code,pages_booking.Date_From FROM pages_booking'):
-    print(x.Date_From.replace(tzinfo=None))
-    # print(x.code)
-    print(datetime.now())
+# for x in Booking.objects.raw('SELECT pages_booking.code,pages_booking.Date_From FROM pages_booking'):
+#     print("Booking ID :" + str(x.code))
+#     duration_date_to = datetime.now() - Booking.objects.get(pk=x.code).Date_To.replace(tzinfo=None)
+#     duration_date_to_in_s = duration_date_to.total_seconds()
+#     minutes_date_to = divmod(duration_date_to_in_s, 60)[0]
+#     minutes_date_to = int(minutes_date_to)
+#     duration_date_from =datetime.now()- Booking.objects.get(pk=x.code).Date_From.replace(tzinfo=None)
+#                            # For build-in functions
+#     duration_date_from_in_s = duration_date_from.total_seconds()
+#     minutes_date_from = divmod(duration_date_from_in_s, 60)[0]
+#     minutes_date_from = int(minutes_date_from)
+#     print("minutes_date_from  :" + str(minutes_date_from))
+#     print("minutes_date_to  :" + str(minutes_date_to))
+
+print("\n")
+print("\n")
+print("\n")
+
+
+print("TEST User matp321@mail.com belongs to group parking_manager :"+str(has_group(CustomUser.objects.get(email='matp321@mail.com'),"Parking_manager")))
+print("TEST User user1@mail.com belongs to group Client_mobile :"+str(has_group(CustomUser.objects.get(email='user1@mail.com'),"Client_mobile")))
+
+print("User_email"+CustomUser.objects.get(pk=1).email)
+
+
+has_group(CustomUser.objects.get(pk=1),"Parking_manager")
+
+
+duration = self.request.data['Date_To'].replace(tzinfo=None)-self.request.data['Date_From'].replace(tzinfo=None)
+
+
 
 
 

@@ -1,15 +1,15 @@
 import requests
 
-auth_token='4fb390b82071a40eff6719e7b0d84d72c600ab0f'
+auth_token='a45217fc6005f8e0d5b56d0fe09374240bbc9d45'
 hed = {'Authorization': 'Token ' + auth_token}
-user="matp321@mail.com"
+user="user1@mail.com"
 data={
         "parking": 1,
-        "Date_From": "2019-02-03T16:46:19Z",
-        "Date_To": "2019-02-05T16:46:20Z",
-        "user": 5,
+        "Date_From": "2019-02-06T16:46:19Z",
+        "Date_To": "2019-02-06T17:56:20Z",
+        "user": 6,
         "registration_plate": "plate1234",
-        "number_of_cars": 1
+        "number_of_cars": 120
 }
 base="http://192.168.8.106:8000"
 end_point='/api/booking/'

@@ -25,5 +25,20 @@ g = float("{0:.2f}".format(hours+((minutes/60)-hours)))
 print(g)
 
 
+# self.Date_To=self.Date_To.replace('Z','')
+# self.Date_From=self.Date_From.replace('Z', '')
+
+
+
+
+
+def convert_string_date_time(input):
+    input = input.replace('Z', '').replace('T', ' ')
+    input = datetime.strptime(input, '%Y-%m-%d %H:%M:%S')
+    input=input.replace(tzinfo=None)
+    return input
+
+print(convert_string_date_time("2019-02-07T03:43:02Z"))
+
 
 # divmod returns quotient and remainder
