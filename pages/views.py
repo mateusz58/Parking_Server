@@ -314,7 +314,7 @@ class Booking_View_logged(generics.ListAPIView):
         model = Booking
         def get_queryset(self):
             user=self.request.user
-            if has_group(CustomUser.objects.get(pk=self.request.data['user']).email, "Client_mobile"):
+            if has_group(self.request.user, "Client_mobile"):
                 queryset = Booking.objects.all()
                 return queryset.filter(user__email=self.request.user)
 

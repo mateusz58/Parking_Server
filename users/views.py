@@ -3,13 +3,18 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, get_user_model
-
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.exceptions import APIException
 # Create your views here.
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
-from templatetags.templatetag import has_group
+from Responses.reponses import user_inactive, user_not_in_group
+from customexceptions import UNAUTHORIZED
+from templatetags.templatetag import has_group, is_user_active, has_group_v2
 from django.contrib.auth.models import Group
 
 from users.forms import CustomUserCreationForm
@@ -17,6 +22,8 @@ from users.models import CustomUser
 from users.tokens import account_activation_token
 from django.core.mail import EmailMessage
 
+from rest_auth.views import LoginView
+#### PARKING MANAGER
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -38,6 +45,7 @@ def login_view(request):
  # and has_group(request.user, "Parking_manager"):
 
 
+## PARKING MANAGER
 def signup_view(request):
 
     if request.method == 'POST':
@@ -75,3 +83,44 @@ def signup_view(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'account/signup.html', { 'form': form })
+
+
+class CustomLoginView(LoginView):
+    def check_user(self):
+
+
+
+
+        return super(CustomLoginView, self).check_user()
+
+
+class CustomAuthToken(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        if not is_user_active(user):
+            # raise UNAUTHORIZED("Requested user inactive, confirm you email in order to log in")
+
+            # return Response({
+            #     'user_id': user.pk,
+            #     'email': user.email
+            # })
+            raise APIException("Value of Date_From must be higher than Date_To")
+        if not has_group_v2(user,"Parking_manager"):
+            raise UNAUTHORIZED("Unable to log in with provided credentials.")
+            # return Response({
+            #     'user_id': user.pk,
+            #     'email': user.email
+            # })
+            # raise APIException("Value of Date_From must be higher than Date_To")
+
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'email': user.email
+        })

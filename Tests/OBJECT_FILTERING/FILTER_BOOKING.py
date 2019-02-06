@@ -127,10 +127,10 @@ print("TEST User user1@mail.com belongs to group Client_mobile :"+str(has_group(
 print("User_email"+CustomUser.objects.get(pk=1).email)
 
 
-has_group(CustomUser.objects.get(pk=1),"Parking_manager")
+has_group(CustomUser.objects.get(pk=6),"Parking_manager")
 
 
-duration = self.request.data['Date_To'].replace(tzinfo=None)-self.request.data['Date_From'].replace(tzinfo=None)
+
 
 
 
