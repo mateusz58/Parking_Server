@@ -131,7 +131,6 @@ def update_booking():
                 print("Booking ID:" + str(x.code) + "CHANGED COST FROM:" + str(x.Cost) + "To:" + str(Cost) + "AT:" + str(datetime.now()))
 
 
-
 while True:
     update_parking()
     update_booking()

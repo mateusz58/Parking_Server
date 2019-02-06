@@ -20,10 +20,8 @@ urlpatterns = [
         activate, name='activate'),
 
     url(r'^booking/search/', views.filter_booking_view, name='booking'),
-
 # group_required('Parking_manager'),
 ###JSON serializers
-
     # path('api/test/', views.test_detail,name='test'),
    # url(r'^api/snippet/', views.booking_list),
 
@@ -59,15 +57,12 @@ urlpatterns = [
 
     # url(r'^accounts-rest/registration/account-confirm-email-v2-custom/(?P<key>.+)/$', CustomVerifyEmailView.as_view(), name='account_confirm_email_custom')
 
-
-
     # 'api/registration_custom/'    REJESTRACJA
     # 'api/rest-auth/password/reset/' RESET HASLA
     # 'api/rest-auth/password/change/'ZMIANA HASLA
     #  'api-token-auth/'              LOGOWANIE
-
+    #   api/rest-auth/logout/
 ########
-
 ## PARKINGER VIEW
 
 ]

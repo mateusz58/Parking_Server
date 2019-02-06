@@ -170,7 +170,7 @@ class Delete_Parking_View(RetrieveUpdateAPIView):
         serializer_class = Parking_Serializer
         def test_func(self):
             user=self.request.user
-            print("Delete_Parking_View"+user)
+            print("Delete_Parking_View"+str(user))
             return has_group(user, "Parking_manager")
 
 class Booking_View(CreateAPIView,ListAPIView):
