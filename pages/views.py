@@ -30,6 +30,7 @@ from rest_framework.mixins import ListModelMixin
 from Basic_Functions.String_processing import check_query_string
 from Basic_Functions.Time_convert import convert_string_date_time
 from TRIGGERS.FREE_PLACES_UPDATE import free_places_update
+from customexceptions import FORBIDDEN
 from decorators import group_required
 from pages.api_group_permission import HasGroupPermission
 from templatetags.templatetag import has_group
@@ -163,7 +164,6 @@ class Parking_View_Coordinates(CreateAPIView, ListAPIView):
     def get(self, request, *args, **kwargs):
      return self.list(request, *args, *kwargs)
 
-
 class Delete_Parking_View(RetrieveUpdateAPIView):
         permission_classes = (IsAuthenticated,)
         queryset = Parking.objects.all()
@@ -172,9 +172,6 @@ class Delete_Parking_View(RetrieveUpdateAPIView):
             user=self.request.user
             print("Delete_Parking_View"+user)
             return has_group(user, "Parking_manager")
-
-
-
 
 class Booking_View(CreateAPIView,ListAPIView):
 
@@ -190,11 +187,11 @@ class Booking_View(CreateAPIView,ListAPIView):
         minutes = int(minutes)
         print("Minutes"+str(minutes))
         if convert_string_date_time(self.request.data['Date_To']).replace(tzinfo=None)<convert_string_date_time(self.request.data['Date_From']).replace(tzinfo=None):
-            raise APIException("Value of Date_From must be higher than Date_To")
+            raise FORBIDDEN("Value of Date_From must be higher than Date_To")
         if convert_string_date_time(self.request.data['Date_From']).replace(tzinfo=None)<datetime.now():
-            raise APIException("Value of Date_From must be higher than current time")
+            raise FORBIDDEN("Value of Date_From must be higher than current time")
         if minutes < 30:
-            raise APIException("You cannot register parking place for less than 30 minutes")
+            raise FORBIDDEN("You cannot register parking place for less than 30 minutes")
         _b1 = Booking.objects
         w1 = _b1.filter(Q(Date_From__lt=convert_string_date_time(self.request.data['Date_From'])) & Q(Date_To__gt=convert_string_date_time(self.request.data['Date_From'])) & Q(parking=self.request.data['parking']) & (
             Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
@@ -214,7 +211,7 @@ class Booking_View(CreateAPIView,ListAPIView):
         sum_after_request=sum+self.request.data['number_of_cars']
 
         if sum_after_request>Parking.objects.get(pk=self.request.data['parking']).number_of_places:
-            raise APIException("Not enough free places in that period of time,maximum number of places you can reserve is:"+str(Parking.objects.get(pk=self.request.data['parking']).number_of_places-sum))
+            raise FORBIDDEN("Not enough free places in that period of time,maximum number of places you can reserve is:"+str(Parking.objects.get(pk=self.request.data['parking']).number_of_places-sum))
         ### FREE PLACES  ALGORITHM NOW
         serializer.save()
 
@@ -236,16 +233,16 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdate
             if has_group(CustomUser.objects.get(pk=self.request.data['user']).email, "Parking_manager"):
                 if str(self.request.data['status']) == "CANCELLED":
                     if str(obj.status) == "CANCELLED":
-                        raise APIException("Error cannot cancel that reservation ")
+                        raise FORBIDDEN("Error cannot cancel that reservation ")
                     if str(obj.status) == "EXPIRED":
-                        raise APIException("Error cannot cancel that reservation ")
+                        raise FORBIDDEN("Error cannot cancel that reservation ")
                     if str(obj.status) == "RESERVED":
                         free_places_update(self.request.data['parking'])
                         print("UPDATE status:" + str(self.request.data['status']))
                         ## FREE PLACES ALGORIITHM
                         serializer.save()
                     if str(obj.status) == "EXPIRED_E":
-                        raise APIException("Error cannot cancel that reservation ")
+                        raise FORBIDDEN("Error cannot cancel that reservation ")
                     if str(obj.status) == "RESERVED_L":
                         free_places_update(self.request.data['parking'])
                         print("UPDATE status:" + str(self.request.data['status']))
@@ -264,7 +261,7 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdate
                         ## FREE PLACES ALGORIITHM
                         serializer.save()
                     else:
-                        raise APIException("Error cannot change state to RESERVED")
+                        raise FORBIDDEN("Error cannot change state to RESERVED")
 
                 if str(self.request.data['status']) == "EXPIRED_E":
                     if str(obj.status) == "RESERVED":
@@ -273,7 +270,7 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdate
                         ## FREE PLACES ALGORIITHM
                         serializer.save()
                     else:
-                        raise APIException("Error cannot change state to EXPIRED_E")
+                        raise FORBIDDEN("Error cannot change state to EXPIRED_E")
 
                 if str(self.request.data['status']) == "RESERVED_L":
                     if str(obj.status) == "RESERVED":
@@ -282,7 +279,7 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdate
                         ## FREE PLACES ALGORIITHM
                         serializer.save()
                     else:
-                        raise APIException("Error cannot change state to RESERVED_L")
+                        raise FORBIDDEN("Error cannot change state to RESERVED_L")
 
             if has_group(CustomUser.objects.get(pk=self.request.data['user']).email, "Client_mobile"):
                 if str(self.request.data['status']) == "CANCELLED":
@@ -292,11 +289,11 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdate
                     else:
                         free_places_update(self.request.data['parking'])
                         print("UPDATE status:" + str(self.request.data['status']))
-                        raise APIException("Error cannot cancel that reservation ")
+                        raise FORBIDDEN("Error cannot cancel that reservation ")
                         ## FREE PLACES ALGORIITHM
                         serializer.save()
                 else:
-                    raise APIException("Internal error: wrong body request  ")
+                    raise FORBIDDEN("Internal error: wrong body request  ")
 
 
 # @permission_required('GET_booking_API', raise_exception=True)
