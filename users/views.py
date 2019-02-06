@@ -62,6 +62,7 @@ def signup_view(request):
              user.groups.add(group)
              user.save()
              current_site = get_current_site(request)
+             print("get_current_site(request)"+str(get_current_site(request)))
              message = render_to_string('account/email/acc_active_email.html', {
                         'user': user,
                         'domain': current_site.domain,

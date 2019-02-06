@@ -32,7 +32,6 @@ from Basic_Functions.Time_convert import convert_string_date_time
 from TRIGGERS.FREE_PLACES_UPDATE import free_places_update
 from customexceptions import FORBIDDEN
 from decorators import group_required
-from pages.api_group_permission import HasGroupPermission
 from templatetags.templatetag import has_group
 from .filters import UserFilter, BookingFilter
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
@@ -140,7 +139,7 @@ class User_View_Search(generics.ListAPIView):
 
 # @permission_required('GET_Parking_API', raise_exception=True)
 class Parking_View(CreateAPIView, ListAPIView):
-    permission_classes = (IsAuthenticated | ReadOnly,)
+    permission_classes = (ReadOnly,)
     queryset = Parking.objects.all()
     serializer_class = Parking_Serializer
 
@@ -158,7 +157,7 @@ class Parking_View_Search(generics.ListAPIView):
 
 
 class Parking_View_Coordinates(CreateAPIView, ListAPIView):
-    permission_classes = (IsAuthenticated | ReadOnly,)
+    permission_classes = (ReadOnly,)
     queryset = Parking.objects.all()
     serializer_class = Parking_Serializer_Coordinates
     def get(self, request, *args, **kwargs):
