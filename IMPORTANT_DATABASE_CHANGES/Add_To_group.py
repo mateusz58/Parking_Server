@@ -27,7 +27,6 @@ permission_GET_Users_API = Permission.objects.create(codename ='GET_Users_API', 
 permission_Update_Users_API = Permission.objects.create(codename ='Update_Users_API', name ='Send Update request to api/users/<pk>', content_type = ct)
 
 
-
 Client_mobile.permissions.add(permission_POST_booking_API)
 Client_mobile.permissions.add(permission_UPDATE_booking_API)
 Client_mobile.permissions.add(permission_GET_booking_API)
@@ -36,8 +35,6 @@ Client_mobile.permissions.add(permission_POST_rest_log_API)
 Client_mobile.permissions.add(permission_GET_Parking_API)
 Client_mobile.permissions.add(permission_GET_Users_API)
 Client_mobile.permissions.add(permission_Update_Users_API)
-
-
 
 Parking_manager, created = Group.objects.get_or_create(name ='Parking_manager')
 

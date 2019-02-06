@@ -1,14 +1,14 @@
 import requests
-
-auth_token='636f03e05a1f40c7fc9f6150d7d690c35b39a087'
+# USER   # "id": 12,
+auth_token='75a6a637908febb8ecf42b4e2f547a4481fb55e4'
 hed = {'Authorization': 'Token ' + auth_token}
 user="user1@mail.com"
 data={
         "parking": 1,
-        "Date_From": "2019-02-06T16:46:19Z",
-        "Date_To": "2019-02-06T17:56:20Z",
-        "user": 6,
-        "registration_plate": "plate1234",
+        "Date_From": "2019-02-08T16:46:19Z",
+        "Date_To": "2019-02-10T17:56:20Z",
+        "user": 12,
+        "registration_plate": "user1_plate",
         "number_of_cars": 120
 }
 base="http://192.168.8.106:8000"

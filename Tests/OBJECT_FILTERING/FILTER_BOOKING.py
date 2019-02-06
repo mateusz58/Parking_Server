@@ -6,7 +6,7 @@ from templatetags.templatetag import has_group
 from users.models import CustomUser
 from django.contrib.auth.models import Group
 from django.db import connection
-
+#CHANGES
 from pages.models import Parking, Booking, CustomUser
 from django.utils import timezone
 import re

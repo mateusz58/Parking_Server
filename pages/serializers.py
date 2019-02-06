@@ -50,7 +50,7 @@ class Booking_Serializer_delete(serializers.ModelSerializer):
                 model = Booking
                 fields = ('code', 'parking', 'Date_From', 'Date_To', 'Cost', 'user', 'registration_plate',
                           'number_of_cars','status')
-                read_only_fields = ('code', 'parking', 'Date_From', 'Date_To', 'Cost', 'user', 'registration_plate',
+                read_only_fields = ('code', 'parking', 'Date_From', 'Date_To', 'Cost', 'user',
                           'number_of_cars')
 
 
