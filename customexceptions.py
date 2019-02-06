@@ -55,7 +55,6 @@ class UNAUTHORIZED(BaseCustomException):
 class FORBIDDEN(BaseCustomException):
     status_code = 403
 
-
 # ## HOW To USE
 # from django.http import JsonResponse
 # from customexceptions import InvalidUsage

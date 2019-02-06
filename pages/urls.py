@@ -4,7 +4,7 @@ from allauth.account.views import confirm_email
 from decorators import group_required
 from pages import views
 from users.email_acctivation import activate
-from users.views import login_view, signup_view
+from users.views import login_view, signup_view, CustomRegisterView
 from .views import HomePageView, AboutPageView, Parking_View_Coordinates, Parking_View, Booking_View, User_View, \
     Delete_User_View, Delete_Booking_View, Parking_View_Search, User_View_Search, Booking_View_Search, \
     Delete_Parking_View, Booking_View_logged
@@ -39,6 +39,7 @@ urlpatterns = [
 
     path('api/booking/<int:pk>', Delete_Booking_View.as_view()),
     path('api/booking/', Booking_View.as_view()),
+    ### show bookings of logged user only
     url(r'api/booking/login', Booking_View_logged.as_view()),
     ######
 
@@ -48,17 +49,22 @@ urlpatterns = [
     path('api/rest-auth/', include('rest_auth.urls')), ####
 
 
-
+    ## REJESTRACJA STANDARDOWA
     path('api/rest-auth/registration/', include('rest_auth.registration.urls')),  ##### rejestracja
 
-    url(r'^accounts-rest/registration/account-confirm-email/(?P<key>.+)/$', confirm_email, name='account_confirm_email')
+    ## REJESTRACJA CUSTOM
+    url(r'api/registration_custom/', CustomRegisterView.as_view(), name='CustomRegisterView'),
+
+    url(r'^accounts-rest/registration/account-confirm-email/(?P<key>.+)/$', confirm_email, name='account_confirm_email'),
+
+    # url(r'^accounts-rest/registration/account-confirm-email-v2-custom/(?P<key>.+)/$', CustomVerifyEmailView.as_view(), name='account_confirm_email_custom')
 
 
 
-    # 'api/rest-auth/registration/'    REJESTRACJA
+    # 'api/registration_custom/'    REJESTRACJA
     # 'api/rest-auth/password/reset/' RESET HASLA
     # 'api/rest-auth/password/change/'ZMIANA HASLA
-    #    'api-token-auth/'              LOGOWANIE
+    #  'api-token-auth/'              LOGOWANIE
 
 ########
 

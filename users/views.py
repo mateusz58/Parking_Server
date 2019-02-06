@@ -21,8 +21,9 @@ from users.forms import CustomUserCreationForm
 from users.models import CustomUser
 from users.tokens import account_activation_token
 from django.core.mail import EmailMessage
-
+from rest_framework import status
 from rest_auth.views import LoginView
+from rest_auth.registration.views import RegisterView,VerifyEmailView
 #### PARKING MANAGER
 def login_view(request):
     if request.method == 'POST':
@@ -85,15 +86,6 @@ def signup_view(request):
     return render(request, 'account/signup.html', { 'form': form })
 
 
-class CustomLoginView(LoginView):
-    def check_user(self):
-
-
-
-
-        return super(CustomLoginView, self).check_user()
-
-
 class CustomAuthToken(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
@@ -103,20 +95,9 @@ class CustomAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         if not is_user_active(user):
-            # raise UNAUTHORIZED("Requested user inactive, confirm you email in order to log in")
-
-            # return Response({
-            #     'user_id': user.pk,
-            #     'email': user.email
-            # })
-            raise APIException("Value of Date_From must be higher than Date_To")
-        if not has_group_v2(user,"Parking_manager"):
+            raise UNAUTHORIZED("Unable to log in ,you must activate your account by clicking activation link that you received on email")
+        if not has_group_v2(user,"Client_mobile"):
             raise UNAUTHORIZED("Unable to log in with provided credentials.")
-            # return Response({
-            #     'user_id': user.pk,
-            #     'email': user.email
-            # })
-            # raise APIException("Value of Date_From must be higher than Date_To")
 
         token, created = Token.objects.get_or_create(user=user)
         return Response({
@@ -124,3 +105,18 @@ class CustomAuthToken(ObtainAuthToken):
             'user_id': user.pk,
             'email': user.email
         })
+
+
+class CustomRegisterView(RegisterView):
+        def create(self, request, *args, **kwargs):
+            response = super().create(request, *args, **kwargs)
+            if status.is_success(response.status_code):
+                print("Request_check"+str(self.request.data['email']))
+                user=str(self.request.data['email'])
+                user = CustomUser.objects.get(email=user).id
+                # CustomUser.objects.filter(pk=user).update(is_active=False)
+                my_group = Group.objects.get(name='Client_mobile')
+                my_group.user_set.add(user)
+            return response
+
+

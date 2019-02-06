@@ -4,7 +4,7 @@ from django.db.models import Q, Sum
 
 from templatetags.templatetag import has_group
 from users.models import CustomUser
-
+from django.contrib.auth.models import Group
 from django.db import connection
 
 from pages.models import Parking, Booking, CustomUser
@@ -127,29 +127,17 @@ print("TEST User user1@mail.com belongs to group Client_mobile :"+str(has_group(
 print("User_email"+CustomUser.objects.get(pk=1).email)
 
 
-has_group(CustomUser.objects.get(pk=6),"Parking_manager")
+# my_group = Group.objects.get(name='Client_mobile')
+# my_group.user_set.add(user)
+# CustomUser.objects.filter(email="user44@mail.com").update(is_active=False)
 
+user=CustomUser.objects.get(email="user44@mail.com").id
 
+CustomUser.objects.get(email="user44@mail.com")
 
+print("TEST group"+str(has_group(CustomUser.objects.get(email="user44@mail.com"),"Client_mobile")))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+print("TEST active"+str(CustomUser.objects.get(email="user44@mail.com").is_active))
 
 
 # for p in Booking.objects.raw('SELECT * FROM pages_booking'):
