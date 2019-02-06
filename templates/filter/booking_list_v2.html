@@ -12,10 +12,6 @@
           {% render_field filter.form.code class="form-control" %}
         </div>
         <div class="form-group col-sm-4 col-md-3">
-          {{ filter.form.parking.label_tag }}
-          {% render_field filter.form.parking class="form-control" %}
-        </div>
-        <div class="form-group col-sm-4 col-md-3">
           {{ filter.form.Date_From.label_tag }}
           {% render_field filter.form.Date_From class="form-control" %}
         </div>
@@ -53,13 +49,12 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>Kod</th>
-        <th>Nazwa parkingu</th>
-        <th>Data od</th>
-        <th>Date do</th>
-        <th>Koszt</th>
-          <th>Użytkownik</th>
-          <th>Numer rejestracyjny</th>
+        <th>Code</th>
+        <th>Date from</th>
+        <th>Date to</th>
+        <th>Cost</th>
+          <th>User</th>
+          <th>Car registration number</th>
           <th>Status</th>
       </tr>
     </thead>
@@ -67,7 +62,6 @@
       {% for booking in filter.qs %}
         <tr>
           <td>{{ booking.code }}</td>
-          <td>{{ booking.parking }}</td>
           <td>{{ booking.Date_From }}</td>
           <td>{{ booking.Date_To }}</td>
           <td>{{ booking.Cost }}</td>

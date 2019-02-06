@@ -2,8 +2,8 @@ import requests
 
 
 data={
-    "username": "user46@mail.com",
-    "email": "user46@mail.com",
+    "username": "user3@mail.com",
+    "email": "user3@mail.com",
     "password1": "matp17954",
     "password2": "matp17954",
 }

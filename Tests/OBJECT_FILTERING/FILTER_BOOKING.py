@@ -13,34 +13,34 @@ import re
 
 ## Wyswietlanie wszystkich
 
-Booking.objects.all()
-
-Parking.objects.all()
+# Booking.objects.all()
+#
+# Parking.objects.all()
 
 # queryset =  Booking.objects.all()
 
-
-print("FILTERED FIELD NAME OF FOREIGN KEY")
-# Booking.objects.get(user=1).code
-print("FILTERED FIELD EXISTS")
+#
+# print("FILTERED FIELD NAME OF FOREIGN KEY")
+# # Booking.objects.get(user=1).code
+# print("FILTERED FIELD EXISTS")
 # userfilter(name=group_name).exists()
 #
 # user.groups.filter(name=group_name).exists()
 
 # CustomUser.objects.filter(email='o8922871@nwytg.net').exists()
-print("ID")
-CustomUser.objects.get(email='o8922871@nwytg.net').id
+# print("ID")
+# CustomUser.objects.get(email='o8922871@nwytg.net').id
 
 
-Booking.objects.all()
-
-time1 = datetime(2019, 2, 28, 10, 0, 00)
-time2 = datetime(2019, 2, 28, 16, 0, 00)
-
-time3 = datetime(2018, 2, 28, 16, 0, 00)
-
-
-parking1=1
+# Booking.objects.all()
+#
+# time1 = datetime(2019, 2, 28, 10, 0, 00)
+# time2 = datetime(2019, 2, 28, 16, 0, 00)
+#
+# time3 = datetime(2018, 2, 28, 16, 0, 00)
+#
+#
+# parking1=1
 
 
 # Person.objects.raw('SELECT * FROM myapp_person WHERE last_name = %s', [lname])
@@ -116,28 +116,28 @@ parking1=1
 #     print("minutes_date_from  :" + str(minutes_date_from))
 #     print("minutes_date_to  :" + str(minutes_date_to))
 
-print("\n")
-print("\n")
-print("\n")
-
-
-print("TEST User matp321@mail.com belongs to group parking_manager :"+str(has_group(CustomUser.objects.get(email='matp321@mail.com'),"Parking_manager")))
-print("TEST User user1@mail.com belongs to group Client_mobile :"+str(has_group(CustomUser.objects.get(email='user1@mail.com'),"Client_mobile")))
-
-print("User_email"+CustomUser.objects.get(pk=1).email)
+# print("\n")
+# print("\n")
+# print("\n")
+#
+#
+# print("TEST User matp321@mail.com belongs to group parking_manager :"+str(has_group(CustomUser.objects.get(email='matp321@mail.com'),"Parking_manager")))
+# print("TEST User user1@mail.com belongs to group Client_mobile :"+str(has_group(CustomUser.objects.get(email='user1@mail.com'),"Client_mobile")))
+#
+# print("User_email"+CustomUser.objects.get(pk=1).email)
 
 
 # my_group = Group.objects.get(name='Client_mobile')
 # my_group.user_set.add(user)
 # CustomUser.objects.filter(email="user44@mail.com").update(is_active=False)
-
-user=CustomUser.objects.get(email="user44@mail.com").id
-
-CustomUser.objects.get(email="user44@mail.com")
-
-print("TEST group"+str(has_group(CustomUser.objects.get(email="user44@mail.com"),"Client_mobile")))
-
-print("TEST active"+str(CustomUser.objects.get(email="user44@mail.com").is_active))
+#
+# user=CustomUser.objects.get(email="user44@mail.com").id
+#
+# CustomUser.objects.get(email="user44@mail.com")
+#
+# print("TEST group"+str(has_group(CustomUser.objects.get(email="user44@mail.com"),"Client_mobile")))
+#
+# print("TEST active"+str(CustomUser.objects.get(email="user44@mail.com").is_active))
 
 
 # for p in Booking.objects.raw('SELECT * FROM pages_booking'):
@@ -147,5 +147,18 @@ print("TEST active"+str(CustomUser.objects.get(email="user44@mail.com").is_activ
 #     students, classes
 #     WHERE
 #     students._id = classes.student
+requested_user="matp321@mail.com"
+user_converse=CustomUser.objects.get(email=requested_user).id
+parking_filtered=Parking.objects.get(user_parking=user_converse).id
+booking_filtered=Booking.objects.filter(parking=parking_filtered)
+## pobrany uzytkownik
+print("Parking filtered: "+str(Booking.objects.all()))
+
+print("booking filtered: "+str(booking_filtered))
+
+# print("Booking filtered filtered"+str(Booking.objects.filter(parking=parking_filtered.id)))
+
+
+
 
 

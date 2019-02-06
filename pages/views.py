@@ -89,9 +89,16 @@ class AboutPageView(TemplateView):
 @login_required
 def filter_booking_view(request):
     user=request.user
+
+    requested_user = user
+    user_get_id = CustomUser.objects.get(email=requested_user).id
+    parking_filtered = Parking.objects.get(user_parking=user_get_id).id
+    booking_filtered = Booking.objects.filter(parking=parking_filtered)
+
+    print("filter_booking_view"+str(user))
     permission_classes = (IsAuthenticated,)
-    booking_list = Booking.objects.all()
-    booking_filter = BookingFilter(request.GET, queryset=booking_list)
+    # booking_list = Booking.objects.all()
+    booking_filter = BookingFilter(request.GET, queryset=booking_filtered)
     # return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})
     if   user.groups.filter(name='Parking_manager').exists():
         return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})

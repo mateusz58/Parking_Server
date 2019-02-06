@@ -29,13 +29,8 @@ STATUS_CHOICES = (
     ('RESERVED', 'reserved'),
     ('CANCELLED', 'cancelled'),
     ('RESERVED_L', 'reserved_l'),
+    ('EXPIRED_E', 'expired_e')
 )
-
-
-
-
-
-
 
 
 
@@ -78,8 +73,6 @@ class Booking(models.Model):
     number_of_cars = models.PositiveIntegerField(default=1)
 
     def get_Cost_Custom(self):
-
-
         print("TRIGGER BOOKING COST")
         time1 = self.Date_From
         time2 = self.Date_To
