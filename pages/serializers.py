@@ -19,9 +19,8 @@ class Parking_Serializer(serializers.ModelSerializer):
 
     class Meta:
         model = Parking
-        fields = ('id', 'parking_name', 'parking_Street', 'parking_City', 'x','y','free_places','HOUR_COST','number_of_places')
-        read_only_fields = ('id','x','y','parking_name','parking_City','free_places','parking_Street')
-
+        fields = ('id', 'parking_name', 'parking_Street', 'parking_City', 'x','y','free_places','HOUR_COST','number_of_places','user_parking')
+        read_only_fields = ('id','x','y','parking_name','parking_City','free_places','parking_Street','user_parking')
 
 class User_Serializer(serializers.ModelSerializer):
         class Meta:

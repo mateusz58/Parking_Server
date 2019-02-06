@@ -49,6 +49,7 @@ class Parking(models.Model):
     number_of_places=models.PositiveIntegerField(default=1)
     free_places = models.PositiveIntegerField(default=number_of_places)
     HOUR_COST = models.FloatField(default=2.0)
+    user_parking = models.ForeignKey(CustomUser, related_name='user_parking', on_delete=models.CASCADE,default=5)
     class Meta:
         unique_together = ('parking_Street', 'parking_City',)
     ##pub_date = models.DateTimeField('date published')

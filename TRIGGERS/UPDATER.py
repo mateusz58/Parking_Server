@@ -130,7 +130,6 @@ def update_booking():
                 Booking.objects.filter(pk=x.code).update(Cost=Cost)
                 print("Booking ID:" + str(x.code) + "CHANGED COST FROM:" + str(x.Cost) + "To:" + str(Cost) + "AT:" + str(datetime.now()))
 
-
 while True:
     update_parking()
     update_booking()
