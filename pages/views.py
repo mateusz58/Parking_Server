@@ -215,25 +215,35 @@ class Booking_View(CreateAPIView,ListAPIView):
         w4 = _b1.filter(Q(Date_From__lt=convert_string_date_time(self.request.data['Date_From'])) & Q(Date_To__gt=convert_string_date_time(self.request.data['Date_To'])) & Q(
             parking=self.request.data['parking']) & (
                             Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        variations = [w1, w2, w3, w4]
+
+        w5 = _b1.filter(Q(Date_From=convert_string_date_time(self.request.data['Date_From'])) & Q(Date_To=convert_string_date_time(self.request.data['Date_To'])) & Q(
+            parking=self.request.data['parking']) & (
+                            Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+
+        variations = [w1, w2, w3, w4,w5]
         i=0
 
-        if w1.filter(registration_plate=self.request.data['registration_plate']).exists():
+        if w1.filter(registration_plate=str(self.request.data['registration_plate'])).exists():
             raise FORBIDDEN("Car with registration number:"+str(self.request.data['registration_plate'])+" have already registered parking place in that period of time")
 
-        if w2.filter(registration_plate=self.request.data['registration_plate']).exists():
+        if w2.filter(registration_plate=str(self.request.data['registration_plate'])).exists():
             raise FORBIDDEN("Car with registration number:"+str(self.request.data['registration_plate'])+" have already registered parking place in that period of time")
 
-        if w3.filter(registration_plate=self.request.data['registration_plate']).exists():
+        if w3.filter(registration_plate=str(self.request.data['registration_plate'])).exists():
             raise FORBIDDEN("Car with registration number:"+str(self.request.data['registration_plate'])+" have already registered parking place in that period of time")
 
-        if w4.filter(registration_plate=self.request.data['registration_plate']).exists():
+        if w4.filter(registration_plate=str(self.request.data['registration_plate'])).exists():
+            raise FORBIDDEN("Car with registration number:"+str(self.request.data['registration_plate'])+" have already registered parking place in that period of time")
+
+        if w5.filter(registration_plate=str(self.request.data['registration_plate'])).exists():
             raise FORBIDDEN("Car with registration number:"+str(self.request.data['registration_plate'])+" have already registered parking place in that period of time")
 
         sum=0
         while i < len(variations):
-             sum=sum+check_query_string(variations[i])
-             i += 1
+            print("Variation:" + str(variations))
+            sum = sum + check_query_string(variations[i])
+            i += 1
+
         sum_after_request=sum+self.request.data['number_of_cars']
 
         if sum_after_request>Parking.objects.get(pk=self.request.data['parking']).number_of_places:
@@ -241,7 +251,7 @@ class Booking_View(CreateAPIView,ListAPIView):
         ### FREE PLACES  ALGORITHM NOW
         modify = serializer.save()
 
-        print("MODIFY"+modify)
+        print("MODIFY"+str(modify))
 
 
 

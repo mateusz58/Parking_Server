@@ -5,11 +5,11 @@ hed = {'Authorization': 'Token ' + auth_token}
 user="user1@mail.com"
 data={
         "parking": 1,
-        "Date_From": "2019-02-08T16:46:19Z",
-        "Date_To": "2019-02-10T17:56:20Z",
+        "Date_From": "2019-02-11T16:46:19Z",
+        "Date_To": "2019-02-12T17:56:20Z",
         "user": 12,
-        "registration_plate": "user1_plate",
-        "number_of_cars": 120
+        "registration_plate": "userplate1",
+        "number_of_cars":5
 }
 base="http://192.168.8.106:8000"
 end_point='/api/booking/'

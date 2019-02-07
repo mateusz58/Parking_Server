@@ -147,14 +147,14 @@ import re
 #     students, classes
 #     WHERE
 #     students._id = classes.student
-requested_user="matp321@mail.com"
-user_converse=CustomUser.objects.get(email=requested_user).id
-parking_filtered=Parking.objects.get(user_parking=user_converse).id
-booking_filtered=Booking.objects.filter(parking=parking_filtered)
+# requested_user="matp321@mail.com"
+# user_converse=CustomUser.objects.get(email=requested_user).id
+# parking_filtered=Parking.objects.get(user_parking=user_converse).id
+# booking_filtered=Booking.objects.filter(parking=parking_filtered)
 ## pobrany uzytkownik
-print("Parking filtered: "+str(Booking.objects.all()))
+print("Booking objects: "+str(Booking.objects.values_list("registration_plate")))
 
-print("booking filtered: "+str(booking_filtered))
+# print("booking filtered: "+str(booking_filtered))
 
 # print("Booking filtered filtered"+str(Booking.objects.filter(parking=parking_filtered.id)))
 
