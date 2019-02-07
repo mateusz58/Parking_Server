@@ -82,8 +82,7 @@ class Car_Serializer(serializers.ModelSerializer):
         model = Car
         fields = (
         'Date_From', 'Date_To', 'registration_plate', 'booking','status')
-
-        read_only_fields = ('booking',)
+        read_only_fields = ('booking','Date_From')
 
 
 

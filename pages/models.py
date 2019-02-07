@@ -73,6 +73,15 @@ class Booking(models.Model):
     updated = models.DateTimeField(auto_now=True)
     number_of_cars = models.PositiveIntegerField(default=1)
 
+    def clean(self):
+        from django.core.exceptions import ValidationError
+
+
+        if self.number_of_cars < 1:
+            raise ValidationError('You cannot register register parking place for less than one car')
+
+
+
     def get_Cost_Custom(self):
         print("TRIGGER BOOKING COST")
         time1 = self.Date_From
@@ -111,7 +120,7 @@ class Car(models.Model):
     id = models.BigAutoField(primary_key=True, editable=False)
     Date_From = models.DateTimeField(default=dt.datetime.now())
     Date_To = models.DateTimeField(default=dt.datetime.now())
-    booking = models.ForeignKey(Booking, related_name='booking', on_delete=models.CASCADE,default=25)
+    booking = models.ForeignKey(Booking, related_name='booking', on_delete=models.CASCADE, blank=True, null=True)
     registration_plate = models.CharField(max_length=10,validators=[isalphavalidator], null=False, blank=False,default='default')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ACTIVE', editable=True)
 

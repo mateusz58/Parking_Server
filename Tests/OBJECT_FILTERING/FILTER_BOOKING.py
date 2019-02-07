@@ -7,7 +7,7 @@ from users.models import CustomUser
 from django.contrib.auth.models import Group
 from django.db import connection
 #CHANGES
-from pages.models import Parking, Booking, CustomUser
+from pages.models import Parking, Booking, CustomUser, Car
 from django.utils import timezone
 import re
 
@@ -159,6 +159,8 @@ print("Booking objects: "+str(Booking.objects.values_list("registration_plate"))
 # print("Booking filtered filtered"+str(Booking.objects.filter(parking=parking_filtered.id)))
 
 
+
+Car.objects.all().delete()
 
 
 

@@ -257,32 +257,49 @@ class Booking_View(CreateAPIView,ListAPIView):
 
 
         sum_after_request=sum+self.request.data['number_of_cars']
-        # print("request.HEADERS['Host']" + str(self.request.META['REMOTE_ADDR'])) ## WORKS PROPERLY
-        print("request.HTTP_DATE_FROM" + str(self.request.META['HTTP_DATE_FROM']))  ## WORKS PROPERLY
-        print("request.HTTP_DATE_TO" + str(self.request.META['HTTP_DATE_TO']))  ## WORKS PROPERLY
-        print("request.HTTP_REGISTRATION_PLATE" + str(self.request.META['HTTP_REGISTRATION_PLATE']))  ## WORKS PROPERLY
+
+        if sum_after_request > Parking.objects.get(pk=self.request.data['parking']).number_of_places:
+            raise FORBIDDEN(
+                "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
+                    Parking.objects.get(pk=self.request.data['parking']).number_of_places - sum))
+
+
         registration_plate_list=str(self.request.META['HTTP_REGISTRATION_PLATE'])
         registration_plate_list = list(registration_plate_list.split(","))
         date_from=str(self.request.META['HTTP_DATE_FROM'])
-        date_to = str(self.request.META['HTTP_DATE_FROM'])
-        convert_string_date_time(date_from)
-        convert_string_date_time(date_to)
-        # print("request.HEADERS['Host']" + str(self.request.META['HTTP_AUTHORIZATION'])) ## WORKS PROPERLY
-        # print("request.HEADERS['Host']" + str(self.request.META))
-        raise APIException("HEADER TEST")
+        date_to = str(self.request.META['HTTP_DATE_TO'])
+        date_from=convert_string_date_time(date_from)
+        date_to=convert_string_date_time(date_to)
 
-
-        if sum_after_request>Parking.objects.get(pk=self.request.data['parking']).number_of_places:
-            raise FORBIDDEN("Not enough free places in that period of time,maximum number of places you can reserve is:"+str(Parking.objects.get(pk=self.request.data['parking']).number_of_places-sum))
-        ### FREE PLACES  ALGORITHM NOW
+        # raise FORBIDDEN("HEADER TEST")
+        ## CREATED BOOKING OBJECT
         modify = serializer.save()
-
         ##HEADER TEST
         # print(headers["domain"])
 
         user_id=CustomUser.objects.get(email=str(self.request.user)).id
         Booking.objects.filter(pk=modify.code).update(user=user_id)
 
+        booking_instance=Booking.objects.get(pk=modify.code).code
+
+        if not int(self.request.data['number_of_cars'])==len(registration_plate_list):
+            raise FORBIDDEN("Number of provided registration numbers are not equal to number of parking places you want to register ")
+
+        i2=0
+        while i2 < int(self.request.data['number_of_cars']):
+            new_car = Car.objects.create()
+            new_car.refresh_from_db()
+            # new_car.Date_From=date_from,
+            # new_car.Date_To=date_to,
+            # # new_car.booking=Booking.objects.get(pk=63),
+            # new_car.registration_plate=registration_plate_list[i2]
+
+            Car.objects.filter(pk=new_car.id).update(Date_From=date_from)
+            Car.objects.filter(pk=new_car.id).update(Date_To=date_to)
+            Car.objects.filter(pk=new_car.id).update(registration_plate=registration_plate_list[i2])
+            Car.objects.filter(pk=new_car.id).update(booking=Booking.objects.get(pk=modify.code))
+            i2=i2+1
+            # car.objects.filter(pk=car.id).update(booking=booking_instance)
 
 
 
@@ -351,7 +368,6 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdate
                         serializer.save()
                     else:
                         raise FORBIDDEN("Error cannot change state to RESERVED_L")
-
             if has_group(CustomUser.objects.get(pk=self.request.data['user']).email, "Client_mobile"):
                 if str(self.request.data['status']) == "CANCELLED":
                     if str(obj.status) == "ACTIVE":
