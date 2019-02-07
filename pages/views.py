@@ -177,6 +177,7 @@ class Delete_Parking_View(RetrieveUpdateAPIView):
         def test_func(self):
             user=self.request.user
             print("Delete_Parking_View"+str(user))
+
             return has_group(user, "Parking_manager")
 
 class Booking_View(CreateAPIView,ListAPIView):
@@ -240,18 +241,38 @@ class Booking_View(CreateAPIView,ListAPIView):
 
         sum=0
         while i < len(variations):
-            print("Variation:" + str(variations))
+            # print("Variation:" + str(variations))
             sum = sum + check_query_string(variations[i])
             i += 1
 
+
         sum_after_request=sum+self.request.data['number_of_cars']
+        # print("request.HEADERS['Host']" + str(self.request.META['REMOTE_ADDR'])) ## WORKS PROPERLY
+        print("request.HTTP_DATE_FROM" + str(self.request.META['HTTP_DATE_FROM']))  ## WORKS PROPERLY
+        print("request.HTTP_DATE_TO" + str(self.request.META['HTTP_DATE_TO']))  ## WORKS PROPERLY
+        print("request.HTTP_REGISTRATION_PLATE" + str(self.request.META['HTTP_REGISTRATION_PLATE']))  ## WORKS PROPERLY
+        registration_plate_list=str(self.request.META['HTTP_REGISTRATION_PLATE'])
+        registration_plate_list = list(registration_plate_list.split(","))
+        date_from=str(self.request.META['HTTP_DATE_FROM'])
+        date_to = str(self.request.META['HTTP_DATE_FROM'])
+        convert_string_date_time(date_from)
+        convert_string_date_time(date_to)
+        # print("request.HEADERS['Host']" + str(self.request.META['HTTP_AUTHORIZATION'])) ## WORKS PROPERLY
+        # print("request.HEADERS['Host']" + str(self.request.META))
+        raise APIException("HEADER TEST")
+
 
         if sum_after_request>Parking.objects.get(pk=self.request.data['parking']).number_of_places:
             raise FORBIDDEN("Not enough free places in that period of time,maximum number of places you can reserve is:"+str(Parking.objects.get(pk=self.request.data['parking']).number_of_places-sum))
         ### FREE PLACES  ALGORITHM NOW
         modify = serializer.save()
 
-        print("MODIFY"+str(modify))
+        ##HEADER TEST
+        # print(headers["domain"])
+
+        user_id=CustomUser.objects.get(email=str(self.request.user)).id
+        Booking.objects.filter(pk=modify.code).update(user=user_id)
+
 
 
 

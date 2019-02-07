@@ -3,9 +3,11 @@ import requests
 
 value='123'
 auth_token='75a6a637908febb8ecf42b4e2f547a4481fb55e4'
-hed = {'Authorization': 'Token ' + auth_token}
-
-
+hed = {'Authorization': 'Token ' + auth_token,
+        'date-from':'2019-02-18T16:46:19Z',
+        "date-to": "2019-02-20T17:56:20Z",
+        "registration-plate":"userplate9,userplate7"
+       }
 data={
         "parking": 1,
         "Date_From": "2019-02-18T16:46:19Z",
