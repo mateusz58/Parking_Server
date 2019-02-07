@@ -195,60 +195,73 @@ class Booking_View(CreateAPIView,ListAPIView):
     queryset = Booking.objects.all()
     serializer_class = Booking_Serializer
     def perform_create(self, serializer):
-        duration =convert_string_date_time(self.request.data['Date_To']).replace(tzinfo=None)-convert_string_date_time(self.request.data['Date_From']).replace(tzinfo=None)
+
+        registration_plate_list=str(self.request.META['HTTP_REGISTRATION_PLATE'])
+        registration_plate_list = list(registration_plate_list.split(","))
+        date_from=str(self.request.META['HTTP_DATE_FROM'])
+        date_to = str(self.request.META['HTTP_DATE_TO'])
+        date_from=convert_string_date_time(date_from)
+        date_to=convert_string_date_time(date_to)
+
+
+        duration =convert_string_date_time(self.request.data['Date_To']).replace(tzinfo=None)-convert_string_date_time(self.request.META['HTTP_DATE_FROM']).replace(tzinfo=None)
         duration_s = duration.total_seconds()
         minutes = divmod(duration_s, 60)[0]
         minutes = int(minutes)
         print("Minutes"+str(minutes))
-        if not str(self.request.data['registration_plate']).isalnum():
-            raise FORBIDDEN("Wrong registration number of car,car registration number can consist only of numbers and letters characters")
-        if len(str(self.request.data['registration_plate']))<6:
-            raise FORBIDDEN("Wrong registration number of car,car registration number must consist of at least 6 characters and maximum 10 characters")
-        if len(str(self.request.data['registration_plate']))>10:
-            raise FORBIDDEN("Wrong registration number of car,car registration number must consist of at least 6 characters and maximum 10 characters")
+        i=0
+        while i < int(self.request.data['number_of_cars']):
+                if not str(registration_plate_list[i]).isalnum():
+                    raise FORBIDDEN("Wrong registration number of car,car registration number can consist only of numbers and letters characters")
+                if len(registration_plate_list[i])<6:
+                    raise FORBIDDEN("Wrong registration number of car:"+str(registration_plate_list[i])+",car registration number must consist of at least 6 characters and maximum 10 characters")
+                if len(registration_plate_list[i])>10:
+                    raise FORBIDDEN("Wrong registration number of car:"+str(registration_plate_list[i])+",car registration number must consist of at least 6 characters and maximum 10 characters")
+                i = i+1
+        i=0
         if self.request.data['number_of_cars'] < 1:
             raise FORBIDDEN("You cannot register register parking place for less than one car")
         if minutes < 30:
             raise FORBIDDEN("You cannot register parking place for less than 30 minutes")
-        if convert_string_date_time(self.request.data['Date_To']).replace(tzinfo=None)<convert_string_date_time(self.request.data['Date_From']).replace(tzinfo=None):
+        if convert_string_date_time(self.request.META['HTTP_DATE_TO']).replace(tzinfo=None)<convert_string_date_time(self.request.META['HTTP_DATE_FROM']).replace(tzinfo=None):
             raise FORBIDDEN("Value of Date_From must be higher than Date_To")
-        if convert_string_date_time(self.request.data['Date_From']).replace(tzinfo=None)<datetime.now():
+        if convert_string_date_time(self.request.META['HTTP_DATE_FROM']).replace(tzinfo=None)<datetime.now():
             raise FORBIDDEN("Value of Date_From must be higher than current time")
         if minutes < 30:
             raise FORBIDDEN("You cannot register parking place for less than 30 minutes")
-        _b1 = Booking.objects
-        w1 = _b1.filter(Q(Date_From__lt=convert_string_date_time(self.request.data['Date_From'])) & Q(Date_To__gt=convert_string_date_time(self.request.data['Date_From'])) & Q(parking=self.request.data['parking']) & (
+        _b1 = Car.objects
+        w1 = _b1.filter(Q(Date_From__lt=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(Date_To__gt=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(parking=self.request.data['parking']) & (
             Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w2= _b1.filter(Q(Date_From__gt=convert_string_date_time(self.request.data['Date_From'])) & Q(Date_To__lt=convert_string_date_time(self.request.data['Date_To'])) & Q(parking=self.request.data['parking']) & (
+        w2= _b1.filter(Q(Date_From__gt=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(Date_To__lt=convert_string_date_time(self.request.META['HTTP_DATE_TO'])) & Q(parking=self.request.data['parking']) & (
             Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w3=_b1.filter(Q(Date_From__lt=convert_string_date_time(self.request.data['Date_To'])) & Q(Date_To__gt=convert_string_date_time(self.request.data['Date_To'])) & Q(parking=self.request.data['parking']) & (
+        w3=_b1.filter(Q(Date_From__lt=convert_string_date_time(self.request.META['HTTP_DATE_TO'])) & Q(Date_To__gt=convert_string_date_time(self.request.META['HTTP_DATE_TO'])) & Q(parking=self.request.data['parking']) & (
             Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w4 = _b1.filter(Q(Date_From__lt=convert_string_date_time(self.request.data['Date_From'])) & Q(Date_To__gt=convert_string_date_time(self.request.data['Date_To'])) & Q(
+        w4 = _b1.filter(Q(Date_From__lt=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(Date_To__gt=convert_string_date_time(self.request.META['HTTP_DATE_TO'])) & Q(
             parking=self.request.data['parking']) & (
                             Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
 
-        w5 = _b1.filter(Q(Date_From=convert_string_date_time(self.request.data['Date_From'])) & Q(Date_To=convert_string_date_time(self.request.data['Date_To'])) & Q(
+        w5 = _b1.filter(Q(Date_From=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(Date_To=convert_string_date_time(self.request.META['HTTP_DATE_TO'])) & Q(
             parking=self.request.data['parking']) & (
                             Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-
         variations = [w1, w2, w3, w4,w5]
-        i=0
 
-        if w1.filter(registration_plate=str(self.request.data['registration_plate'])).exists():
-            raise FORBIDDEN("Car with registration number:"+str(self.request.data['registration_plate'])+" have already registered parking place in that period of time")
+        while i < int(self.request.data['number_of_cars']):
+            if w1.filter(registration_plate=str(registration_plate_list[i])).exists():
+                raise FORBIDDEN("Car with registration number:"+str(registration_plate_list[i])+" have already registered parking place in that period of time")
 
-        if w2.filter(registration_plate=str(self.request.data['registration_plate'])).exists():
-            raise FORBIDDEN("Car with registration number:"+str(self.request.data['registration_plate'])+" have already registered parking place in that period of time")
+            if w2.filter(registration_plate=str(registration_plate_list[i])).exists():
+                raise FORBIDDEN("Car with registration number:"+str(registration_plate_list[i])+" have already registered parking place in that period of time")
 
-        if w3.filter(registration_plate=str(self.request.data['registration_plate'])).exists():
-            raise FORBIDDEN("Car with registration number:"+str(self.request.data['registration_plate'])+" have already registered parking place in that period of time")
+            if w3.filter(registration_plate=str(registration_plate_list[i])).exists():
+                raise FORBIDDEN("Car with registration number:"+str(registration_plate_list[i])+" have already registered parking place in that period of time")
 
-        if w4.filter(registration_plate=str(self.request.data['registration_plate'])).exists():
-            raise FORBIDDEN("Car with registration number:"+str(self.request.data['registration_plate'])+" have already registered parking place in that period of time")
+            if w4.filter(registration_plate=str(registration_plate_list[i])).exists():
+                raise FORBIDDEN("Car with registration number:"+str(registration_plate_list[i])+" have already registered parking place in that period of time")
 
-        if w5.filter(registration_plate=str(self.request.data['registration_plate'])).exists():
-            raise FORBIDDEN("Car with registration number:"+str(self.request.data['registration_plate'])+" have already registered parking place in that period of time")
-
+            if w5.filter(registration_plate=str(registration_plate_list[i])).exists():
+                raise FORBIDDEN("Car with registration number:"+str(registration_plate_list[i])+" have already registered parking place in that period of time")
+            i=i+1
+        i = 0
         sum=0
         while i < len(variations):
             # print("Variation:" + str(variations))
@@ -264,44 +277,31 @@ class Booking_View(CreateAPIView,ListAPIView):
                     Parking.objects.get(pk=self.request.data['parking']).number_of_places - sum))
 
 
-        registration_plate_list=str(self.request.META['HTTP_REGISTRATION_PLATE'])
-        registration_plate_list = list(registration_plate_list.split(","))
-        date_from=str(self.request.META['HTTP_DATE_FROM'])
-        date_to = str(self.request.META['HTTP_DATE_TO'])
-        date_from=convert_string_date_time(date_from)
-        date_to=convert_string_date_time(date_to)
 
         # raise FORBIDDEN("HEADER TEST")
         ## CREATED BOOKING OBJECT
         modify = serializer.save()
         ##HEADER TEST
         # print(headers["domain"])
-
         user_id=CustomUser.objects.get(email=str(self.request.user)).id
         Booking.objects.filter(pk=modify.code).update(user=user_id)
-
         booking_instance=Booking.objects.get(pk=modify.code).code
-
         if not int(self.request.data['number_of_cars'])==len(registration_plate_list):
             raise FORBIDDEN("Number of provided registration numbers are not equal to number of parking places you want to register ")
-
-        i2=0
-        while i2 < int(self.request.data['number_of_cars']):
+        i=0
+        while i < int(self.request.data['number_of_cars']):
             new_car = Car.objects.create()
             new_car.refresh_from_db()
             # new_car.Date_From=date_from,
             # new_car.Date_To=date_to,
             # # new_car.booking=Booking.objects.get(pk=63),
-            # new_car.registration_plate=registration_plate_list[i2]
-
+            # new_car.registration_plate=registration_plate_list[i]
             Car.objects.filter(pk=new_car.id).update(Date_From=date_from)
             Car.objects.filter(pk=new_car.id).update(Date_To=date_to)
-            Car.objects.filter(pk=new_car.id).update(registration_plate=registration_plate_list[i2])
+            Car.objects.filter(pk=new_car.id).update(registration_plate=registration_plate_list[i])
             Car.objects.filter(pk=new_car.id).update(booking=Booking.objects.get(pk=modify.code))
-            i2=i2+1
+            i=i+1
             # car.objects.filter(pk=car.id).update(booking=booking_instance)
-
-
 
 class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdateAPIView):
 
