@@ -7,7 +7,7 @@ from users.email_acctivation import activate
 from users.views import login_view, signup_view, CustomRegisterView
 from .views import HomePageView, AboutPageView, Parking_View_Coordinates, Parking_View, Booking_View, User_View, \
     Delete_User_View, Delete_Booking_View, Parking_View_Search, User_View_Search, Booking_View_Search, \
-    Delete_Parking_View, Booking_View_logged
+    Delete_Parking_View, Booking_View_logged, Car_View
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
@@ -24,6 +24,9 @@ urlpatterns = [
 ###JSON serializers
     # path('api/test/', views.test_detail,name='test'),
    # url(r'^api/snippet/', views.booking_list),
+
+
+    path('api/car/', Car_View.as_view()),
 
     path('api/parking/', Parking_View.as_view()),
     path('api/parking/<int:pk>', Delete_Parking_View.as_view()),

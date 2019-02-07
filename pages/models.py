@@ -13,6 +13,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from Validators.Booking_validator import validate_range_min_max
+from Validators.Car_validators import isalphavalidator
 from users.models import CustomUser
 
 
@@ -66,7 +67,7 @@ class Booking(models.Model):
     registration_plate = models.CharField(max_length=20)
     Date_From = models.DateTimeField(default=dt.datetime.now())
     Date_To = models.DateTimeField(default=dt.datetime.now())
-    Cost = models.FloatField(editable=False,default=-0)
+    Cost = models.FloatField(editable=False,default=0)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ACTIVE', editable=True)
     added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -82,14 +83,13 @@ class Booking(models.Model):
         minutes = divmod(duration_in_s, 60)[0]
         HOURS = float("{0:.2f}".format(hours + ((minutes / 60) - hours)))
         Cost = self.parking.HOUR_COST * HOURS*self.number_of_cars
+        Cost=round(Cost, 2)
         return Cost
 
 
 
     def __int__(self):
          return self.registration_plate
-
-
 
     def save(self, *args, **kwargs):
 
@@ -102,6 +102,33 @@ class Booking(models.Model):
             # self.Date_From=self.Date_From.replace(tzinfo=None)
             # self.Date_To=self.Date_To.replace(tzinfo=None)
 
-
             self.Cost = str(self.get_Cost_Custom())
             super().save(*args, **kwargs)
+
+class Car(models.Model):
+
+
+    id = models.BigAutoField(primary_key=True, editable=False)
+    Date_From = models.DateTimeField(default=dt.datetime.now())
+    Date_To = models.DateTimeField(default=dt.datetime.now())
+    booking = models.ForeignKey(Booking, related_name='booking', on_delete=models.CASCADE,default=25)
+    registration_plate = models.CharField(max_length=10,validators=[isalphavalidator], null=False, blank=False,default='default')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ACTIVE', editable=True)
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+
+        duration = self.Date_To-self.Date_From
+        duration_s = duration.total_seconds()
+        minutes = divmod(duration_s, 60)[0]
+        minutes = int(minutes)
+
+        if minutes<30:
+                raise ValidationError('You cannot register parking place for less than 30 minutes')
+
+    def save(self, *args, **kwargs):
+
+        super().save(*args, **kwargs)
+
+
+

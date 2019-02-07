@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from pages.models import Parking, Booking
+from pages.models import Parking, Booking, Car
 from users.models import CustomUser
 
 
@@ -22,5 +22,13 @@ class Booking_admin(admin.ModelAdmin):
         list_filter = ('user','parking__parking_name','status')
 
 
+class Car_admin(admin.ModelAdmin):
+    list_display = ['booking','Date_From', 'Date_To','registration_plate', 'status']
+    ordering = ['Date_From']
+    search_fields = ('Date_From', 'Date_To', 'booking', 'registration_plate','status')
+    list_filter = ('status',)
+
+
 admin.site.register(Parking,Parking_Admin)
 admin.site.register(Booking,Booking_admin)
+admin.site.register(Car,Car_admin)

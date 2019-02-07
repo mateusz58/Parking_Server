@@ -4,7 +4,7 @@ import re
 from django.db.models import Q, Sum
 from rest_framework import serializers
 
-from pages.models import Parking, Booking, CustomUser
+from pages.models import Parking, Booking, CustomUser, Car
 
 from datetime import datetime
 
@@ -72,6 +72,18 @@ class Booking_Serializer(serializers.ModelSerializer):
                 model = Booking
                 fields = ('code', 'parking', 'Date_From', 'Date_To', 'Cost', 'user', 'registration_plate','number_of_cars','HOURS','status')
                 read_only_fields = ('code','Cost','HOURS','status','HOURS')
+
+
+class Car_Serializer(serializers.ModelSerializer):
+
+
+
+    class Meta:
+        model = Car
+        fields = (
+        'Date_From', 'Date_To', 'registration_plate', 'booking','status')
+
+        read_only_fields = ('booking',)
 
 
 

@@ -45,13 +45,13 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from pages.models import Parking,Booking
+from pages.models import Parking, Booking, Car
 from django.contrib.auth.decorators import login_required, permission_required
 from rest_framework.parsers import JSONParser
 from django.views.generic import TemplateView
 from rest_framework.exceptions import APIException
 from pages.serializers import User_Serializer, Booking_Serializer, Parking_Serializer, Parking_Serializer_Coordinates, \
-    User_Serializer_Login_Email, Booking_Serializer_delete
+    User_Serializer_Login_Email, Booking_Serializer_delete, Car_Serializer
 from users.models import CustomUser
 from rest_framework.decorators import api_view
 from datetime import datetime
@@ -172,8 +172,18 @@ class Parking_View_Coordinates(CreateAPIView, ListAPIView):
 
 class Delete_Parking_View(RetrieveUpdateAPIView):
         permission_classes = (IsAuthenticated,)
-        queryset = Parking.objects.all()
         serializer_class = Parking_Serializer
+
+        def get_queryset(self):
+            # user_id=CustomUser.objects.get(email=self.request.user).id
+            queryset = Parking.objects.all()
+            parking_name_v = self.request.query_params.get('parking_name', None)
+
+            if parking_name_v is not None:
+                queryset = queryset.filter(parking_name=parking_name_v)
+            return queryset
+
+
         def test_func(self):
             user=self.request.user
             print("Delete_Parking_View"+str(user))
@@ -375,6 +385,16 @@ class Booking_View_logged(generics.ListAPIView):
             if has_group(self.request.user, "Client_mobile"):
                 queryset = Booking.objects.all()
                 return queryset.filter(user__email=self.request.user)
+
+class Car_View(generics.ListAPIView):
+        permission_classes = (IsAuthenticated | ReadOnly,)
+        serializer_class = Car_Serializer
+        model = Car
+        def get_queryset(self):
+            queryset = Car.objects.all()
+            return queryset
+
+
 
 
 

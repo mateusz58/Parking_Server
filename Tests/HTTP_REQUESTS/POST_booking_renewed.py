@@ -14,7 +14,7 @@ data={
         "Date_To": "2019-02-20T17:56:20Z",
         "user": 12,
         "registration_plate": "userplate5",
-        "number_of_cars":5
+        "number_of_cars":130
 }
 base="http://192.168.8.106:8000"
 end_point='/api/booking/'
