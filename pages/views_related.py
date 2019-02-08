@@ -24,6 +24,7 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_2
 from pages.models import Booking
 from pages.serializers import Car_booking_Serializer
 from pages.views import ReadOnly
+from users.models import CustomUser
 
 
 class Car_booking_View(generics.ListAPIView):
@@ -31,5 +32,19 @@ class Car_booking_View(generics.ListAPIView):
     serializer_class = Car_booking_Serializer
     model = Booking
     queryset=Booking.objects.all()
+
+
+class Update_Car_booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdateAPIView):
+    permission_classes = (IsAuthenticated | ReadOnly,)
+    serializer_class = Car_booking_Serializer
+    model = Booking
+    queryset = Booking.objects.all()
+
+    def test_func(self):
+        obj = self.get_object()
+        print("obj.user  VALUE:" + str(obj.user) + "CustomUser.objects.get(email=self.request.user).id VALUE" + str(
+            CustomUser.objects.get(email=self.request.user).email))
+        print("obj.status  VALUE:" + str(obj.status))
+        return str(obj.user) == str(CustomUser.objects.get(email=self.request.user).email)
 
 

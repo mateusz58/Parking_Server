@@ -3,12 +3,15 @@ from django.urls import path, include
 from allauth.account.views import confirm_email
 from decorators import group_required
 from pages import views
-from pages.views_related import Car_booking_View
+from pages.views_related import Car_booking_View, Update_Car_booking_View
 from users.email_acctivation import activate
 from users.views import login_view, signup_view, CustomRegisterView
 from .views import HomePageView, AboutPageView, Parking_View_Coordinates, Parking_View, Booking_View, User_View, \
     Delete_User_View, Delete_Booking_View, Parking_View_Search, User_View_Search, Booking_View_Search, \
     Delete_Parking_View, Booking_View_logged, Car_View
+
+from rest_framework_nested import routers
+
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
@@ -28,6 +31,9 @@ urlpatterns = [
 
 
     path('api/car_booking/', Car_booking_View.as_view()),
+
+    path('api/car_booking/<int:pk>', Update_Car_booking_View.as_view()),
+
 
     path('api/car/', Car_View.as_view()),
 

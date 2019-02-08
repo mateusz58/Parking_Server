@@ -1,0 +1,79 @@
+{% extends '_base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+  <form method="get">
+    <div class="well">
+      <h4 style="margin-top: 0">Reservation list</h4>
+      <div class="row">
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.code.label_tag }}
+          {% render_field filter.form.code class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.Date_From.label_tag }}
+          {% render_field filter.form.Date_From class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.Date_To.label_tag }}
+          {% render_field filter.form.Date_To class="form-control" %}
+        </div>
+             <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.Cost.label_tag }}
+          {% render_field filter.form.Cost class="form-control" %}
+             </div>
+             <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.user.label_tag }}
+          {% render_field filter.form.user class="form-control" %}
+        </div>
+             <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.registration_plate.label_tag }}
+          {% render_field filter.form.registration_plate class="form-control" %}
+        </div>
+              <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.status.label_tag }}
+          {% render_field filter.form.status class="form-control" %}
+        </div>
+
+
+        </div>
+
+      </div>
+      <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Search
+      </button>
+    </div>
+  </form>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Date from</th>
+        <th>Date to</th>
+        <th>Cost</th>
+          <th>User</th>
+          <th>Car registration number</th>
+          <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for booking in filter.qs %}
+        <tr>
+          <td>{{ booking.code }}</td>
+          <td>{{ booking.Date_From }}</td>
+          <td>{{ booking.Date_To }}</td>
+          <td>{{ booking.Cost }}</td>
+          <td>{{ booking.user }}</td>
+          <td>{{ booking.registration_plate }}</td>
+            <td>{{ booking.status }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No data</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
