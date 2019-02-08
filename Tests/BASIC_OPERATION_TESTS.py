@@ -13,4 +13,13 @@ while i < len(colors):
     i += 1
 
 
+def is_all_items_unique(input_list):
+    first_element = input_list[0]
+    for element in input_list:
+        if element != first_element:
+            return False
 
+    return True
+
+
+print(is_all_items_unique(colors))

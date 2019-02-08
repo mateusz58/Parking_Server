@@ -6,14 +6,14 @@ auth_token='75a6a637908febb8ecf42b4e2f547a4481fb55e4'
 hed = {'Authorization': 'Token ' + auth_token,
         'date-from':'2019-02-18T16:46:19Z',
         "date-to": "2019-02-20T17:56:20Z",
-        "registration-plate":"userplate9,userplate7"
+        "registration-plate":"user1pla51,user1pla47"
        }
 data={
         "parking": 1,
         "Date_From": "2019-02-18T16:46:19Z",
         "Date_To": "2019-02-20T17:56:20Z",
         "user": 12,
-        "registration_plate": "user1pla50",
+        "registration_plate": "user1pla51",
         "number_of_cars":2
 }
 base="http://192.168.8.106:8000"

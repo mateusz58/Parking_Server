@@ -76,13 +76,22 @@ class Booking_Serializer(serializers.ModelSerializer):
 
 class Car_Serializer(serializers.ModelSerializer):
 
-
-
     class Meta:
         model = Car
-        fields = (
-        'Date_From', 'Date_To', 'registration_plate', 'booking','status')
+        fields = ( 'id','Date_From', 'Date_To', 'registration_plate', 'booking','status')
         read_only_fields = ('booking','Date_From')
+
+class Car_booking_Serializer(serializers.ModelSerializer):
+
+    booking = Car_Serializer(many=True)
+    class Meta:
+        model = Booking
+        fields =('code', 'parking','Cost', 'user','number_of_cars','booking')
+        read_only_fields = ('code', 'parking','Cost', 'user',)
+
+
+
+
 
 
 

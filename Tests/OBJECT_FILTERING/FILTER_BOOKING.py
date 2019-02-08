@@ -160,7 +160,9 @@ print("Booking objects: "+str(Booking.objects.values_list("registration_plate"))
 
 
 
-Car.objects.all().delete()
+# Car.objects.all().delete()
+
+
 
 
 
