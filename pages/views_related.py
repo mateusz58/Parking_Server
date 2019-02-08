@@ -21,8 +21,8 @@ from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveAPIV
 from rest_framework.authtoken.models import Token
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_202_ACCEPTED
 
-from pages.models import Booking
-from pages.serializers import Car_booking_Serializer
+from pages.models import Booking, Car
+from pages.serializers import Car_booking_Serializer, Car_Serializer
 from pages.views import ReadOnly
 from users.models import CustomUser
 
@@ -46,5 +46,18 @@ class Update_Car_booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUp
             CustomUser.objects.get(email=self.request.user).email))
         print("obj.status  VALUE:" + str(obj.status))
         return str(obj.user) == str(CustomUser.objects.get(email=self.request.user).email)
+
+class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPIView):
+        permission_classes = (IsAuthenticated | ReadOnly,)
+        serializer_class = Car_Serializer
+        model = Car
+        queryset = Car.objects.all()
+        def test_func(self):
+            obj = self.get_object()
+            user=Booking.objects.get(pk=int(obj.booking.code)).user
+            # print("obj.user  VALUE:" + str(obj.user) + "CustomUser.objects.get(email=self.request.user).id VALUE" + str(
+            #     CustomUser.objects.get(email=self.request.user).email))
+            # print("obj.status  VALUE:" + str(obj.status))
+            return str(user) == str(CustomUser.objects.get(email=self.request.user).email)
 
 

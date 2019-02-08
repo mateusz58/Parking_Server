@@ -152,7 +152,7 @@ import re
 # parking_filtered=Parking.objects.get(user_parking=user_converse).id
 # booking_filtered=Booking.objects.filter(parking=parking_filtered)
 ## pobrany uzytkownik
-print("Booking objects: "+str(Booking.objects.values_list("registration_plate")))
+# print("Booking objects: "+str(Booking.objects.values_list("registration_plate")))
 
 # print("booking filtered: "+str(booking_filtered))
 
@@ -162,6 +162,8 @@ print("Booking objects: "+str(Booking.objects.values_list("registration_plate"))
 
 # Car.objects.all().delete()
 
+
+print(Booking.objects.get(pk=75).user)
 
 
 

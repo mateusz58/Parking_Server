@@ -3,7 +3,7 @@ import pytz
 import re
 from django.db.models import Q, Sum
 from rest_framework import serializers
-
+from drf_writable_nested import WritableNestedModelSerializer
 from pages.models import Parking, Booking, CustomUser, Car
 
 from datetime import datetime
@@ -82,20 +82,31 @@ class Car_Serializer(serializers.ModelSerializer):
         read_only_fields = ('booking','Date_From')
 
 class Car_booking_Serializer(serializers.ModelSerializer):
-
     booking = Car_Serializer(many=True)
     class Meta:
         model = Booking
         fields =('code', 'parking','Cost', 'user','number_of_cars','booking')
-        read_only_fields = ('code', 'parking','Cost', 'user',)
+        read_only_fields = ('code', 'parking','Cost', 'user','booking')
 
-
-
-
-
-
-
-
+#
+# class Car_booking_Serializer(serializers.ModelSerializer):
+#
+#     class Meta:
+#         model = Booking
+#         fields =('code', 'parking','Cost', 'user','number_of_cars','booking')
+#         read_only_fields = ('code', 'parking','Cost', 'user',)
+#
+#
+#
+# class Request_Car_booking_Serializer(WritableNestedModelSerializer):
+#     booking = Car_booking_Serializer(many=True)
+#
+#
+#     class Meta:
+#         model = Booking
+#         fields =('code', 'parking','Cost', 'user','number_of_cars','booking')
+#         read_only_fields = ('code', 'parking','Cost', 'user',)
+#
 
 
 

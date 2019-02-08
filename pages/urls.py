@@ -3,7 +3,7 @@ from django.urls import path, include
 from allauth.account.views import confirm_email
 from decorators import group_required
 from pages import views
-from pages.views_related import Car_booking_View, Update_Car_booking_View
+from pages.views_related import Car_booking_View, Update_Car_booking_View, Update_Car_View
 from users.email_acctivation import activate
 from users.views import login_view, signup_view, CustomRegisterView
 from .views import HomePageView, AboutPageView, Parking_View_Coordinates, Parking_View, Booking_View, User_View, \
@@ -36,6 +36,7 @@ urlpatterns = [
 
 
     path('api/car/', Car_View.as_view()),
+    path('api/car/<int:pk>', Update_Car_View.as_view()),
 
     path('api/parking/', Parking_View.as_view()),
     path('api/parking/<int:pk>', Delete_Parking_View.as_view()),
