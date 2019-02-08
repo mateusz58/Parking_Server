@@ -321,56 +321,7 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdate
             obj = self.get_object()
 
             #### FREE PLACES UPDATE ALGORITHM NOW
-            if has_group(CustomUser.objects.get(pk=self.request.data['user']).email, "Parking_manager"):
-                if str(self.request.data['status']) == "CANCELLED":
-                    if str(obj.status) == "CANCELLED":
-                        raise FORBIDDEN("Error cannot cancel that reservation ")
-                    if str(obj.status) == "EXPIRED":
-                        raise FORBIDDEN("Error cannot cancel that reservation ")
-                    if str(obj.status) == "RESERVED":
-                        free_places_update(self.request.data['parking'])
-                        print("UPDATE status:" + str(self.request.data['status']))
-                        ## FREE PLACES ALGORIITHM
-                        serializer.save()
-                    if str(obj.status) == "EXPIRED_E":
-                        raise FORBIDDEN("Error cannot cancel that reservation ")
-                    if str(obj.status) == "RESERVED_L":
-                        free_places_update(self.request.data['parking'])
-                        print("UPDATE status:" + str(self.request.data['status']))
-                        ## FREE PLACES ALGORIITHM
-                        serializer.save()
-                    else:
-                        free_places_update(self.request.data['parking'])
-                        print("UPDATE status:" + str(self.request.data['status']))
-                        ## FREE PLACES ALGORIITHM
-                        serializer.save()
 
-                if str(self.request.data['status']) == "RESERVED":
-                    if str(obj.status) == "ACTIVE":
-                        free_places_update(self.request.data['parking'])
-                        print("UPDATE status:" + str(self.request.data['status']))
-                        ## FREE PLACES ALGORIITHM
-                        serializer.save()
-                    else:
-                        raise FORBIDDEN("Error cannot change state to RESERVED")
-
-                if str(self.request.data['status']) == "EXPIRED_E":
-                    if str(obj.status) == "RESERVED":
-                        free_places_update(self.request.data['parking'])
-                        print("UPDATE status:" + str(self.request.data['status']))
-                        ## FREE PLACES ALGORIITHM
-                        serializer.save()
-                    else:
-                        raise FORBIDDEN("Error cannot change state to EXPIRED_E")
-
-                if str(self.request.data['status']) == "RESERVED_L":
-                    if str(obj.status) == "RESERVED":
-                        free_places_update(self.request.data['parking'])
-                        print("UPDATE status:" + str(self.request.data['status']))
-                        ## FREE PLACES ALGORIITHM
-                        serializer.save()
-                    else:
-                        raise FORBIDDEN("Error cannot change state to RESERVED_L")
             if has_group(CustomUser.objects.get(pk=self.request.data['user']).email, "Client_mobile"):
                 if str(self.request.data['status']) == "CANCELLED":
                     if str(obj.status) == "ACTIVE":
@@ -383,7 +334,7 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdate
                         ## FREE PLACES ALGORIITHM
                         serializer.save()
                 else:
-                    raise FORBIDDEN("Internal error: wrong body request  ")
+                    raise FORBIDDEN("You cannot change state of that reservation  ")
 
 
 # @permission_required('GET_booking_API', raise_exception=True)

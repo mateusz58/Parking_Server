@@ -2,6 +2,7 @@ from datetime import datetime,tzinfo
 
 from django.db.models import Q, Sum
 
+from TRIGGERS.CALCULATE_COST import calculate_cost
 from templatetags.templatetag import has_group
 from users.models import CustomUser
 from django.contrib.auth.models import Group
@@ -162,9 +163,42 @@ import re
 
 # Car.objects.all().delete()
 
+# _b1 = Car.objects
+# print("\n")
+# _b1 = _b1.all().aggregate(Sum('booking__number_of_cars'))
+#
+# print(_b1)
+#
 
-print(Booking.objects.get(pk=75).user)
 
 
+#
+#
+#
+#
+#
+# # 15800
+#
+# self=Car.objects.get(pk=15800)
+# print(self.id)
+
+
+def get_foreign(self):
+    print(self.booking.parking.id)
+
+# _b1 = Car.objects
+# w5 = _b1.filter(Q(Date_From=convert_string_date_time(self.Date_From)) & Q(
+#     Date_To=convert_string_date_time(self.Date_To)) & Q(
+#     booking__parking=self.booking.parking) & (
+#                     Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+#
+#
+
+# self1=Booking.objects.get(pk=75)
+
+
+# print(str(self1.code))
+book=Booking.objects.get(pk=75)
+print(calculate_cost(book))
 
 
