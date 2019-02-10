@@ -21,9 +21,11 @@ from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveAPIV
 from rest_framework.authtoken.models import Token
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_202_ACCEPTED
 
-from pages.models import Booking, Car
+from customexceptions import FORBIDDEN
+from pages.models import Booking, Car, free_places_update_v2
 from pages.serializers import Car_booking_Serializer, Car_Serializer
 from pages.views import ReadOnly
+from templatetags.templatetag import has_group, has_group_v2
 from users.models import CustomUser
 
 
@@ -59,5 +61,23 @@ class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPI
             #     CustomUser.objects.get(email=self.request.user).email))
             # print("obj.status  VALUE:" + str(obj.status))
             return str(user) == str(CustomUser.objects.get(email=self.request.user).email)
+
+        def perform_update(self, serializer):
+            obj = self.get_object()
+
+            #### FREE PLACES UPDATE ALGORITHM NOW
+            if has_group_v2(self.request.user, "Client_mobile"):
+                if str(self.request.data['status']) == "CANCELLED":
+                    if str(obj.status) == "ACTIVE":
+                        free_places_update_v2(obj)
+                        serializer.save()
+                    else:
+                        free_places_update_v2(obj)
+                        print("UPDATE status:" + str(self.request.data['status']))
+                        raise FORBIDDEN("Error cannot cancel that reservation ")
+                        ## FREE PLACES ALGORIITHM
+                        serializer.save()
+            else:
+                    raise FORBIDDEN("You cannot change state of that reservation  ")
 
 

@@ -32,7 +32,7 @@ from Basic_Functions.Time_convert import convert_string_date_time
 from TRIGGERS.FREE_PLACES_UPDATE import free_places_update
 from customexceptions import FORBIDDEN
 from decorators import group_required
-from templatetags.templatetag import has_group
+from templatetags.templatetag import has_group, has_group_v2
 from .filters import UserFilter, BookingFilter
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
 from rest_framework.decorators import authentication_classes, permission_classes
@@ -89,21 +89,24 @@ class AboutPageView(TemplateView):
 @login_required
 def filter_booking_view(request):
     user=request.user
-
     requested_user = user
     user_get_id = CustomUser.objects.get(email=requested_user).id
     parking_filtered = Parking.objects.get(user_parking=user_get_id).id
     booking_filtered = Booking.objects.filter(parking=parking_filtered)
-
     print("filter_booking_view"+str(user))
     permission_classes = (IsAuthenticated,)
     # booking_list = Booking.objects.all()
     booking_filter = BookingFilter(request.GET, queryset=booking_filtered)
+    Parking.objects.filter(user_parking__email=user).exists()
+
     # return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})
-    if   user.groups.filter(name='Parking_manager').exists():
+    if  user.groups.filter(name='Parking_manager').exists():
         return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})
     else:
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
+        # return render(request, 'home', {'some_flag': True})
+
+
 
 
 
@@ -206,7 +209,7 @@ class Booking_View(CreateAPIView,ListAPIView):
         date_to = str(self.request.META['HTTP_DATE_TO'])
         date_from=convert_string_date_time(date_from)
         date_to=convert_string_date_time(date_to)
-        duration =convert_string_date_time(self.request.data['Date_To']).replace(tzinfo=None)-convert_string_date_time(self.request.META['HTTP_DATE_FROM']).replace(tzinfo=None)
+        duration =convert_string_date_time(str(self.request.META['HTTP_DATE_TO'])).replace(tzinfo=None)-convert_string_date_time(str(self.request.META['HTTP_DATE_FROM'])).replace(tzinfo=None)
         duration_s = duration.total_seconds()
         minutes = divmod(duration_s, 60)[0]
         minutes = int(minutes)
@@ -287,55 +290,34 @@ class Booking_View(CreateAPIView,ListAPIView):
         # print(headers["domain"])
         user_id=CustomUser.objects.get(email=str(self.request.user)).id
         Booking.objects.filter(pk=modify.code).update(user=user_id)
-        booking_instance=Booking.objects.get(pk=modify.code).code
+        booking_instance=Booking.objects.get(pk=modify.code)
         if not int(self.request.data['number_of_cars'])==len(registration_plate_list):
             raise FORBIDDEN("Number of provided registration numbers are not equal to number of parking places you want to register ")
         i=0
         while i < int(self.request.data['number_of_cars']):
-            new_car = Car.objects.create()
+            new_car = Car(
+                registration_plate=registration_plate_list[i],
+                booking=booking_instance,
+                Date_From=date_from,
+                Date_To=date_to
+            )
+            new_car.save()
             new_car.refresh_from_db()
-            # new_car.Date_From=date_from,
-            # new_car.Date_To=date_to,
-            # # new_car.booking=Booking.objects.get(pk=63),
-            # new_car.registration_plate=registration_plate_list[i]
-            Car.objects.filter(pk=new_car.id).update(Date_From=date_from)
-            Car.objects.filter(pk=new_car.id).update(Date_To=date_to)
-            Car.objects.filter(pk=new_car.id).update(registration_plate=registration_plate_list[i])
-            Car.objects.filter(pk=new_car.id).update(booking=Booking.objects.get(pk=modify.code))
             i=i+1
-            # car.objects.filter(pk=car.id).update(booking=booking_instance)
 
 class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdateAPIView):
 
         permission_classes = (IsAuthenticated | ReadOnly,)
         serializer_class = Booking_Serializer_delete
         model = Booking
-        fields = ['code']
         queryset = Booking.objects.all()
         def test_func(self):
             obj = self.get_object()
-            print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
-            print("obj.status  VALUE:" + str(obj.status))
-            return str(obj.user) == str(CustomUser.objects.get(email=self.request.user).email)
-        def perform_update(self, serializer):
-            obj = self.get_object()
-
-            #### FREE PLACES UPDATE ALGORITHM NOW
-
-            if has_group(CustomUser.objects.get(pk=self.request.data['user']).email, "Client_mobile"):
-                if str(self.request.data['status']) == "CANCELLED":
-                    if str(obj.status) == "ACTIVE":
-                        free_places_update(self.request.data['parking'])
-                        serializer.save()
-                    else:
-                        free_places_update(self.request.data['parking'])
-                        print("UPDATE status:" + str(self.request.data['status']))
-                        raise FORBIDDEN("Error cannot cancel that reservation ")
-                        ## FREE PLACES ALGORIITHM
-                        serializer.save()
-                else:
-                    raise FORBIDDEN("You cannot change state of that reservation  ")
-
+            # print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
+            if has_group_v2(self.request.user, "Client_mobile"):
+                return str(obj.user.email) == str(CustomUser.objects.get(email=self.request.user))
+            else:
+                raise FORBIDDEN("You do not have permission to view that")
 
 # @permission_required('GET_booking_API', raise_exception=True)
 class Booking_View_Search(generics.ListAPIView):

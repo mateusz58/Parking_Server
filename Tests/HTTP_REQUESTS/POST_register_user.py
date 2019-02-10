@@ -2,12 +2,12 @@ import requests
 
 
 data={
-    "username": "user3@mail.com",
-    "email": "user3@mail.com",
+    "username": "user2@mail.com",
+    "email": "user2@mail.com",
     "password1": "matp17954",
     "password2": "matp17954",
 }
-base="http://192.168.8.106:8000"
+base="http://127.0.0.1:8000"
 
 
 

@@ -43,15 +43,15 @@ class UserFilter(django_filters.FilterSet):
 
 class BookingFilter(django_filters.FilterSet):
     code = django_filters.CharFilter(field_name='code',lookup_expr='icontains')
-    registration_plate = django_filters.CharFilter(field_name='registration_plate',lookup_expr='icontains')
+    # registration_plate = django_filters.CharFilter(field_name='registration_plate',lookup_expr='icontains')
     Cost=django_filters.NumberFilter()
-    release_year_From = django_filters.NumberFilter(field_name='Date_From', lookup_expr='year')
-    release_year__gt_From = django_filters.NumberFilter(field_name='Date_From', lookup_expr='year__gt')
-    release_year__lt_From = django_filters.NumberFilter(field_name='Date_From', lookup_expr='year__lt')
+    # release_year_From = django_filters.NumberFilter(field_name='Date_From', lookup_expr='year')
+    # release_year__gt_From = django_filters.NumberFilter(field_name='Date_From', lookup_expr='year__gt')
+    # release_year__lt_From = django_filters.NumberFilter(field_name='Date_From', lookup_expr='year__lt')
 
-    release_year_To = django_filters.NumberFilter(field_name='Date_To', lookup_expr='year')
-    release_year__gt_To = django_filters.NumberFilter(field_name='Date_To', lookup_expr='year__gt')
-    release_year__lt_To = django_filters.NumberFilter(field_name='Date_To', lookup_expr='year__lt')
+    # release_year_To = django_filters.NumberFilter(field_name='Date_To', lookup_expr='year')
+    # release_year__gt_To = django_filters.NumberFilter(field_name='Date_To', lookup_expr='year__gt')
+    # release_year__lt_To = django_filters.NumberFilter(field_name='Date_To', lookup_expr='year__lt')
 
     user__email = django_filters.CharFilter(lookup_expr='icontains')
     parking__parking_name= django_filters.CharFilter(lookup_expr='icontains')
@@ -66,7 +66,7 @@ class BookingFilter(django_filters.FilterSet):
 
 
 
-        fields = ['code', 'parking','user', 'Date_From','Date_To','Cost','registration_plate','status',]
+        fields = ['code', 'parking','user','Cost',]
         # fields = {
         #     'code': ['exact',],
         #     'parking': ['icontains',],

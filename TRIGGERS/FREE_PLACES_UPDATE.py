@@ -1,8 +1,9 @@
 from Basic_Functions.String_processing import check_query_string
-from pages.models import Booking, Parking, Car
 from datetime import datetime,tzinfo
 from django.db.models import Q, Sum
 import re
+
+from pages.models import Car, Parking
 
 
 def free_places_update(parking):
@@ -15,4 +16,5 @@ def free_places_update(parking):
     print("Booking_View free_places:" + str(free_places))
     Parking.objects.filter(pk=parking).update(free_places=free_places)
     #### FREE PLACES  ALGORITHM NOW
+
 

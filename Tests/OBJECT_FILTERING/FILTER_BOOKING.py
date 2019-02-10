@@ -2,6 +2,7 @@ from datetime import datetime,tzinfo
 
 from django.db.models import Q, Sum
 
+from Basic_Functions.Time_difference import time_difference_minutes
 from TRIGGERS.CALCULATE_COST import calculate_cost
 from templatetags.templatetag import has_group
 from users.models import CustomUser
@@ -195,10 +196,47 @@ def get_foreign(self):
 #
 
 # self1=Booking.objects.get(pk=75)
+# time1 = datetime(2019, 2, 28, 10, 0, 00)
+# time2 = datetime(2019, 2, 28, 16, 0, 00)
+#
+#
+# book=Booking.objects.get(pk=16)
+#
+#
+# #
+# new_car=Car(
+#     registration_plate="regis12",
+#     booking=book,
+#     Date_From=time1,
+#     Date_To=time2
+#
+# )
+#
+# new_car.save()
+# #
+# print("WORKING")
+# print("\n\n\n\n")
+# #
+# # for x in Car.objects.raw('SELECT * FROM pages_car'):
+# #     print("DATE:"+str(x.id))
+# print("BLABLA")
+# for x in Car.objects.raw('SELECT * FROM pages_car'):
+#     print("ID:"+x.status)
+#     x.status="ACTIVE"
+#     x.save()
+#     x.refresh_from_db()
+#
+#
+# time1 = datetime(2019, 2, 28, 16, 0, 00).replace(tzinfo=None)
+# time2 = datetime(2019, 2, 28, 16, 30, 00).replace(tzinfo=None)
+#
+#
+# print(time_difference_minutes(time2,time1))
+#
+#
+# Car.objects.filter(pk=36).update(status='RESERVED')
 
 
-# print(str(self1.code))
-book=Booking.objects.get(pk=75)
-print(calculate_cost(book))
 
+print(Parking.objects.filter(user_parking__email='user1@mail.com').exists())
 
