@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'rangefilter',
+    'admin_totals',
     # new
 
     # Third-party

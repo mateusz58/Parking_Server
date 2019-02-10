@@ -86,46 +86,53 @@ class HomePageView(TemplateView):
 class AboutPageView(TemplateView):
     template_name = 'pages/about.html'
 
-
+@login_required
 def redirect_view(request):
+        user=request.user
+        requested_user = user
+        user_get_id = CustomUser.objects.get(email=requested_user).id
+        # user_get = CustomUser.objects.get(email=requested_user)
 
-    print("RESPONSE")
-    response = redirect('/admin/')
-    return response
+        print("USER"+str(user))
+        group_user=user.groups.filter(name='Parking_manager')
 
-# @login_required
+        print(group_user.exists())
+
+        query_user_parking = Parking.objects.filter(user_parking__email=user)
+        print(query_user_parking.exists())
+        permission_classes = (IsAuthenticated,)
+        # booking_list = Booking.objects.all()
+
+        # if not user_get.is_staff():
+        #     from django.contrib import messages
+        #     messages.info(request,'You are not authorized to access this section. Contact the administrator to access this section!')
+        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
+
+        if not group_user.exists():
+            print("Empty1")
+            from django.contrib import messages
+            messages.info(request, 'You are not authorized to access this section. Contact the administrator to access this section!')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
+        if not query_user_parking.exists():
+            print("Empty2")
+            from django.contrib import messages
+            messages.info(request, 'You are not authorized to access this section. Contact the administrator to access this section!')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
+        ## redirect to admin site
+        else:
+            from django.contrib import messages
+            parking_filtered = Parking.objects.get(user_parking=user_get_id)
+            booking_filtered = Booking.objects.filter(parking=parking_filtered)
+            # return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})
+            print("RESPONSE")
+            response = redirect('/admin/')
+            return response
+
+
+#
 # def filter_booking_view(request):
 #
-#     user=request.user
-#     requested_user = user
-#     user_get_id = CustomUser.objects.get(email=requested_user).id
-#     print("USER"+str(user))
-#
-#
-#     group_user=user.groups.filter(name='Parking_manager')
-#
-#     print(group_user.exists())
-#
-#     query_user_parking = Parking.objects.filter(user_parking__email=user)
-#     print(query_user_parking.exists())
-#     permission_classes = (IsAuthenticated,)
-#     # booking_list = Booking.objects.all()
-#     if not group_user.exists():
-#         print("Empty1")
-#         from django.contrib import messages
-#         messages.info(request, 'You are not authorized to access this section. Contact the administrator to access this section!')
-#         return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
-#     if not query_user_parking.exists():
-#         print("Empty2")
-#         from django.contrib import messages
-#         messages.info(request, 'You are not authorized to access this section. Contact the administrator to access this section!')
-#         return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
-#     ## redirect to admin site
-#     else:
-#         from django.contrib import messages
-#         parking_filtered = Parking.objects.get(user_parking=user_get_id)
-#         booking_filtered = Booking.objects.filter(parking=parking_filtered)
-#         # return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})
+
 #         response = redirect('/admin/')
 #         return response
 class ReadOnly(BasePermission):

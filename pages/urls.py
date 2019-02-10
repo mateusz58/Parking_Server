@@ -17,21 +17,12 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = [
 
-
     # path('', lambda _: redirect('admin:index'), name="index"),
-
     # url(r'^$', RedirectView.as_view(url='/admin/'),name='admin-redirect'),
     path('', HomePageView.as_view(), name='home'),
     path('/about/', redirect_view, name='redirectview'),
     path('about/', AboutPageView.as_view(), name='about'),
-
-
-
-
-
-
     #### Redirect to django admin site
-
 
     # path('accounts/login/', LoginPageView.as_view(), name='login'),
     url(r'login/$',login_view, name="account_login"),
@@ -46,17 +37,10 @@ urlpatterns = [
     # path('api/test/', views.test_detail,name='test'),
    # url(r'^api/snippet/', views.booking_list),
 
-
     path('api/car_booking/', Car_booking_View.as_view()),
-
     path('api/car_booking/<int:pk>', Update_Car_booking_View.as_view()),
-
-
     path('api/car/', Car_View.as_view()),
-
-
     path('api/car/<int:pk>', Update_Car_View.as_view()),
-
     path('api/parking/', Parking_View.as_view()),
     path('api/parking/<int:pk>', Delete_Parking_View.as_view()),
     path('api/parking_wsp/', Parking_View_Coordinates.as_view()),

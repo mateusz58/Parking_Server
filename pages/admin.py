@@ -2,6 +2,8 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib.admin import AdminSite, ModelAdmin
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
 from django.utils.translation import ugettext_lazy
 
 from pages.models import Parking, Booking, Car
@@ -46,24 +48,25 @@ class Booking_admin(admin.ModelAdmin):
 
 class Car_admin(admin.ModelAdmin):
 
-
     list_display = ['get_id','get_booking','Cost','get_Cost','get_number','get_user','Date_From', 'Date_To','registration_plate', 'status',]
     ordering = ['Date_From']
     search_fields = ('Date_From', 'Date_To', 'booking', 'registration_plate')
     list_filter = ('status',)
 
+    list_totals = [('Cost', lambda field: Coalesce(Sum(field), 0)), ]
+
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter),
     )
+
+
     # list_display = ['Cost','Date_From', 'Date_To',
     #                 'registration_plate', 'status', ]
-
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ['booking','Date_To']
+            return ['booking','Date_To','Date_From']
         else:
             return []
-
     def get_booking(self,obj):
         return obj.booking.code
     def get_id(self, obj):
@@ -77,7 +80,6 @@ class Car_admin(admin.ModelAdmin):
 
     def get_user(self, obj):
         return obj.booking.user
-
     get_booking.short_description='Kod'
     get_Cost.admin_order_field = 'Cost'  # Allows column order sorting
     get_Cost.short_description = 'Cost booking'  # Renames column head

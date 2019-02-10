@@ -298,6 +298,9 @@ user="user1@mail.com"
 
 comment = Car.objects.filter(pk=100)
 
+
+comment.old
+
 comment.exists()
 
 
