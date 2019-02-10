@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'rangefilter',
     'admin_totals',
+    'merged_inlines',
     # new
-
     # Third-party
     'allauth',  # new
     'allauth.account',  # new

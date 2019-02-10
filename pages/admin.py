@@ -11,6 +11,11 @@ from users.models import CustomUser
 from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
 
 #
+
+from merged_inlines.admin import MergedInlineAdmin
+class Tabular_Cars(admin.TabularInline):
+    model=Car
+
 class Parking_managemnt(AdminSite):
     # Text to put at the end of each page's <title>.
     site_title = ugettext_lazy('Parking management system')
@@ -20,7 +25,6 @@ class Parking_managemnt(AdminSite):
 
     # Text to put at the top of the admin index page.
     index_title = ugettext_lazy('Parking management system')
-
 
 class Parking_Admin(admin.ModelAdmin):
 
@@ -35,12 +39,14 @@ class Parking_Admin(admin.ModelAdmin):
         modeladmin.Parking_city_order.short_description = "Order by city name"
 
 class Booking_admin(admin.ModelAdmin):
-        # list_display = ['code', 'parking','Date_From','Date_To','Cost','registration_plate','status']
-        list_display = ['code','user','parking', 'Cost','number_of_cars']
-        # search_fields = ('code','user__email','parking__parking_name','registration_plate','status')
-        list_filter = ('user','parking__parking_name',)
 
-        def get_readonly_fields(self, request, obj=None):
+    inlines = [Tabular_Cars]
+        # list_display = ['code', 'parking','Date_From','Date_To','Cost','registration_plate','status']
+    list_display = ['code','user','parking', 'Cost','number_of_cars']
+        # search_fields = ('code','user__email','parking__parking_name','registration_plate','status')
+    list_filter = ('user','parking__parking_name',)
+
+    def get_readonly_fields(self, request, obj=None):
             if obj:
                 return ['number_of_cars', 'parking']
             else:
@@ -93,6 +99,9 @@ class Car_admin(admin.ModelAdmin):
 
 from django.contrib import admin
 from .models import SaleSummary
+
+
+
 
 admin.site.register(Parking,Parking_Admin)
 admin.site.register(Booking,Booking_admin)
