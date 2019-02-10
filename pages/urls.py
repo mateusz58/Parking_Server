@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.shortcuts import redirect
 from django.urls import path, include
 from allauth.account.views import confirm_email
 from decorators import group_required
@@ -8,14 +9,30 @@ from users.email_acctivation import activate
 from users.views import login_view, signup_view, CustomRegisterView
 from .views import HomePageView, AboutPageView, Parking_View_Coordinates, Parking_View, Booking_View, User_View, \
     Delete_User_View, Delete_Booking_View, Parking_View_Search, User_View_Search, Booking_View_Search, \
-    Delete_Parking_View, Booking_View_logged, Car_View
+    Delete_Parking_View, Booking_View_logged, Car_View, redirect_view
 
 from rest_framework_nested import routers
+from django.views.generic.base import RedirectView
 
 
 urlpatterns = [
+
+
+    # path('', lambda _: redirect('admin:index'), name="index"),
+
+    # url(r'^$', RedirectView.as_view(url='/admin/'),name='admin-redirect'),
     path('', HomePageView.as_view(), name='home'),
+    path('/about/', redirect_view, name='redirectview'),
     path('about/', AboutPageView.as_view(), name='about'),
+
+
+
+
+
+
+    #### Redirect to django admin site
+
+
     # path('accounts/login/', LoginPageView.as_view(), name='login'),
     url(r'login/$',login_view, name="account_login"),
     url(r'signup/$',signup_view, name="account_signup"),
@@ -23,7 +40,7 @@ urlpatterns = [
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         activate, name='activate'),
 
-    url(r'^booking/search/', views.filter_booking_view, name='booking'),
+    # url(r'^booking/search/', views.filter_booking_view, name='booking'),
 # group_required('Parking_manager'),
 ###JSON serializers
     # path('api/test/', views.test_detail,name='test'),
@@ -36,6 +53,8 @@ urlpatterns = [
 
 
     path('api/car/', Car_View.as_view()),
+
+
     path('api/car/<int:pk>', Update_Car_View.as_view()),
 
     path('api/parking/', Parking_View.as_view()),

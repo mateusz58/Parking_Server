@@ -45,7 +45,6 @@ def login_view(request):
     return render(request, 'account/login.html', { 'form': form })
  # and has_group(request.user, "Parking_manager"):
 
-
 ## PARKING MANAGER
 def signup_view(request):
 

@@ -240,3 +240,67 @@ def get_foreign(self):
 
 print(Parking.objects.filter(user_parking__email='user1@mail.com').exists())
 
+query=Parking.objects.filter(user_parking__email='user1@mail.com')
+
+print(query.exists())
+
+try:
+    query_user_parking = Parking.objects.filter(user_parking__email="dsf@sdf.com")
+except query_user_parking.DoesNotExist:
+    query_user_parking = None
+    print("WRONG")
+
+
+print("FURTHER")
+x=2
+if query_user_parking is None:
+    print("NONE")
+
+
+# user_get_id = CustomUser.objects.get(email=requested_user).id
+# try:
+#     parking_filtered = Parking.objects.get(user_parking=user_get_id).id
+# except parking_filtered.DoesNotExist:
+#     parking_filtered = None
+# try:
+#     booking_filtered = Booking.objects.filter(parking=parking_filtered)
+# except booking_filtered.DoesNotExist:
+#     booking_filtered = None
+# try:
+#     group_user = user.groups.filter(name='Parking_manager')
+# except group_user.DoesNotExist:
+#     group_user = None
+#
+
+user="user1@mail.com"
+
+# try:
+#     group_user=user.groups.filter(name='Parking_manager')
+# except group_user.DoesNotExist:
+#     group_user = "Empty"
+# try:
+#     query_user_parking = Parking.objects.filter(user_parking__email=user)
+# except query_user_parking.DoesNotExist:
+#     query_user_parking = "Empty"
+#
+# # booking_list = Booking.objects.all()
+# if group_user=="Empty":
+#     print("Empty1")
+# if query_user_parking=="Empty":
+#     print("Empty2")
+# else:
+#     print("Empty3")
+#
+#
+#
+#
+
+
+comment = Car.objects.filter(pk=100)
+
+comment.exists()
+
+
+
+
+

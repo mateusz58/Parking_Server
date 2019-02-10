@@ -4,7 +4,7 @@ from django.views.generic import TemplateView, CreateView
 from django.conf.urls import url
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect, request
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -86,30 +86,48 @@ class HomePageView(TemplateView):
 class AboutPageView(TemplateView):
     template_name = 'pages/about.html'
 
-@login_required
-def filter_booking_view(request):
-    user=request.user
-    requested_user = user
-    user_get_id = CustomUser.objects.get(email=requested_user).id
-    parking_filtered = Parking.objects.get(user_parking=user_get_id).id
-    booking_filtered = Booking.objects.filter(parking=parking_filtered)
-    print("filter_booking_view"+str(user))
-    permission_classes = (IsAuthenticated,)
-    # booking_list = Booking.objects.all()
-    booking_filter = BookingFilter(request.GET, queryset=booking_filtered)
-    Parking.objects.filter(user_parking__email=user).exists()
 
-    # return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})
-    if  user.groups.filter(name='Parking_manager').exists():
-        return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})
-    else:
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
-        # return render(request, 'home', {'some_flag': True})
+def redirect_view(request):
 
+    print("RESPONSE")
+    response = redirect('/admin/')
+    return response
 
-
-
-
+# @login_required
+# def filter_booking_view(request):
+#
+#     user=request.user
+#     requested_user = user
+#     user_get_id = CustomUser.objects.get(email=requested_user).id
+#     print("USER"+str(user))
+#
+#
+#     group_user=user.groups.filter(name='Parking_manager')
+#
+#     print(group_user.exists())
+#
+#     query_user_parking = Parking.objects.filter(user_parking__email=user)
+#     print(query_user_parking.exists())
+#     permission_classes = (IsAuthenticated,)
+#     # booking_list = Booking.objects.all()
+#     if not group_user.exists():
+#         print("Empty1")
+#         from django.contrib import messages
+#         messages.info(request, 'You are not authorized to access this section. Contact the administrator to access this section!')
+#         return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
+#     if not query_user_parking.exists():
+#         print("Empty2")
+#         from django.contrib import messages
+#         messages.info(request, 'You are not authorized to access this section. Contact the administrator to access this section!')
+#         return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
+#     ## redirect to admin site
+#     else:
+#         from django.contrib import messages
+#         parking_filtered = Parking.objects.get(user_parking=user_get_id)
+#         booking_filtered = Booking.objects.filter(parking=parking_filtered)
+#         # return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})
+#         response = redirect('/admin/')
+#         return response
 class ReadOnly(BasePermission):
     def has_permission(self, request, view):
         return request.method in SAFE_METHODS

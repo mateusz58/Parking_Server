@@ -15,7 +15,7 @@ urlpatterns = [
     # path('snippets/',include('snippets.urls',namespace='snippets')),
     path('api-token-auth/',CustomAuthToken.as_view(),name='api-token auth'),
     path('admin/', admin.site.urls),
-   path('users/', include('django.contrib.auth.urls')),
-  path('accounts/', include('allauth.urls')),
-  path('', include('pages.urls'))
+    path('users/', include('django.contrib.auth.urls')),
+    path('accounts/', include('allauth.urls')),
+    path('', include('pages.urls'))
 ]
