@@ -101,8 +101,8 @@ class Booking(models.Model):
     added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     number_of_cars = models.PositiveIntegerField(default=0, editable=True)
-    Date_From = models.DateTimeField(default=dt.datetime.now(), editable=False)
-    Date_To = models.DateTimeField(default=dt.datetime.now(), editable=False)
+    Date_From = models.DateTimeField(default=dt.datetime.now(), editable=True)
+    Date_To = models.DateTimeField(default=dt.datetime.now(), editable=True)
 
     # def clean(self):
     def __int__(self):

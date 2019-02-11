@@ -27,7 +27,7 @@ class Tabular_Cars(admin.TabularInline):
     def get_formset(self, request, obj=None, **kwargs):
         print("obj value:"+str(obj))
         if obj is None:
-            obj=random.choice(Booking.objects.all())
+            obj=0
             return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
         else:
             self.booking = obj
@@ -35,14 +35,21 @@ class Tabular_Cars(admin.TabularInline):
 
     # logger.error("Test!!")
     def get_max_num(self, request, obj=None, **kwargs):
-        print("PARENT max_num" + str(self.booking.number_of_cars))
-        self.max_num = self.booking.number_of_cars
-        return self.max_num
+
+        if obj==0:
+            return 0
+        else:
+            print("PARENT max_num" + str(self.booking.number_of_cars))
+            self.max_num = self.booking.number_of_cars
+            return self.max_num
 
     def get_min_num(self, request, obj=None, **kwargs):
-        print("PARENT min_num" + str(self.booking.number_of_cars))
-        self.min_num = self.booking.number_of_cars
-        return  self.min_num
+        if obj == 0:
+            return 0
+        else:
+            print("PARENT min_num" + str(self.booking.number_of_cars))
+            self.min_num = self.booking.number_of_cars
+            return  self.min_num
 
     # return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
 
@@ -64,6 +71,12 @@ class Parking_Admin(admin.ModelAdmin):
     search_fields = ('parking_name', 'parking_Street', 'parking_City')
     list_filter = ('parking_name', 'parking_Street', 'parking_City')
 
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ['parking_Street', 'parking_City','parking_name','number_of_places','x','y','user_parking', ]
+        else:
+            return []
+
     def Parking_city_order(modeladmin, request, queryset):
         Parking.ordering = ['parking_City']
         modeladmin.Parking_city_order.short_description = "Order by city name"
@@ -79,7 +92,7 @@ class Booking_admin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ['parking', 'number_of_cars', ]
+            return ['parking', 'number_of_cars','Date_From','Date_To' ]
         else:
             return []
 
@@ -96,7 +109,6 @@ class Car_admin(admin.ModelAdmin):
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter),
     )
-
     # list_display = ['Cost','Date_From', 'Date_To',
     #                 'registration_plate', 'status', ]
     def get_readonly_fields(self, request, obj=None):
