@@ -1,3 +1,5 @@
+import random
+
 from django.contrib import admin
 
 # Register your models here.
@@ -8,6 +10,7 @@ from django.urls import resolve
 from django.utils.translation import ugettext_lazy
 
 from djangox_project.logger import logger
+from pages.forms import Car_Form
 from pages.models import Parking, Booking, Car
 from users.models import CustomUser
 from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
@@ -22,25 +25,26 @@ class Tabular_Cars(admin.TabularInline):
     extra = 8
 
     def get_formset(self, request, obj=None, **kwargs):
-        self.booking = obj
-        return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
+        print("obj value:"+str(obj))
+        if obj is None:
+            obj=random.choice(Booking.objects.all())
+            return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
+        else:
+            self.booking = obj
+            return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
+
     # logger.error("Test!!")
-
     def get_max_num(self, request, obj=None, **kwargs):
-
-        print("PARENT"+str(self.booking.number_of_cars))
-        self.max_num =self.booking.number_of_cars
+        print("PARENT max_num" + str(self.booking.number_of_cars))
+        self.max_num = self.booking.number_of_cars
         return self.max_num
 
     def get_min_num(self, request, obj=None, **kwargs):
-            print("PARENT" + str(self.booking.number_of_cars))
-            self.max_num = self.booking.number_of_cars
-            return self.max_num
+        print("PARENT min_num" + str(self.booking.number_of_cars))
+        self.min_num = self.booking.number_of_cars
+        return  self.min_num
 
-
-        # return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
-
-
+    # return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
 
 
 class Parking_managemnt(AdminSite):
@@ -66,8 +70,7 @@ class Parking_Admin(admin.ModelAdmin):
 
 
 class Booking_admin(admin.ModelAdmin):
-
-    model=Booking
+    model = Booking
     inlines = [Tabular_Cars]
     # list_display = ['code', 'parking','Date_From','Date_To','Cost','registration_plate','status']
     list_display = ['code', 'Date_From', 'Date_To', 'user', 'parking', 'Cost', 'number_of_cars']
@@ -76,7 +79,7 @@ class Booking_admin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ['parking']
+            return ['parking', 'number_of_cars', ]
         else:
             return []
 
