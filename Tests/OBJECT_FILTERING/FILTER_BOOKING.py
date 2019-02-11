@@ -1,4 +1,4 @@
-from datetime import datetime,tzinfo
+from datetime import datetime, tzinfo
 
 from django.db.models import Q, Sum
 
@@ -8,10 +8,11 @@ from templatetags.templatetag import has_group
 from users.models import CustomUser
 from django.contrib.auth.models import Group
 from django.db import connection
-#CHANGES
+# CHANGES
 from pages.models import Parking, Booking, CustomUser, Car
 from django.utils import timezone
 import re
+
 
 ## Wyswietlanie wszystkich
 
@@ -161,7 +162,6 @@ import re
 # print("Booking filtered filtered"+str(Booking.objects.filter(parking=parking_filtered.id)))
 
 
-
 # Car.objects.all().delete()
 
 # _b1 = Car.objects
@@ -170,7 +170,6 @@ import re
 #
 # print(_b1)
 #
-
 
 
 #
@@ -184,8 +183,7 @@ import re
 # print(self.id)
 
 
-def get_foreign(self):
-    print(self.booking.parking.id)
+
 
 # _b1 = Car.objects
 # w5 = _b1.filter(Q(Date_From=convert_string_date_time(self.Date_From)) & Q(
@@ -203,14 +201,7 @@ def get_foreign(self):
 # book=Booking.objects.get(pk=16)
 #
 #
-# #
-# new_car=Car(
-#     registration_plate="regis12",
-#     booking=book,
-#     Date_From=time1,
-#     Date_To=time2
-#
-# )
+
 #
 # new_car.save()
 # #
@@ -237,71 +228,102 @@ def get_foreign(self):
 # Car.objects.filter(pk=36).update(status='RESERVED')
 
 
-
-print(Parking.objects.filter(user_parking__email='user1@mail.com').exists())
-
-query=Parking.objects.filter(user_parking__email='user1@mail.com')
-
-print(query.exists())
-
-try:
-    query_user_parking = Parking.objects.filter(user_parking__email="dsf@sdf.com")
-except query_user_parking.DoesNotExist:
-    query_user_parking = None
-    print("WRONG")
-
-
-print("FURTHER")
-x=2
-if query_user_parking is None:
-    print("NONE")
-
-
-# user_get_id = CustomUser.objects.get(email=requested_user).id
-# try:
-#     parking_filtered = Parking.objects.get(user_parking=user_get_id).id
-# except parking_filtered.DoesNotExist:
-#     parking_filtered = None
-# try:
-#     booking_filtered = Booking.objects.filter(parking=parking_filtered)
-# except booking_filtered.DoesNotExist:
-#     booking_filtered = None
-# try:
-#     group_user = user.groups.filter(name='Parking_manager')
-# except group_user.DoesNotExist:
-#     group_user = None
+# print(Parking.objects.filter(user_parking__email='user1@mail.com').exists())
 #
-
-user="user1@mail.com"
-
+# query=Parking.objects.filter(user_parking__email='user1@mail.com')
+#
+# print(query.exists())
+#
 # try:
-#     group_user=user.groups.filter(name='Parking_manager')
-# except group_user.DoesNotExist:
-#     group_user = "Empty"
-# try:
-#     query_user_parking = Parking.objects.filter(user_parking__email=user)
+#     query_user_parking = Parking.objects.filter(user_parking__email="dsf@sdf.com")
 # except query_user_parking.DoesNotExist:
-#     query_user_parking = "Empty"
+#     query_user_parking = None
+#     print("WRONG")
 #
-# # booking_list = Booking.objects.all()
-# if group_user=="Empty":
-#     print("Empty1")
-# if query_user_parking=="Empty":
-#     print("Empty2")
-# else:
-#     print("Empty3")
 #
+# print("FURTHER")
+# x=2
+# if query_user_parking is None:
+#     print("NONE")
 #
 #
 #
+# comment = Car.objects.filter(pk=100)
+#
+#
+# comment.old
+#
+# comment.exists()
+
+# time1 = datetime(2019, 2, 26, 16, 0, 00).replace(tzinfo=None)
+# time2 = datetime(2019, 2, 28, 16, 30, 00).replace(tzinfo=None)
+#
+# book = Booking.objects.get(pk=26)
+#
 
 
-comment = Car.objects.filter(pk=100)
+#
+#
+# # new_car.clean()
+# # new_car.save()
+#
+#
+# new_car_Test1.full_clean()
+#
+# new_car_Test1.save()
+
+time1 = datetime(2019, 2, 8, 16, 0, 00).replace(tzinfo=None)
+
+time2 = datetime(2019, 2, 16, 16, 0, 00).replace(tzinfo=None)
+
+# if_exists = Car.objects.filter(pk=new_car_Test1.id).exists()
+# assert if_exists == False, "Query does not exist"
+# assert if_exists == True, "Query exists"
+#
+# Car.objects.filter(pk=47).update(Date_From=time1)
+# Car.objects.filter(pk=47).update(Date_To=time2)
+#
+# Car.objects.filter(pk=47).update(Date_From=time1)
+#
+#
+# Car.objects.filter(pk=47).update(status="RESERVED")
+
+# new_car_Test1 = Car(
+#     registration_plate="regis12",
+#     booking=book,
+#     Date_From=time1,
+#     Date_To=time2
+#
+# )
+
+# Booking.objects.update(number_of_cars=0)
 
 
-comment.old
 
-comment.exists()
+# car = Car(registration_plate="regis12", booking=Booking.objects.get(pk=31),Date_From=time1,Date_To=time2, status="ACTIVE").save(force_insert=True)
+
+
+
+
+
+car=Car.objects
+car = car.filter(Q(booking=Booking.objects.get(pk=31)) & Q(status='EXPIRED_E'))
+if not car.exists():
+    print("SORRY")
+
+# earliest=car.earliest('Date_From').Date_From
+# latest=car.latest('Date_To').Date_To
+
+
+
+#
+# print("earliest"+str(latest))
+# print("earliest"+str(earliest))
+
+
+
+
+
 
 
 
