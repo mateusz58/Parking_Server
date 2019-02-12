@@ -364,6 +364,7 @@ def try_loop():
 # sum = query.aggregate(Sum('Cost'))['Cost__sum']
 # print("SUMA"+str(sum))
 query=Parking.objects.filter(pk=5)
+query.update(free_places=100)
 print(str(query))
 # print(query.aggregate(Sum('Cost')))
 #

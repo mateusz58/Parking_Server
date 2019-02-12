@@ -1,5 +1,6 @@
 # Create your models here.
 import datetime as dt
+import time
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -13,9 +14,15 @@ from Basic_Functions.String_processing import check_query_string
 from Basic_Functions.Time_difference import time_difference_minutes
 from Validators.Car_validators import isalphavalidator
 # from djangox_project.get_username import get_request
-
+from djangox_project import settings
+from templatetags.templatetag import has_group_v2
 
 from users.models import CustomUser
+
+from django.dispatch import receiver
+from crum import get_current_request
+from crum import get_current_user
+from crum.signals import current_user_getter
 
 
 def free_places_update_v2(Car_object):
@@ -107,6 +114,38 @@ class Booking(models.Model):
     Date_To = models.DateTimeField(default=dt.datetime.now(), editable=True)
     active = models.BooleanField(default=True, editable=False)
 
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True,
+                                   default=None, on_delete=models.CASCADE, related_name='created_by', editable=False)
+
+    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True,
+                                    default=None, on_delete=models.CASCADE, related_name='modified_by', editable=False)
+
+    def get_Cost_sum(self, arg):
+        print("CAR MODEL STATE TRIGGER get_Cost")
+        time1 = self.Date_From.replace(tzinfo=None)
+        time2 = self.Date_To.replace(tzinfo=None)
+        duration = time2 - time1
+        duration_in_s = duration.total_seconds()
+        hours = divmod(duration_in_s, 3600)[0]  ## HOURS DURATION
+        minutes = divmod(duration_in_s, 60)[0]
+        HOURS = float("{0:.2f}".format(hours + ((minutes / 60) - hours)))
+        Cost = self.parking.HOUR_COST * HOURS
+        Cost = round(Cost, 2)
+        return Cost * self.number_of_cars
+
+    def get_Cost_single(self, arg):
+        print("CAR MODEL STATE TRIGGER get_Cost")
+        time1 = self.Date_From.replace(tzinfo=None)
+        time2 = self.Date_To.replace(tzinfo=None)
+        duration = time2 - time1
+        duration_in_s = duration.total_seconds()
+        hours = divmod(duration_in_s, 3600)[0]  ## HOURS DURATION
+        minutes = divmod(duration_in_s, 60)[0]
+        HOURS = float("{0:.2f}".format(hours + ((minutes / 60) - hours)))
+        Cost = self.parking.HOUR_COST * HOURS
+        Cost = round(Cost, 2)
+        return Cost
+
     def validate_if_place_available_excluded_registration_plate_exists(self, arg):
         print("CAR MODEL STATE TRIGGER validate_if_place_available")
         duration = self.Date_To.replace(tzinfo=None) - self.Date_From.replace(tzinfo=None)
@@ -162,11 +201,9 @@ class Booking(models.Model):
             raise ValidationError('You cannot register parking place for less than 30 minutes')
 
     def validate_current_time(self, arg):
-        if self.Date_To.replace(tzinfo=None).replace(second=0, microsecond=0) <  dt.datetime.now().replace(second=0,microsecond=0):
-
+        if self.Date_To.replace(tzinfo=None).replace(second=0, microsecond=0) < dt.datetime.now().replace(second=0,
+                                                                                                          microsecond=0):
             raise ValidationError("Value of Date_To must be higher or equal to current time")
-
-
 
     def calculate_number_of_cars(self, arg):
 
@@ -240,6 +277,13 @@ class Booking(models.Model):
 
     def save(self, **kwargs):
         print("save()TRIGGER BOOKING ACTIVATED")
+
+        user = get_current_user()
+        if user and not user.pk:
+            user = None
+        if not self.pk:
+            self.created_by = user
+        self.modified_by = user
 
         return super(Booking, self).save(**kwargs)
 
@@ -559,8 +603,6 @@ class Car(models.Model):
 
         print("(save)TRIGGER CAR ACTIVATED")
 
-
-
         self.old_status = self.status
         Car.objects.filter(pk=self.id).update(Cost=self.get_Cost(self))
 
@@ -598,10 +640,19 @@ class Car(models.Model):
             Car.objects.filter(id=self.id).update(Cost=0)
         Booking.objects.filter(pk=self.booking.code).update(number_of_cars=Car.objects.filter(
             Q(booking=self.booking) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
-        Booking.objects.filter(code=self.booking.code).update(Cost=Car.objects.filter(
-            Q(booking=self.booking) & (
-                    Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L') | Q(status='EXPIRED') | Q(
-                status='EXPIRED_E'))).aggregate(Sum('Cost'))['Cost__sum'])
+
+        if Car.objects.filter(
+                Q(booking=self.booking) & (
+                        Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L') | Q(status='EXPIRED') | Q(
+                    status='EXPIRED_E'))).exists():
+
+            Booking.objects.filter(code=self.booking.code).update(Cost=Car.objects.filter(
+                Q(booking=self.booking) & (
+                        Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L') | Q(status='EXPIRED') | Q(
+                    status='EXPIRED_E'))).aggregate(Sum('Cost'))['Cost__sum'])
+
+        else:
+            Booking.objects.filter(code=self.booking.code).update(Cost=0)
 
         if not Car.objects.filter(Q(booking=self.booking) & (
                 Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).exists():
@@ -626,10 +677,35 @@ def model_Parking_delete(sender, instance, **kwargs):
         print(str(e))
 
 
-@receiver(pre_save, sender=Booking)
+@receiver(post_save, sender=Booking)
 def model_add(sender, instance, **kwargs):
-    print("Receiver for object:" + str(instance.code))
-    print("Pre save save signal Booking count value:" + str(instance.number_of_cars))
+    import inspect, os
+
+    obj = Booking.objects.get(code=instance.code)
+    obj.refresh_from_db()
+
+    user = Booking.objects.get(pk=instance).created_by
+
+    if has_group_v2(user, "Client_mobile"):
+        return
+
+    else:
+
+        Booking.objects.filter(pk=instance).update(user=user)
+
+        for x in range(instance.number_of_cars):
+            try:
+
+                Car(registration_plate="", booking=Booking.objects.get(code=instance.code),
+                    Date_From=instance.Date_From,
+                    Date_To=instance.Date_To, Cost=instance.get_Cost_single(instance)).save()
+                count = count + 1
+            except Exception as e:
+                print("BOOKING EXCEPTION:" + str(e))
+                continue
+        Booking.objects.filter(code=instance.code).update(active=True)
+        Booking.objects.filter(code=instance.code).update(number_of_cars=instance.number_of_cars)
+        Booking.objects.filter(code=instance.code).update(Cost=instance.get_Cost_sum(instance))
     # count = Car.objects.filter(booking=instance).count()
     # if count==0:
     #     raise ValidationError(

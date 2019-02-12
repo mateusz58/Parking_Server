@@ -4,14 +4,14 @@ import requests
 value='123'
 auth_token='2edb54b1e8124ece31e6414e5228ee7ce512a6c2'
 hed = {'Authorization': 'Token ' + auth_token,
-        'date-from':'2019-02-12T16:46:19Z',
+        'date-from':'2019-02-13T16:46:19Z',
         "date-to": "2019-02-20T17:56:20Z",
-        "registration-plate":"user1pla50,user1pla46"
+        "registration-plate":"user1t6gr"
        }
 data={
-        "parking": 2,
+        "parking": 5,
         "user": 2,
-        "number_of_cars":2
+        "number_of_cars":1
 }
 base="http://127.0.0.1:8000"
 end_point='/api/booking/'

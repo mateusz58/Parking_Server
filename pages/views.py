@@ -227,8 +227,13 @@ class Booking_View(CreateAPIView,ListAPIView):
         registration_plate_list=str(self.request.META['HTTP_REGISTRATION_PLATE'])
         registration_plate_list = list(registration_plate_list.split(","))
 
-        if is_all_items_unique(registration_plate_list):
-            raise FORBIDDEN("All registration numbers must be different")
+        if int(self.request.data['number_of_cars'])!=len(registration_plate_list):
+            raise FORBIDDEN("Numbers of cars and registration number must be equal")
+
+        if len(registration_plate_list)>1:
+            if is_all_items_unique(registration_plate_list):
+                raise FORBIDDEN("All registration numbers must be different")
+
 
         date_from=str(self.request.META['HTTP_DATE_FROM'])
         date_to = str(self.request.META['HTTP_DATE_TO'])
@@ -240,7 +245,7 @@ class Booking_View(CreateAPIView,ListAPIView):
         minutes = int(minutes)
         print("Minutes"+str(minutes))
         i=0
-        while i < int(self.request.data['number_of_cars']):
+        while i < len(registration_plate_list):
                 if not str(registration_plate_list[i]).isalnum():
                     raise FORBIDDEN("Wrong registration number of car,car registration number can consist only of numbers and letters characters")
                 if len(registration_plate_list[i])<6:
@@ -313,9 +318,12 @@ class Booking_View(CreateAPIView,ListAPIView):
         modify = serializer.save()
         ##HEADER TEST
         # print(headers["domain"])
-        user_id=CustomUser.objects.get(email=str(self.request.user)).id
-        Booking.objects.filter(pk=modify.code).update(user=user_id)
+        user_id=CustomUser.objects.get(email=str(self.request.user))
+        book=Booking.objects.filter(code=modify.code).update(user=user_id)
         booking_instance=Booking.objects.get(pk=modify.code)
+        booking_instance.refresh_from_db()
+
+        Booking.objects.filter(pk=modify.code).update(user=user_id)
         if not int(self.request.data['number_of_cars'])==len(registration_plate_list):
             raise FORBIDDEN("Number of provided registration numbers are not equal to number of parking places you want to register ")
         i=0
@@ -329,6 +337,13 @@ class Booking_View(CreateAPIView,ListAPIView):
             new_car.save()
             new_car.refresh_from_db()
             i=i+1
+
+            user_id = CustomUser.objects.get(email=str(self.request.user))
+            user_id.refresh_from_db()
+            Booking.objects.filter(code=modify.code).update(user=user_id)
+            print("ENDING")
+
+
 
 class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdateAPIView):
 

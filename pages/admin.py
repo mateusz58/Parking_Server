@@ -28,13 +28,24 @@ class Tabular_Cars(admin.TabularInline):
     extra = 8
 
     list_display = ['get_id','Cost', 'Date_From', 'Date_To',
-                    'registration_plate', 'status', ]
+                    'registration_plate', 'status','get_number', ]
 
     # list_display = ['Cost','Date_From', 'Date_To',
     #                 'registration_plate', 'status', ]
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ['booking', 'Date_To', 'Date_From']
+        else:
+            return []
+
+    def get_number(self, obj):
+        return obj.booking.number_of_cars
+
+    get_number.short_description = 'Number of Cars'
+
     # def get_readonly_fields(self, request, obj=None):
     #     if obj:
-    #         return ['booking', 'Date_To', 'Date_From']
+    #         return ['parking', 'number_of_cars', 'Date_From', 'Date_To']
     #     else:
     #         return []
 
@@ -44,11 +55,6 @@ class Tabular_Cars(admin.TabularInline):
         return obj.id
 
     get_id.short_description = 'Car id'
-
-
-
-
- # Renames column head
 
 
 
@@ -63,13 +69,11 @@ class Tabular_Cars(admin.TabularInline):
             self.booking = obj
             return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
 
-    # logger.error("Test!!")
     def get_max_num(self, request, obj=None, **kwargs):
 
         if obj == 0:
             return 0
         else:
-            # print("PARENT max_num" + str(self.booking.number_of_cars))
             self.max_num = self.booking.number_of_cars
             return self.max_num
 
@@ -81,7 +85,6 @@ class Tabular_Cars(admin.TabularInline):
             self.min_num = self.booking.number_of_cars
             return self.min_num
 
-    # return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
 
 
 class Parking_managemnt(AdminSite):

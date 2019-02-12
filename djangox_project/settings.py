@@ -91,6 +91,7 @@ MIDDLEWARE = [
     'djangox_project.custom_middleware.RequestExceptionHandler'
 ]
 
+MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)
 ROOT_URLCONF = 'djangox_project.urls'
 TEMPLATES = [
     {
