@@ -15,6 +15,36 @@ def check_query_string(value):
             return value
 
 
+
+def check_query_string_sum_int(query,field_to_sum):
+    if not hasNumbers(str(field_to_sum)): return 0
+    else:
+            value = (query.all().aggregate(Sum(field_to_sum)))
+            value = re.sub("\D", "", str(value))
+            value = int(value)
+            return value
+
+def check_query_string_sum_float_all(query,field_to_sum):
+    if not hasNumbers(str(field_to_sum)): return 0
+    else:
+            value = (query.all().aggregate(Sum(field_to_sum)))
+            value = re.sub("\D", "", str(value))
+            value = float(value)
+            value=round(value,2)
+            return value
+
+
+def check_query_string_sum_float_query(query,field_to_sum):
+    if not hasNumbers(str(query)):
+        return 0
+    else:
+        value = (query.aggregate(Sum(field_to_sum)))
+        value = re.sub("\D", "", str(value))
+        value = float(value)
+        value = round(value, 2)
+        return value
+
+
 def is_all_items_unique(input_list):
     first_element = input_list[0]
     for element in input_list:

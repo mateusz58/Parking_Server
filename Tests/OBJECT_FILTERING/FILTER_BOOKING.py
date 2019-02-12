@@ -13,7 +13,6 @@ from pages.models import Parking, Booking, CustomUser, Car
 from django.utils import timezone
 import re
 
-
 ## Wyswietlanie wszystkich
 
 # Booking.objects.all()
@@ -183,8 +182,6 @@ import re
 # print(self.id)
 
 
-
-
 # _b1 = Car.objects
 # w5 = _b1.filter(Q(Date_From=convert_string_date_time(self.Date_From)) & Q(
 #     Date_To=convert_string_date_time(self.Date_To)) & Q(
@@ -289,7 +286,7 @@ time2 = datetime(2019, 2, 16, 16, 0, 00).replace(tzinfo=None)
 # Car.objects.filter(pk=47).update(status="RESERVED")
 
 # new_car_Test1 = Car(
-#     registration_plate="regis12",
+#     registration_plate="",
 #     booking=book,
 #     Date_From=time1,
 #     Date_To=time2
@@ -299,21 +296,13 @@ time2 = datetime(2019, 2, 16, 16, 0, 00).replace(tzinfo=None)
 # Booking.objects.update(number_of_cars=0)
 
 
-
-# car = Car(registration_plate="regis12", booking=Booking.objects.get(pk=31),Date_From=time1,Date_To=time2, status="ACTIVE").save(force_insert=True)
-
-
-
-
-
-car=Car.objects
-car = car.filter(Q(booking=Booking.objects.get(pk=31)) & Q(status='EXPIRED_E'))
-if not car.exists():
-    print("SORRY")
+# car=Car.objects
+# car = car.filter(Q(booking=Booking.objects.get(pk=31)) & Q(status='EXPIRED_E'))
+# if not car.exists():
+#     print("SORRY")
 
 # earliest=car.earliest('Date_From').Date_From
 # latest=car.latest('Date_To').Date_To
-
 
 
 #
@@ -321,9 +310,71 @@ if not car.exists():
 # print("earliest"+str(earliest))
 
 
+time2 = datetime(2019, 2, 16, 16, 0, 00).replace(tzinfo=None)
+time1 = datetime(2019, 2, 8, 16, 0, 00).replace(tzinfo=None)
+
+if time2 > datetime.now():
+    print("TEST")
 
 
+# car = Car(registration_plate="", booking=Booking.objects.get(pk=35),Date_From=time1,Date_To=time2).clean_exclude_register_plate_exist_and_validate_registration_plate_signs()
 
 
+def try_except_function_clean():
+    try:
+        car = Car(registration_plate="default", booking=Booking.objects.get(pk=35), Date_From=time1,
+                  Date_To=time2).clean()
+        car = Car(registration_plate="default", booking=Booking.objects.get(pk=35), Date_From=time1,
+                  Date_To=time2).save()
+        print("Car saved")
+    except Exception as e:
+        print(str(e))
 
 
+def try_except_function_clean_no_plate_verify():
+    try:
+        car = Car(registration_plate="", booking=Booking.objects.get(pk=35), Date_From=time1,
+                  Date_To=time2).clean_exclude_register_plate_exist_and_validate_registration_plate_signs()
+        car = Car(registration_plate="", booking=Booking.objects.get(pk=35), Date_From=time1, Date_To=time2).save()
+        print("Car saved")
+    except Exception as e:
+        print(str(e))
+
+
+def iterate_cars(self, query):
+    for record in query:
+        try:
+            print(record.id)
+        except Exception as e:
+            pass
+
+
+# try_except_function_clean()
+# try_except_function_clean_no_plate_verify()
+
+
+def try_loop():
+    z = [1, 2, 3, 4, 5]
+    for row in z:
+        print(row)
+
+
+# query=Car.objects.filter(booking=Booking.objects.get(pk=338))
+#
+# sum = query.aggregate(Sum('Cost'))['Cost__sum']
+# print("SUMA"+str(sum))
+query=Parking.objects.filter(pk=4)
+query.update(free_places=4)
+# print(query.aggregate(Sum('Cost')))
+#
+#
+# # check_if_registration_plate_exists(car)
+# z=[1,2,3,4,5]
+# x=0
+# for row in z:  ##'hkx' are rows being read in from 'csv.open'
+#     try:
+#
+#     except IndexError, e:
+#
+#         continue  ## I thought this would just move on to the next row in 'hkx'
+#

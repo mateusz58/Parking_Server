@@ -10,6 +10,8 @@ from django.urls import resolve
 from django.utils.translation import ugettext_lazy
 
 from djangox_project.logger import logger
+from pages.admin_actions import make_active, make_cancelled, make_expired, make_reserved, make_expired_e, \
+    make_reserved_l, Booking_set_inactive
 from pages.forms import Car_Form
 from pages.models import Parking, Booking, Car
 from users.models import CustomUser
@@ -24,8 +26,12 @@ class Tabular_Cars(admin.TabularInline):
     model = Car
     extra = 8
 
+
+
     def get_formset(self, request, obj=None, **kwargs):
         print("obj value:"+str(obj))
+        Tabular_Cars.obj = obj
+        print("Tabular cars obj:"+str(Tabular_Cars.obj))
         if obj is None:
             obj=0
             return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
@@ -39,7 +45,7 @@ class Tabular_Cars(admin.TabularInline):
         if obj==0:
             return 0
         else:
-            print("PARENT max_num" + str(self.booking.number_of_cars))
+            # print("PARENT max_num" + str(self.booking.number_of_cars))
             self.max_num = self.booking.number_of_cars
             return self.max_num
 
@@ -47,7 +53,7 @@ class Tabular_Cars(admin.TabularInline):
         if obj == 0:
             return 0
         else:
-            print("PARENT min_num" + str(self.booking.number_of_cars))
+            # print("PARENT min_num" + str(self.booking.number_of_cars))
             self.min_num = self.booking.number_of_cars
             return  self.min_num
 
@@ -85,10 +91,13 @@ class Parking_Admin(admin.ModelAdmin):
 class Booking_admin(admin.ModelAdmin):
     model = Booking
     inlines = [Tabular_Cars]
+    actions = [Booking_set_inactive]
     # list_display = ['code', 'parking','Date_From','Date_To','Cost','registration_plate','status']
-    list_display = ['code', 'Date_From', 'Date_To', 'user', 'parking', 'Cost', 'number_of_cars']
-    # search_fields = ('code','user__email','parking__parking_name','registration_plate','status')
-    list_filter = ('user', 'parking__parking_name',)
+    list_display = ['code', 'Date_From', 'Date_To', 'user', 'parking', 'Cost', 'number_of_cars','active',]
+    search_fields = ('code','user__email',)
+    list_filter = (
+        ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter),('active')
+    )
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
@@ -98,14 +107,15 @@ class Booking_admin(admin.ModelAdmin):
 
 
 class Car_admin(admin.ModelAdmin):
+
+    actions=[make_active,make_cancelled,make_expired,make_reserved,make_expired_e,make_reserved_l]
+
     list_display = ['get_id', 'get_booking', 'Cost', 'get_Cost', 'get_number', 'get_user', 'Date_From', 'Date_To',
                     'registration_plate', 'status', ]
     ordering = ['Date_From']
     search_fields = ('registration_plate',)
     list_filter = ('status',)
-
     list_totals = [('Cost', lambda field: Coalesce(Sum(field), 0)), ]
-
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter),
     )
@@ -149,6 +159,10 @@ from django.contrib import admin
 admin.site.register(Parking, Parking_Admin)
 admin.site.register(Booking, Booking_admin)
 admin.site.register(Car, Car_admin)
+
+admin.sites.AdminSite.site_header = 'Parking management system'
+admin.sites.AdminSite.site_title = 'Parking management system'
+admin.sites.AdminSite.index_title = 'Parking management system'
 
 # admin.site.site_header = "'Parking management system'"
 # admin.site.site_title = "'Parking management system'"

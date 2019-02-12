@@ -81,3 +81,15 @@ class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPI
                     raise FORBIDDEN("You cannot change state of that reservation  ")
 
 
+class Car_booking_View_logged(generics.ListAPIView):
+    serializer_class = Car_booking_Serializer
+    model = Booking
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        user = self.request.user
+        if has_group(self.request.user, "Client_mobile"):
+            queryset = Booking.objects.all()
+            return queryset.filter(user__email=self.request.user)
+
+
