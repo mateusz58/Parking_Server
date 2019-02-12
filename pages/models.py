@@ -161,9 +161,11 @@ class Booking(models.Model):
             raise ValidationError('You cannot register parking place for less than 30 minutes')
 
     def validate_current_time(self, arg):
-        if self.Date_To.replace(tzinfo=None).replace(second=0, microsecond=0) <= dt.datetime.now().replace(second=0,
-                                                                                                           microsecond=0):
+        if self.Date_To.replace(tzinfo=None).replace(second=0, microsecond=0) <  dt.datetime.now().replace(second=0,microsecond=0):
+
             raise ValidationError("Value of Date_To must be higher or equal to current time")
+
+
 
     def calculate_number_of_cars(self, arg):
 
@@ -386,7 +388,7 @@ class Car(models.Model):
     def validate_current_time(self, arg):
         if self.Date_To.replace(tzinfo=None).replace(second=0, microsecond=0) <= dt.datetime.now().replace(second=0,
                                                                                                            microsecond=0):
-            raise ValidationError("Value of Date_To must be higher or equal to current time")
+            raise ValidationError("*Value of Date_To must be higher or equal to current time")
 
     def validate_registration_plate_signs(self, arg):
         print("CAR MODEL STATE TRIGGER validate_registration_plate_signs")

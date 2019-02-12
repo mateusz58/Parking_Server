@@ -24,7 +24,7 @@ from merged_inlines.admin import MergedInlineAdmin
 
 class Tabular_Cars(admin.TabularInline):
     model = Car
-    extra = 8
+    extra = 0
 
     list_display = ['get_id','Cost', 'Date_From', 'Date_To',
                     'registration_plate', 'status', ]
@@ -50,8 +50,6 @@ class Tabular_Cars(admin.TabularInline):
 
 
  # Renames column head
-
-
 
 
 
