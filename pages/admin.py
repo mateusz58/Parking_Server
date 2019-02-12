@@ -6,13 +6,14 @@ from django.contrib import admin
 from django.contrib.admin import AdminSite, ModelAdmin
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
+from django.forms import forms
 from django.urls import resolve
 from django.utils.translation import ugettext_lazy
 
 from djangox_project.logger import logger
 from pages.admin_actions import make_active, make_cancelled, make_expired, make_reserved, make_expired_e, \
     make_reserved_l, Booking_set_inactive
-from pages.forms import Car_Form
+from pages.forms import Booking_Form
 from pages.models import Parking, Booking, Car
 from users.models import CustomUser
 from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
@@ -24,20 +25,18 @@ from merged_inlines.admin import MergedInlineAdmin
 
 class Tabular_Cars(admin.TabularInline):
     model = Car
-    extra = 0
+    extra = 8
 
     list_display = ['get_id','Cost', 'Date_From', 'Date_To',
                     'registration_plate', 'status', ]
 
-
-
     # list_display = ['Cost','Date_From', 'Date_To',
     #                 'registration_plate', 'status', ]
-    def get_readonly_fields(self, request, obj=None):
-        if obj:
-            return ['booking', 'Date_To', 'Date_From']
-        else:
-            return []
+    # def get_readonly_fields(self, request, obj=None):
+    #     if obj:
+    #         return ['booking', 'Date_To', 'Date_From']
+    #     else:
+    #         return []
 
 
 
@@ -125,6 +124,8 @@ class Booking_admin(admin.ModelAdmin):
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('active')
     )
+
+
 
     def get_readonly_fields(self, request, obj=None):
         if obj:

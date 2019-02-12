@@ -1,14 +1,13 @@
 from django import forms
 from django.contrib import admin
 
-from pages.models import Car
+from pages.models import Booking
 
 
-class Car_Form(forms.ModelForm):
+class Booking_Form(forms.ModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super(Car_Form, self).__init__(*args, **kwargs)
 
     class Meta:
-        model = Car
+        model = Booking
         exclude = ['registration_plate']
+        fields = ('Date_From','Date_To')

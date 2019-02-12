@@ -14,6 +14,7 @@ from Basic_Functions.Time_difference import time_difference_minutes
 from Validators.Car_validators import isalphavalidator
 # from djangox_project.get_username import get_request
 
+
 from users.models import CustomUser
 
 
@@ -205,6 +206,8 @@ class Booking(models.Model):
         return self.code
 
     def clean(self):
+
+        from pages.forms import Booking_Form
 
         self.validate_minutes(self)
         self.validate_current_time(self)
@@ -555,6 +558,8 @@ class Car(models.Model):
     def save(self, *args, **kwargs):
 
         print("(save)TRIGGER CAR ACTIVATED")
+
+
 
         self.old_status = self.status
         Car.objects.filter(pk=self.id).update(Cost=self.get_Cost(self))
