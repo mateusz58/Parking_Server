@@ -26,14 +26,41 @@ class Tabular_Cars(admin.TabularInline):
     model = Car
     extra = 8
 
+    list_display = ['get_id','Cost', 'Date_From', 'Date_To',
+                    'registration_plate', 'status', ]
+
+
+
+    # list_display = ['Cost','Date_From', 'Date_To',
+    #                 'registration_plate', 'status', ]
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ['booking', 'Date_To', 'Date_From']
+        else:
+            return []
+
+
+
+    def get_id(self, obj):
+        return obj.id
+
+    get_id.short_description = 'Car id'
+
+
+
+
+ # Renames column head
+
+
+
 
 
     def get_formset(self, request, obj=None, **kwargs):
-        print("obj value:"+str(obj))
+        print("obj value:" + str(obj))
         Tabular_Cars.obj = obj
-        print("Tabular cars obj:"+str(Tabular_Cars.obj))
+        print("Tabular cars obj:" + str(Tabular_Cars.obj))
         if obj is None:
-            obj=0
+            obj = 0
             return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
         else:
             self.booking = obj
@@ -42,7 +69,7 @@ class Tabular_Cars(admin.TabularInline):
     # logger.error("Test!!")
     def get_max_num(self, request, obj=None, **kwargs):
 
-        if obj==0:
+        if obj == 0:
             return 0
         else:
             # print("PARENT max_num" + str(self.booking.number_of_cars))
@@ -55,7 +82,7 @@ class Tabular_Cars(admin.TabularInline):
         else:
             # print("PARENT min_num" + str(self.booking.number_of_cars))
             self.min_num = self.booking.number_of_cars
-            return  self.min_num
+            return self.min_num
 
     # return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
 
@@ -72,14 +99,16 @@ class Parking_managemnt(AdminSite):
 
 
 class Parking_Admin(admin.ModelAdmin):
-    list_display = ['parking_name', 'parking_Street', 'parking_City', 'free_places', 'number_of_places', 'HOUR_COST']
+    list_display = ['id','parking_name', 'parking_Street', 'parking_City', 'free_places', 'number_of_places', 'HOUR_COST']
     ordering = ['parking_name']
     search_fields = ('parking_name', 'parking_Street', 'parking_City')
     list_filter = ('parking_name', 'parking_Street', 'parking_City')
 
+
+
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ['parking_Street', 'parking_City','parking_name','number_of_places','x','y','user_parking', ]
+            return ['parking_Street', 'parking_City', 'parking_name', 'number_of_places', 'x', 'y', 'user_parking', ]
         else:
             return []
 
@@ -93,23 +122,21 @@ class Booking_admin(admin.ModelAdmin):
     inlines = [Tabular_Cars]
     actions = [Booking_set_inactive]
     # list_display = ['code', 'parking','Date_From','Date_To','Cost','registration_plate','status']
-    list_display = ['code', 'Date_From', 'Date_To', 'user', 'parking', 'Cost', 'number_of_cars','active',]
-    search_fields = ('code','user__email',)
+    list_display = ['code', 'Date_From', 'Date_To', 'user', 'parking', 'Cost', 'number_of_cars', 'active', ]
+    search_fields = ('code', 'user__email',)
     list_filter = (
-        ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter),('active')
+        ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('active')
     )
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ['parking', 'number_of_cars','Date_From','Date_To' ]
+            return ['parking', 'number_of_cars', 'Date_From', 'Date_To']
         else:
             return []
 
 
 class Car_admin(admin.ModelAdmin):
-
-    actions=[make_active,make_cancelled,make_expired,make_reserved,make_expired_e,make_reserved_l]
-
+    actions = [make_active, make_cancelled, make_expired, make_reserved, make_expired_e, make_reserved_l]
     list_display = ['get_id', 'get_booking', 'Cost', 'get_Cost', 'get_number', 'get_user', 'Date_From', 'Date_To',
                     'registration_plate', 'status', ]
     ordering = ['Date_From']
@@ -117,15 +144,22 @@ class Car_admin(admin.ModelAdmin):
     list_filter = ('status',)
     list_totals = [('Cost', lambda field: Coalesce(Sum(field), 0)), ]
     list_filter = (
-        ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter),
+        ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('status'),
     )
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
+
     # list_display = ['Cost','Date_From', 'Date_To',
     #                 'registration_plate', 'status', ]
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ['booking', 'Date_To', 'Date_From']
+            return ['booking', 'Date_To', 'Date_From','registration_plate',]
         else:
-            return []
+            return ['status']
 
     def get_booking(self, obj):
         return obj.booking.code
