@@ -4,7 +4,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib.admin import AdminSite, ModelAdmin
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.db.models.functions import Coalesce
 from django.forms import forms
 from django.urls import resolve
@@ -13,28 +13,32 @@ from django.utils.translation import ugettext_lazy
 from djangox_project.logger import logger
 from pages.admin_actions import make_active, make_cancelled, make_expired, make_reserved, make_expired_e, \
     make_reserved_l, Booking_set_inactive
-from pages.forms import Booking_Form
 from pages.models import Parking, Booking, Car
 from users.models import CustomUser
 from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
 
 #
-
 from merged_inlines.admin import MergedInlineAdmin
 
 
 class Tabular_Cars(admin.TabularInline):
     model = Car
-    extra = 8
+    extra = 0
 
-    list_display = ['get_id','Cost', 'Date_From', 'Date_To',
-                    'registration_plate', 'status','get_number', ]
+
+    can_delete = False
+
+    list_display = ['get_id', 'Cost', 'Date_From', 'Date_To',
+                    'registration_plate', 'status', 'get_number', ]
+
+    def has_add_permission(self, request, obj=None):
+        return False
 
     # list_display = ['Cost','Date_From', 'Date_To',
     #                 'registration_plate', 'status', ]
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ['booking', 'Date_To', 'Date_From']
+            return ['id', 'booking', 'Date_From', 'Date_To']
         else:
             return []
 
@@ -43,68 +47,76 @@ class Tabular_Cars(admin.TabularInline):
 
     get_number.short_description = 'Number of Cars'
 
-    # def get_readonly_fields(self, request, obj=None):
-    #     if obj:
-    #         return ['parking', 'number_of_cars', 'Date_From', 'Date_To']
-    #     else:
-    #         return []
-
-
-
     def get_id(self, obj):
         return obj.id
 
     get_id.short_description = 'Car id'
-
-
+    proxy = False
+    temp = 0
 
     def get_formset(self, request, obj=None, **kwargs):
+
         print("obj value:" + str(obj))
         Tabular_Cars.obj = obj
-        print("Tabular cars obj:" + str(Tabular_Cars.obj))
+        print("Tabular cars get_formset:" + str(Tabular_Cars.obj))
         if obj is None:
+            print("Tabular cars initiate")
+            Tabular_Cars.proxy = True
             obj = 0
             return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
         else:
-            self.booking = obj
-            return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
+            if Tabular_Cars.proxy and self.temp == 0:
+                print("Tabular cars else")
+                self.booking = obj
+                self.temp = self.booking
+                # Booking.objects.filter(pk=self.booking).update(number_of_cars=0)
+                Tabular_Cars.proxy = False
+                return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
+            else:
+                return super(Tabular_Cars, self).get_formset(request, obj=None, **kwargs)
 
     def get_max_num(self, request, obj=None, **kwargs):
 
         if obj == 0:
             return 0
         else:
-            self.max_num = self.booking.number_of_cars
-            return self.max_num
+            try:
+                print("Tabular get_max_num cars Called when adding:" + str(self.temp))
+                self.max_num = Booking.objects.get(pk=self.temp).number_of_cars
+                return self.max_num
+            except Exception as e:
+                print("Exception get_max_num:"+str(e))
+                return 0
 
-    def get_min_num(self, request, obj=None, **kwargs):
-        if obj == 0:
-            return 0
-        else:
-            # print("PARENT min_num" + str(self.booking.number_of_cars))
-            self.min_num = self.booking.number_of_cars
-            return self.min_num
+    # def get_min_num(self, request, obj=None, **kwargs):
+    #     if obj == 0:
+    #         return 0
+    #     else:
+    #
+    #
+    #         print("Tabular get_max_num cars Called when adding:" + str(self.temp))
+    #         # print("PARENT min_num" + str(self.booking.number_of_cars))
+    #         # Booking.objects.get(pk=self.booking).number_of_cars
+    #         self.min_num = Booking.objects.get(pk=self.temp).number_of_cars
+    #
+    #         return self.min_num
 
-
-
-class Parking_managemnt(AdminSite):
-    # Text to put at the end of each page's <title>.
-    site_title = ugettext_lazy('Parking management system')
-
-    # Text to put in each page's <h1> (and above login form).
-    site_header = ugettext_lazy('Parking management system')
-
-    # Text to put at the top of the admin index page.
-    index_title = ugettext_lazy('Parking management system')
+    # def get_extra(self, request, obj=None, **kwargs):
+    #     """Dynamically sets the number of extra forms. 0 if the related object
+    #     already exists or the extra configuration otherwise."""
+    #
+    #     if obj:
+    #         # Don't add any extra forms if the related object already exists.
+    #         return 0
+    #     return self.extra
 
 
 class Parking_Admin(admin.ModelAdmin):
-    list_display = ['id','parking_name', 'parking_Street', 'parking_City', 'free_places', 'number_of_places', 'HOUR_COST']
+    list_display = ['id', 'parking_name', 'parking_Street', 'parking_City', 'free_places', 'number_of_places',
+                    'HOUR_COST']
     ordering = ['parking_name']
-    search_fields = ('parking_name', 'parking_Street', 'parking_City')
+    search_fields = ('parking_name', 'parking_Street', 'Tabular cars obj:parking_City')
     list_filter = ('parking_name', 'parking_Street', 'parking_City')
-
-
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
@@ -119,7 +131,6 @@ class Parking_Admin(admin.ModelAdmin):
 
 class Booking_admin(admin.ModelAdmin):
     model = Booking
-    inlines = [Tabular_Cars]
     actions = [Booking_set_inactive]
     # list_display = ['code', 'parking','Date_From','Date_To','Cost','registration_plate','status']
     list_display = ['code', 'Date_From', 'Date_To', 'user', 'parking', 'Cost', 'number_of_cars', 'active', ]
@@ -127,8 +138,51 @@ class Booking_admin(admin.ModelAdmin):
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('active')
     )
+    inlines = [Tabular_Cars, ]
 
+    def get_id(self, obj):
+        return obj.id
 
+    # def save_formset(self, request, form, formset, change):
+    #     instances = formset.save(commit=False)
+    #     for instance in instances:
+    #         # Do something with `instance`
+    #         instance.delete()
+    #     formset.save_m2m()
+
+    def response_add(self, request, new_object):
+        obj = self.after_saving_model_and_related_inlines(new_object)
+        Booking.objects.filter(pk=obj).update(number_of_cars=Car.objects.filter(
+            Q(booking=obj) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
+        return super(Booking_admin, self).response_add(request, obj)
+
+    def response_change(self, request, obj):
+        obj = self.after_saving_model_and_related_inlines(obj)
+        Booking.objects.filter(pk=obj).update(number_of_cars=Car.objects.filter(
+            Q(booking=obj) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
+        return super(Booking_admin, self).response_change(request, obj)
+
+    def after_saving_model_and_related_inlines(self, obj):
+        # print (obj.related_set.all())
+        # now we have what we need here... :)
+
+        print("Booking admin called" + str(obj))
+
+        print("Booking admin called" + str(self))
+
+        print("Booking admin id" + str(obj.code))
+
+        Booking.objects.filter(pk=obj).update(number_of_cars=Car.objects.filter(
+            Q(booking=obj) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
+
+        # Booking.objects.filter(pk=self.booking.code).update(number_of_cars=Car.objects.filter(
+        #     Q(booking=self.booking) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
+
+        return obj
+
+    # def change_view(self, request, object_id, form_url='', extra_context=None):
+    #     self.inlines = [AttachmentInlineReadOnly, ]
+    #     return super(InlineReadOnly, self).change_view(request, object_id, form_url, extra_context)
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
@@ -159,7 +213,7 @@ class Car_admin(admin.ModelAdmin):
     #                 'registration_plate', 'status', ]
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ['booking', 'Date_To', 'Date_From','registration_plate',]
+            return ['booking', 'Date_To', 'Date_From', ]
         else:
             return ['status']
 

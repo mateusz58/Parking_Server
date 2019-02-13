@@ -244,7 +244,6 @@ class Booking(models.Model):
 
     def clean(self):
 
-        from pages.forms import Booking_Form
 
         self.validate_minutes(self)
         self.validate_current_time(self)
@@ -681,14 +680,16 @@ def model_Parking_delete(sender, instance, **kwargs):
 def model_add(sender, instance, **kwargs):
     import inspect, os
 
+    print("Receiver Model_add called post_save Booking")
+
     obj = Booking.objects.get(code=instance.code)
     obj.refresh_from_db()
 
     user = Booking.objects.get(pk=instance).created_by
 
+
     if has_group_v2(user, "Client_mobile"):
         return
-
     else:
 
         Booking.objects.filter(pk=instance).update(user=user)
@@ -699,13 +700,17 @@ def model_add(sender, instance, **kwargs):
                 Car(registration_plate="", booking=Booking.objects.get(code=instance.code),
                     Date_From=instance.Date_From,
                     Date_To=instance.Date_To, Cost=instance.get_Cost_single(instance)).save()
-                count = count + 1
             except Exception as e:
                 print("BOOKING EXCEPTION:" + str(e))
                 continue
         Booking.objects.filter(code=instance.code).update(active=True)
         Booking.objects.filter(code=instance.code).update(number_of_cars=instance.number_of_cars)
         Booking.objects.filter(code=instance.code).update(Cost=instance.get_Cost_sum(instance))
+
+
+        print("Reveiver after all")
+        Booking.objects.filter(pk=instance).update(number_of_cars=Car.objects.filter(
+            Q(booking=instance) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
     # count = Car.objects.filter(booking=instance).count()
     # if count==0:
     #     raise ValidationError(
