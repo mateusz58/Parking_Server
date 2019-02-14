@@ -334,7 +334,7 @@ def try_except_function_clean():
 def try_except_function_clean_no_plate_verify():
     try:
         car = Car(registration_plate="", booking=Booking.objects.get(pk=35), Date_From=time1,
-                  Date_To=time2).clean_exclude_register_plate_exist_and_validate_registration_plate_signs()
+                  Date_To=time2).clean()
         car = Car(registration_plate="", booking=Booking.objects.get(pk=35), Date_From=time1, Date_To=time2).save()
         print("Car saved")
     except Exception as e:
@@ -363,9 +363,33 @@ def try_loop():
 #
 # sum = query.aggregate(Sum('Cost'))['Cost__sum']
 # print("SUMA"+str(sum))
-query=Parking.objects.filter(pk=5)
-query.update(free_places=100)
-print(str(query))
+time1 = datetime(2019, 2, 13, 8, 0, 00).replace(tzinfo=None)
+time2 = datetime(2019, 2, 13, 21, 24, 00).replace(tzinfo=None)
+
+
+# Car.objects.filter(pk=1159).update(Date_From=time1)
+# Car.objects.filter(pk=1159).update(Date_To=time2)
+# Car.objects.filter(pk=1159).update(status='ACTIVE')
+
+# car = Car(registration_plate="", booking=Booking.objects.get(pk=35), Date_From=time1,
+#           Date_To=time2).clean()
+car = Car(registration_plate="fgdgdfg", booking=Booking.objects.get(pk=232), Date_From=time1, Date_To=time2).save()
+
+Parking.objects.filter(pk=5).update(free_places=100)
+Car.objects.filter(pk=1159).update(status='ACTIVE')
+Car.objects.filter(pk=1169).update(status='ACTIVE')
+
+
+
+
+
+
+
+
+
+
+
+
 # print(query.aggregate(Sum('Cost')))
 #
 #

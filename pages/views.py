@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from django import template
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic import TemplateView, CreateView
@@ -29,7 +31,9 @@ from rest_framework.mixins import ListModelMixin
 
 from Basic_Functions.String_processing import check_query_string, is_all_items_unique
 from Basic_Functions.Time_convert import convert_string_date_time
+from Basic_Functions.Time_difference import is_overlapped
 from TRIGGERS.FREE_PLACES_UPDATE import free_places_update
+from TRIGGERS.UPDATER import main_updater
 from customexceptions import FORBIDDEN
 from decorators import group_required
 from templatetags.templatetag import has_group, has_group_v2
@@ -38,7 +42,8 @@ from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_MET
 from rest_framework.decorators import authentication_classes, permission_classes
 #
 from rest_framework import viewsets, permissions, filters, generics, authentication, status, routers
-from rest_framework.generics import CreateAPIView, ListAPIView, get_object_or_404, RetrieveUpdateDestroyAPIView,RetrieveUpdateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, get_object_or_404, RetrieveUpdateDestroyAPIView, \
+    RetrieveUpdateAPIView
 from django.utils.decorators import method_decorator
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -58,6 +63,7 @@ from datetime import datetime
 
 from django.db.models import Q, Sum
 import re
+
 
 
 #
@@ -83,50 +89,54 @@ import re
 class HomePageView(TemplateView):
     template_name = 'pages/home.html'
 
+
 class AboutPageView(TemplateView):
     template_name = 'pages/about.html'
 
+
 @login_required
 def redirect_view(request):
-        user=request.user
-        requested_user = user
-        user_get_id = CustomUser.objects.get(email=requested_user).id
-        # user_get = CustomUser.objects.get(email=requested_user)
+    user = request.user
+    requested_user = user
+    user_get_id = CustomUser.objects.get(email=requested_user).id
+    # user_get = CustomUser.objects.get(email=requested_user)
 
-        print("USER"+str(user))
-        group_user=user.groups.filter(name='Parking_manager')
+    print("USER" + str(user))
+    group_user = user.groups.filter(name='Parking_manager')
 
-        print(group_user.exists())
+    print(group_user.exists())
 
-        query_user_parking = Parking.objects.filter(user_parking__email=user)
-        print(query_user_parking.exists())
-        permission_classes = (IsAuthenticated,)
-        # booking_list = Booking.objects.all()
+    query_user_parking = Parking.objects.filter(user_parking__email=user)
+    print(query_user_parking.exists())
+    permission_classes = (IsAuthenticated,)
+    # booking_list = Booking.objects.all()
 
-        # if not user_get.is_staff():
-        #     from django.contrib import messages
-        #     messages.info(request,'You are not authorized to access this section. Contact the administrator to access this section!')
-        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
+    # if not user_get.is_staff():
+    #     from django.contrib import messages
+    #     messages.info(request,'You are not authorized to access this section. Contact the administrator to access this section!')
+    #     return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
 
-        if not group_user.exists():
-            print("Empty1")
-            from django.contrib import messages
-            messages.info(request, 'You are not authorized to access this section. Contact the administrator to access this section!')
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
-        if not query_user_parking.exists():
-            print("Empty2")
-            from django.contrib import messages
-            messages.info(request, 'You are not authorized to access this section. Contact the administrator to access this section!')
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
-        ## redirect to admin site
-        else:
-            from django.contrib import messages
-            parking_filtered = Parking.objects.get(user_parking=user_get_id)
-            booking_filtered = Booking.objects.filter(parking=parking_filtered)
-            # return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})
-            print("RESPONSE")
-            response = redirect('/admin/')
-            return response
+    if not group_user.exists():
+        print("Empty1")
+        from django.contrib import messages
+        messages.info(request,
+                      'You are not authorized to access this section. Contact the administrator to access this section!')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
+    if not query_user_parking.exists():
+        print("Empty2")
+        from django.contrib import messages
+        messages.info(request,
+                      'You are not authorized to access this section. Contact the administrator to access this section!')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
+    ## redirect to admin site
+    else:
+        from django.contrib import messages
+        parking_filtered = Parking.objects.get(user_parking=user_get_id)
+        booking_filtered = Booking.objects.filter(parking=parking_filtered)
+        # return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})
+        print("RESPONSE")
+        response = redirect('/admin/')
+        return response
 
 
 #
@@ -139,38 +149,49 @@ class ReadOnly(BasePermission):
     def has_permission(self, request, view):
         return request.method in SAFE_METHODS
 
+
 ## JSON VIEWS
 # @permission_required('GET_Users_API', raise_exception=True)
 class User_View(CreateAPIView, ListAPIView):
     permission_classes = (IsAuthenticated | ReadOnly,)
     queryset = CustomUser.objects.all()
     serializer_class = User_Serializer_Login_Email
+
     def get(self, request, *args, **kwargs):
-     return self.list(request, *args, *kwargs)
+        return self.list(request, *args, *kwargs)
+
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+
 # @permission_required('Update_Users_API', raise_exception=True)
 class Delete_User_View(RetrieveUpdateDestroyAPIView):
-        queryset = CustomUser.objects.all()
-        serializer_class = User_Serializer
+    queryset = CustomUser.objects.all()
+    serializer_class = User_Serializer
+
+
 # @permission_required('GET_Users_API', raise_exception=True)
 class User_View_Email_login(CreateAPIView, ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = User_Serializer
+
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
 
 # @permission_required('GET_Users_API', raise_exception=True)
 class User_View_Search(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = User_Serializer_Login_Email
+
     def get_queryset(self):
-        queryset =  CustomUser.objects.all()
+        queryset = CustomUser.objects.all()
         parking_name_v = self.request.query_params.get('email', None)
 
         if parking_name_v is not None:
             queryset = queryset.filter(email=parking_name_v)
         return queryset
+
 
 # @permission_required('GET_Parking_API', raise_exception=True)
 class Parking_View(CreateAPIView, ListAPIView):
@@ -178,12 +199,14 @@ class Parking_View(CreateAPIView, ListAPIView):
     queryset = Parking.objects.all()
     serializer_class = Parking_Serializer
 
+
 # @permission_required('GET_Parking_API', raise_exception=True)
 class Parking_View_Search(generics.ListAPIView):
     permission_classes = (ReadOnly,)
     serializer_class = Parking_Serializer
+
     def get_queryset(self):
-        queryset =  Parking.objects.all()
+        queryset = Parking.objects.all()
         parking_name_v = self.request.query_params.get('parking_name', None)
 
         if parking_name_v is not None:
@@ -195,138 +218,134 @@ class Parking_View_Coordinates(CreateAPIView, ListAPIView):
     permission_classes = (ReadOnly,)
     queryset = Parking.objects.all()
     serializer_class = Parking_Serializer_Coordinates
+
     def get(self, request, *args, **kwargs):
-     return self.list(request, *args, *kwargs)
+        return self.list(request, *args, *kwargs)
+
 
 class Delete_Parking_View(RetrieveUpdateAPIView):
-        permission_classes = (IsAuthenticated,)
-        serializer_class = Parking_Serializer
+    permission_classes = (IsAuthenticated,)
+    serializer_class = Parking_Serializer
 
-        def get_queryset(self):
-            # user_id=CustomUser.objects.get(email=self.request.user).id
-            queryset = Parking.objects.all()
-            parking_name_v = self.request.query_params.get('parking_name', None)
+    def get_queryset(self):
+        # user_id=CustomUser.objects.get(email=self.request.user).id
+        queryset = Parking.objects.all()
+        parking_name_v = self.request.query_params.get('parking_name', None)
 
-            if parking_name_v is not None:
-                queryset = queryset.filter(parking_name=parking_name_v)
-            return queryset
+        if parking_name_v is not None:
+            queryset = queryset.filter(parking_name=parking_name_v)
+        return queryset
+
+    def test_func(self):
+        user = self.request.user
+        print("Delete_Parking_View" + str(user))
+
+        return has_group(user, "Parking_manager")
 
 
-        def test_func(self):
-            user=self.request.user
-            print("Delete_Parking_View"+str(user))
-
-            return has_group(user, "Parking_manager")
-
-class Booking_View(CreateAPIView,ListAPIView):
+class Booking_View(CreateAPIView, ListAPIView):
     permission_classes = (IsAuthenticated | ReadOnly,)
     queryset = Booking.objects.all()
     serializer_class = Booking_Serializer
+
     def perform_create(self, serializer):
 
-        registration_plate_list=str(self.request.META['HTTP_REGISTRATION_PLATE'])
+        registration_plate_list = str(self.request.META['HTTP_REGISTRATION_PLATE'])
         registration_plate_list = list(registration_plate_list.split(","))
 
-        if int(self.request.data['number_of_cars'])!=len(registration_plate_list):
+        if int(self.request.data['number_of_cars']) != len(registration_plate_list):
             raise FORBIDDEN("Numbers of cars and registration number must be equal")
 
-        if len(registration_plate_list)>1:
+        if len(registration_plate_list) > 1:
             if is_all_items_unique(registration_plate_list):
                 raise FORBIDDEN("All registration numbers must be different")
 
-
-        date_from=str(self.request.META['HTTP_DATE_FROM'])
+        date_from = str(self.request.META['HTTP_DATE_FROM'])
         date_to = str(self.request.META['HTTP_DATE_TO'])
-        date_from=convert_string_date_time(date_from)
-        date_to=convert_string_date_time(date_to)
-        duration =convert_string_date_time(str(self.request.META['HTTP_DATE_TO'])).replace(tzinfo=None)-convert_string_date_time(str(self.request.META['HTTP_DATE_FROM'])).replace(tzinfo=None)
+        date_from = convert_string_date_time(date_from)
+        date_to = convert_string_date_time(date_to)
+        duration = convert_string_date_time(str(self.request.META['HTTP_DATE_TO'])).replace(
+            tzinfo=None) - convert_string_date_time(str(self.request.META['HTTP_DATE_FROM'])).replace(tzinfo=None)
         duration_s = duration.total_seconds()
         minutes = divmod(duration_s, 60)[0]
         minutes = int(minutes)
-        print("Minutes"+str(minutes))
-        i=0
+        print("Minutes" + str(minutes))
+        i = 0
         while i < len(registration_plate_list):
-                if not str(registration_plate_list[i]).isalnum():
-                    raise FORBIDDEN("Wrong registration number of car,car registration number can consist only of numbers and letters characters")
-                if len(registration_plate_list[i])<6:
-                    raise FORBIDDEN("Wrong registration number of car:"+str(registration_plate_list[i])+",car registration number must consist of at least 6 characters and maximum 10 characters")
-                if len(registration_plate_list[i])>10:
-                    raise FORBIDDEN("Wrong registration number of car:"+str(registration_plate_list[i])+",car registration number must consist of at least 6 characters and maximum 10 characters")
-                i = i+1
-        i=0
-        if self.request.data['number_of_cars'] < 1:
+            if not str(registration_plate_list[i]).isalnum():
+                raise FORBIDDEN(
+                    "Wrong registration number of car,car registration number can consist only of numbers and letters characters")
+            if len(registration_plate_list[i]) < 6:
+                raise FORBIDDEN("Wrong registration number of car:" + str(registration_plate_list[
+                                                                              i]) + ",car registration number must consist of at least 6 characters and maximum 10 characters")
+            if len(registration_plate_list[i]) > 10:
+                raise FORBIDDEN("Wrong registration number of car:" + str(registration_plate_list[
+                                                                              i]) + ",car registration number must consist of at least 6 characters and maximum 10 characters")
+            i = i + 1
+        i = 0
+        if len(registration_plate_list) < 1:
             raise FORBIDDEN("You cannot register register parking place for less than one car")
         if minutes < 30:
             raise FORBIDDEN("You cannot register parking place for less than 30 minutes")
-        if convert_string_date_time(self.request.META['HTTP_DATE_TO']).replace(tzinfo=None)<convert_string_date_time(self.request.META['HTTP_DATE_FROM']).replace(tzinfo=None):
+        if convert_string_date_time(self.request.META['HTTP_DATE_TO']).replace(tzinfo=None) < convert_string_date_time(
+                self.request.META['HTTP_DATE_FROM']).replace(tzinfo=None):
             raise FORBIDDEN("Value of Date_From must be higher than Date_To")
-        if convert_string_date_time(self.request.META['HTTP_DATE_FROM']).replace(tzinfo=None)<datetime.now():
+        if convert_string_date_time(self.request.META['HTTP_DATE_FROM']).replace(tzinfo=None) < datetime.now():
             raise FORBIDDEN("Value of Date_From must be higher than current time")
         if minutes < 30:
             raise FORBIDDEN("You cannot register parking place for less than 30 minutes")
         _b1 = Car.objects
-        w1 = _b1.filter(Q(Date_From__lt=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(Date_To__gt=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(booking__parking=self.request.data['parking']) & (
-            Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w2= _b1.filter(Q(Date_From__gt=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(Date_To__lt=convert_string_date_time(self.request.META['HTTP_DATE_TO'])) & Q(booking__parking=self.request.data['parking']) & (
-            Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w3=_b1.filter(Q(Date_From__lt=convert_string_date_time(self.request.META['HTTP_DATE_TO'])) & Q(Date_To__gt=convert_string_date_time(self.request.META['HTTP_DATE_TO'])) & Q(booking__parking=self.request.data['parking']) & (
-            Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w4 = _b1.filter(Q(Date_From__lt=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(Date_To__gt=convert_string_date_time(self.request.META['HTTP_DATE_TO'])) & Q(
-            booking__parking=self.request.data['parking']) & (
-                            Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
 
-        w5 = _b1.filter(Q(Date_From=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(Date_To=convert_string_date_time(self.request.META['HTTP_DATE_TO'])) & Q(
+        # w1 = _b1.filter(Q(Date_From__lt=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(
+        #     Date_To__gt=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(
+        #     booking__parking=self.request.data['parking']) & (
+        #                         Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+
+        query = _b1.filter(Q(
             booking__parking=self.request.data['parking']) & (
-                            Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        variations = [w1, w2, w3, w4,w5]
+                                Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+
+        Range = namedtuple('Range', ['start', 'end'])
+        variations=[]
+        for record in query:
+            r1 = Range(start=date_from,
+                       end=date_to)
+            r2 = Range(start=record.Date_From.replace(tzinfo=None),
+                       end=record.Date_To.replace(tzinfo=None))
+
+            if is_overlapped(r1,r2):
+                variations.append(record)
+
+        # variations = [w1, w2, w3, w4, w5]
 
         while i < self.request.data['number_of_cars']:
-            if w1.filter(registration_plate=str(registration_plate_list[i])).exists():
-                raise FORBIDDEN("Car with registration number:"+str(registration_plate_list[i])+" have already registered parking place in that period of time")
 
-            if w2.filter(registration_plate=str(registration_plate_list[i])).exists():
-                raise FORBIDDEN("Car with registration number:"+str(registration_plate_list[i])+" have already registered parking place in that period of time")
+            for x in variations:
 
-            if w3.filter(registration_plate=str(registration_plate_list[i])).exists():
-                raise FORBIDDEN("Car with registration number:"+str(registration_plate_list[i])+" have already registered parking place in that period of time")
+                if(x.registration_plate==str(registration_plate_list[i])):
+                    raise FORBIDDEN("Car with registration number:" + str(
+                        registration_plate_list[i]) + " have already registered parking place in that period of time")
 
-            if w4.filter(registration_plate=str(registration_plate_list[i])).exists():
-                raise FORBIDDEN("Car with registration number:"+str(registration_plate_list[i])+" have already registered parking place in that period of time")
-
-            if w5.filter(registration_plate=str(registration_plate_list[i])).exists():
-                raise FORBIDDEN("Car with registration number:"+str(registration_plate_list[i])+" have already registered parking place in that period of time")
-            i=i+1
+            i = i + 1
         i = 0
-        sum=0
-        while i < len(variations):
-            # print("Variation:" + str(variations))
-            sum = sum + check_query_string(variations[i])
-            i += 1
-
-
-        sum_after_request=sum+self.request.data['number_of_cars']
-
+        sum_after_request = len(variations) + self.request.data['number_of_cars']
         if sum_after_request > Parking.objects.get(pk=self.request.data['parking']).number_of_places:
             raise FORBIDDEN(
                 "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
                     Parking.objects.get(pk=self.request.data['parking']).number_of_places - sum))
 
-
-
-        # raise FORBIDDEN("HEADER TEST")
-        ## CREATED BOOKING OBJECT
         modify = serializer.save()
-        ##HEADER TEST
-        # print(headers["domain"])
-        user_id=CustomUser.objects.get(email=str(self.request.user))
-        book=Booking.objects.filter(code=modify.code).update(user=user_id)
-        booking_instance=Booking.objects.get(pk=modify.code)
+
+        user_id = CustomUser.objects.get(email=str(self.request.user))
+        book = Booking.objects.filter(code=modify.code).update(user=user_id)
+        booking_instance = Booking.objects.get(pk=modify.code)
         booking_instance.refresh_from_db()
 
         Booking.objects.filter(pk=modify.code).update(user=user_id)
-        if not int(self.request.data['number_of_cars'])==len(registration_plate_list):
-            raise FORBIDDEN("Number of provided registration numbers are not equal to number of parking places you want to register ")
-        i=0
+        if not int(self.request.data['number_of_cars']) == len(registration_plate_list):
+            raise FORBIDDEN(
+                "Number of provided registration numbers are not equal to number of parking places you want to register ")
+        i = 0
         while i < int(self.request.data['number_of_cars']):
             new_car = Car(
                 registration_plate=registration_plate_list[i],
@@ -336,65 +355,56 @@ class Booking_View(CreateAPIView,ListAPIView):
             )
             new_car.save()
             new_car.refresh_from_db()
-            i=i+1
-
+            i = i + 1
             user_id = CustomUser.objects.get(email=str(self.request.user))
             user_id.refresh_from_db()
             Booking.objects.filter(code=modify.code).update(user=user_id)
-            print("ENDING")
 
+class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPIView):
+    permission_classes = (IsAuthenticated | ReadOnly,)
+    serializer_class = Booking_Serializer_delete
+    model = Booking
+    queryset = Booking.objects.all()
 
+    def test_func(self):
+        obj = self.get_object()
+        # print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
+        if has_group_v2(self.request.user, "Client_mobile"):
+            return str(obj.user.email) == str(CustomUser.objects.get(email=self.request.user))
+        else:
+            raise FORBIDDEN("You do not have permission to view that")
 
-class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdateAPIView):
-
-        permission_classes = (IsAuthenticated | ReadOnly,)
-        serializer_class = Booking_Serializer_delete
-        model = Booking
-        queryset = Booking.objects.all()
-        def test_func(self):
-            obj = self.get_object()
-            # print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
-            if has_group_v2(self.request.user, "Client_mobile"):
-                return str(obj.user.email) == str(CustomUser.objects.get(email=self.request.user))
-            else:
-                raise FORBIDDEN("You do not have permission to view that")
 
 # @permission_required('GET_booking_API', raise_exception=True)
 class Booking_View_Search(generics.ListAPIView):
     serializer_class = Booking_Serializer
+
     def get_queryset(self):
-        queryset =  Booking.objects.all()
+        queryset = Booking.objects.all()
         user_v = self.request.query_params.get('user', None)
         if user_v is not None:
             queryset = queryset.filter(user__email=user_v)
         return queryset
 
+
 class Booking_View_logged(generics.ListAPIView):
-        serializer_class = Booking_Serializer
-        model = Booking
-        def get_queryset(self):
-            user=self.request.user
-            if has_group(self.request.user, "Client_mobile"):
-                queryset = Booking.objects.all()
-                return queryset.filter(user__email=self.request.user)
+    serializer_class = Booking_Serializer
+    model = Booking
+
+    def get_queryset(self):
+        user = self.request.user
+        if has_group(self.request.user, "Client_mobile"):
+            queryset = Booking.objects.all()
+            return queryset.filter(user__email=self.request.user)
+
 
 class Car_View(generics.ListAPIView):
-        permission_classes = (IsAuthenticated | ReadOnly,)
-        serializer_class = Car_Serializer
-        model = Car
-        def get_queryset(self):
-            queryset = Car.objects.all()
-            return queryset
+    permission_classes = (IsAuthenticated | ReadOnly,)
+    serializer_class = Car_Serializer
+    model = Car
 
-
-
-
-
-
+    def get_queryset(self):
+        queryset = Car.objects.all()
+        return queryset
 
 #
-
-
-
-
-

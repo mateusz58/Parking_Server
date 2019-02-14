@@ -23,16 +23,11 @@ from merged_inlines.admin import MergedInlineAdmin
 
 class Tabular_Cars(admin.TabularInline):
     model = Car
-    extra = 0
+    extra = 8
 
-
-    can_delete = False
 
     list_display = ['get_id', 'Cost', 'Date_From', 'Date_To',
                     'registration_plate', 'status', 'get_number', ]
-
-    def has_add_permission(self, request, obj=None):
-        return False
 
     # list_display = ['Cost','Date_From', 'Date_To',
     #                 'registration_plate', 'status', ]
@@ -73,11 +68,14 @@ class Tabular_Cars(admin.TabularInline):
                 Tabular_Cars.proxy = False
                 return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
             else:
-                return super(Tabular_Cars, self).get_formset(request, obj=None, **kwargs)
+                print("Tabular cars second else called obj value:"+str(obj))
+                return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
 
     def get_max_num(self, request, obj=None, **kwargs):
 
         if obj == 0:
+            return 0
+        if obj is None:
             return 0
         else:
             try:
@@ -143,12 +141,12 @@ class Booking_admin(admin.ModelAdmin):
     def get_id(self, obj):
         return obj.id
 
-    # def save_formset(self, request, form, formset, change):
-    #     instances = formset.save(commit=False)
-    #     for instance in instances:
-    #         # Do something with `instance`
-    #         instance.delete()
-    #     formset.save_m2m()
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+        for instance in instances:
+            # Do something with `instance`
+            instance.save()
+        formset.save_m2m()
 
     def response_add(self, request, new_object):
         obj = self.after_saving_model_and_related_inlines(new_object)

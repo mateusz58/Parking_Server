@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     # Local
     'users',
     'pages',
-
+    'background_task'
 ]
 
 REST_FRAMEWORK = {

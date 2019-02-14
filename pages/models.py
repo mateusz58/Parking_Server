@@ -1,6 +1,7 @@
 # Create your models here.
 import datetime as dt
 import time
+from collections import namedtuple
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -11,7 +12,7 @@ from django.dispatch import receiver
 
 from Basic_Functions.SQL_FUNCTIONS import sum_field_from_query
 from Basic_Functions.String_processing import check_query_string
-from Basic_Functions.Time_difference import time_difference_minutes
+from Basic_Functions.Time_difference import time_difference_minutes, is_overlapped
 from Validators.Car_validators import isalphavalidator
 # from djangox_project.get_username import get_request
 from djangox_project import settings
@@ -147,47 +148,37 @@ class Booking(models.Model):
         return Cost
 
     def validate_if_place_available_excluded_registration_plate_exists(self, arg):
-        print("CAR MODEL STATE TRIGGER validate_if_place_available")
-        duration = self.Date_To.replace(tzinfo=None) - self.Date_From.replace(tzinfo=None)
+        date_from = self.Date_From
+        date_to = self.Date_To
+        duration = self.Date_To.replace(
+            tzinfo=None) - self.Date_From.replace(tzinfo=None)
         duration_s = duration.total_seconds()
         minutes = divmod(duration_s, 60)[0]
         minutes = int(minutes)
         print("Minutes" + str(minutes))
-
-        _b1 = Car.objects
-        w1 = _b1.filter(Q(Date_From__lt=self.Date_From) & Q(
-            Date_To__gt=self.Date_From) & Q(
-            booking__parking=self.parking) & (
-                                Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w2 = _b1.filter(Q(Date_From__gt=self.Date_From) & Q(
-            Date_To__lt=self.Date_To) & Q(
-            booking__parking=self.parking) & (
-                                Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w3 = _b1.filter(Q(Date_From__lt=self.Date_To) & Q(
-            Date_To__gt=self.Date_To) & Q(
-            booking__parking=self.parking) & (
-                                Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w4 = _b1.filter(Q(Date_From__lt=self.Date_From) & Q(
-            Date_To__gt=self.Date_To) & Q(
-            booking__parking=self.parking) & (
-                                Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w5 = _b1.filter(Q(Date_From=self.Date_From) & Q(
-            Date_To=self.Date_To) & Q(
-            booking__parking=self.parking) & (
-                                Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        variations = [w1, w2, w3, w4, w5]
-
         i = 0
-        sum = 0
-        while i < len(variations):
-            # print("Variation:" + str(variations))
-            sum = sum + check_query_string(variations[i])
-            i += 1
-        sum_after_request = sum + self.number_of_cars
-        if sum_after_request > Parking.objects.get(pk=self.parking.id).number_of_places:
+
+        query = Car.objects.filter(Q(
+            booking__parking=self.parking) & (
+                                           Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+        Range = namedtuple('Range', ['start', 'end'])
+        variations = []
+        for record in query:
+            r1 = Range(start=date_from,
+                       end=date_to)
+            r2 = Range(start=record.Date_From.replace(tzinfo=None),
+                       end=record.Date_To.replace(tzinfo=None))
+
+            if is_overlapped(r1, r2):
+                variations.append(record)
+
+        # variations = [w1, w2, w3, w4, w5]
+        sum_before_request = len(variations)
+        sum_after_request = len(variations) + self.number_of_cars
+        if sum_after_request > Parking.objects.get(pk=self.request.data['parking']).number_of_places:
             raise ValidationError(
                 "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
-                    self.parking.number_of_places - sum))
+                    Parking.objects.get(pk=self.booking.parking).number_of_places - sum_before_request))
 
     def validate_minutes(self, arg):
         print("CAR MODEL STATE TRIGGER validate_minutes")
@@ -240,31 +231,16 @@ class Booking(models.Model):
         return round(sum, 2)
 
     def __int__(self):
+        self.old_active = self.active
         return self.code
 
     def clean(self):
 
-
+        if self.old_active == False and self.active == True:
+            raise ValidationError("You can only cancel booking")
         self.validate_minutes(self)
         self.validate_current_time(self)
-
         self.validate_if_place_available_excluded_registration_plate_exists(self)
-
-        # count = 0
-        # for x in range(self.number_of_cars):
-        #     try:
-        #         car = Car(registration_plate="", booking=Booking.objects.get(code=self.code), Date_From=self.Date_From,
-        #                   Date_To=self.Date_To).full_clean()
-        #         car = Car(registration_plate="", booking=Booking.objects.get(code=self.code), Date_From=self.Date_From,
-        #                   Date_To=self.Date_To).save()
-        #         count = count + 1
-        #
-        #     except Exception as e:
-        #         print("BOOKING EXCEPTION")
-        #         continue
-        # if (count == 0):
-        #     raise ValidationError("Not enough free places in that period of time:")
-
     def cancel_all(self, arg):
         if self.active == False:
             try:
@@ -273,19 +249,15 @@ class Booking(models.Model):
                 Booking.objects.filter(code=self.code).update(number_of_cars=0)
             except:
                 pass
-
     def save(self, **kwargs):
         print("save()TRIGGER BOOKING ACTIVATED")
-
         user = get_current_user()
         if user and not user.pk:
             user = None
         if not self.pk:
             self.created_by = user
         self.modified_by = user
-
         return super(Booking, self).save(**kwargs)
-
 
 class Car(models.Model):
     id = models.BigAutoField(primary_key=True, editable=False)
@@ -313,49 +285,78 @@ class Car(models.Model):
             raise ValidationError("You must assign Booking value")
 
     def validate_if_place_available_excluded_registration_plate_exists(self, arg):
-        print("CAR MODEL STATE TRIGGER validate_if_place_available")
-        duration = self.Date_To.replace(tzinfo=None) - self.Date_From.replace(tzinfo=None)
+        date_from = self.Date_From
+        date_to = self.Date_To
+        duration = self.Date_To.replace(
+            tzinfo=None) - self.Date_From.replace(tzinfo=None)
         duration_s = duration.total_seconds()
         minutes = divmod(duration_s, 60)[0]
         minutes = int(minutes)
         print("Minutes" + str(minutes))
-
-        _b1 = Car.objects
-        w1 = _b1.filter(Q(Date_From__lt=self.Date_From) & Q(
-            Date_To__gt=self.Date_From) & Q(
-            booking__parking=self.booking.parking) & (
-                                Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w2 = _b1.filter(Q(Date_From__gt=self.Date_From) & Q(
-            Date_To__lt=self.Date_To) & Q(
-            booking__parking=self.booking.parking) & (
-                                Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w3 = _b1.filter(Q(Date_From__lt=self.Date_To) & Q(
-            Date_To__gt=self.Date_To) & Q(
-            booking__parking=self.booking.parking) & (
-                                Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w4 = _b1.filter(Q(Date_From__lt=self.Date_From) & Q(
-            Date_To__gt=self.Date_To) & Q(
-            booking__parking=self.booking.parking) & (
-                                Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        w5 = _b1.filter(Q(Date_From=self.Date_From) & Q(
-            Date_To=self.Date_To) & Q(
-            booking__parking=self.booking.parking) & (
-                                Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-        variations = [w1, w2, w3, w4, w5]
-
         i = 0
-        sum = 0
-        while i < len(variations):
-            # print("Variation:" + str(variations))
-            sum = sum + check_query_string(variations[i])
-            i += 1
-        sum_after_request = sum + 1
-        if sum_after_request > Parking.objects.get(pk=self.booking.parking.id).number_of_places:
+
+        query = Car.objects.filter(Q(
+            booking__parking=self.booking.parking) & (
+                                           Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+        Range = namedtuple('Range', ['start', 'end'])
+        variations = []
+        for record in query:
+            r1 = Range(start=date_from,
+                       end=date_to)
+            r2 = Range(start=record.Date_From.replace(tzinfo=None),
+                       end=record.Date_To.replace(tzinfo=None))
+
+            if is_overlapped(r1, r2):
+                variations.append(record)
+
+        # variations = [w1, w2, w3, w4, w5]
+        sum_before_request = len(variations)
+        sum_after_request = len(variations) + self.number_of_cars
+        if sum_after_request > Parking.objects.get(pk=self.request.data['parking']).number_of_places:
             raise ValidationError(
                 "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
-                    self.booking.parking.number_of_places - sum))
+                    Parking.objects.get(pk=self.booking.parking).number_of_places - sum_before_request))
 
-    def validate_if_place_available(self, arg):
+    def valide_if_place_available(self, serializer):
+
+        date_from = self.Date_From
+        date_to = self.Date_To
+        duration = self.Date_To.replace(
+            tzinfo=None) - self.Date_From.replace(tzinfo=None)
+        duration_s = duration.total_seconds()
+        minutes = divmod(duration_s, 60)[0]
+        minutes = int(minutes)
+        print("Minutes" + str(minutes))
+        i = 0
+
+        query = Car.objects.filter(Q(
+            booking__parking=self.booking.parking) & (
+                                           Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+
+        Range = namedtuple('Range', ['start', 'end'])
+        variations = []
+        for record in query:
+            r1 = Range(start=date_from,
+                       end=date_to)
+            r2 = Range(start=record.Date_From.replace(tzinfo=None),
+                       end=record.Date_To.replace(tzinfo=None))
+
+            if is_overlapped(r1, r2):
+                if record.registration_plate == self.registration_plate:
+                    raise ValidationError("Car with registration number:" + str(
+                        self.registration_plate) + " have already registered parking place in that period of time")
+                else:
+                    variations.append(record)
+
+        # variations = [w1, w2, w3, w4, w5]
+        sum_before_request = len(variations)
+        sum_after_request = len(variations) + self.number_of_cars
+        if sum_after_request > Parking.objects.get(pk=self.parking).number_of_places:
+            raise ValidationError(
+                "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
+                    Parking.objects.get(pk=self.booking.parking).number_of_places - sum_before_request))
+
+    def validate_if_place_available_old(self, arg):
 
         print("CAR MODEL STATE TRIGGER validate_if_place_available")
 
@@ -420,7 +421,7 @@ class Car(models.Model):
                 "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
                     self.booking.parking.number_of_places - sum))
 
-    def validate_minutes(self, arg):
+    def validate_minutes_min_30(self, arg):
         print("CAR MODEL STATE TRIGGER validate_minutes")
 
         duration = self.Date_To - self.Date_From
@@ -431,7 +432,7 @@ class Car(models.Model):
         if minutes < 30:
             raise ValidationError('You cannot register parking place for less than 30 minutes')
 
-    def validate_current_time(self, arg):
+    def validate_Date_To_Higher_or_equal_to_current_time(self, arg):
         if self.Date_To.replace(tzinfo=None).replace(second=0, microsecond=0) <= dt.datetime.now().replace(second=0,
                                                                                                            microsecond=0):
             raise ValidationError("*Value of Date_To must be higher or equal to current time")
@@ -439,16 +440,31 @@ class Car(models.Model):
     def validate_registration_plate_signs(self, arg):
         print("CAR MODEL STATE TRIGGER validate_registration_plate_signs")
 
-        if not str(self.registration_plate).isalnum():
-            raise ValidationError(
-                "Wrong registration number of car,car registration number can consist only of numbers and letters characters")
-        if len(self.registration_plate) < 6:
-            raise ValidationError("Wrong registration number of car:" + str(
-                self.registration_plate) + "car registration number must consist of at least 6 characters and maximum 10 characters")
 
-        if len(self.registration_plate) > 10:
-            raise ValidationError("Wrong registration number of car:" + str(self.registration_plate
-                                                                            ) + ",car registration number must consist of at least 6 characters and maximum 10 characters")
+        if self.pk is None:
+            if not str(self.registration_plate).isalnum():
+                raise ValidationError(
+                    "Wrong registration number of car,car registration number can consist only of numbers and letters characters")
+            if len(self.registration_plate) < 6:
+                raise ValidationError("Wrong registration number of car:" + str(
+                    self.registration_plate) + "car registration number must consist of at least 6 characters and maximum 10 characters")
+
+            if len(self.registration_plate) > 10:
+                raise ValidationError("Wrong registration number of car:" + str(self.registration_plate
+                                                                                ) + ",car registration number must consist of at least 6 characters and maximum 10 characters")
+        else:
+            if not self.registration_plate=="":
+                if not str(self.registration_plate).isalnum():
+                    raise ValidationError(
+                        "Wrong registration number of car,car registration number can consist only of numbers and letters characters")
+                if len(self.registration_plate) < 6:
+                    raise ValidationError("Wrong registration number of car:" + str(
+                        self.registration_plate) + "car registration number must consist of at least 6 characters and maximum 10 characters")
+
+                if len(self.registration_plate) > 10:
+                    raise ValidationError("Wrong registration number of car:" + str(self.registration_plate
+                                                                                    ) + ",car registration number must consist of at least 6 characters and maximum 10 characters")
+
 
     def get_Cost(self, arg):
         print("CAR MODEL STATE TRIGGER get_Cost")
@@ -545,26 +561,31 @@ class Car(models.Model):
 
         print("CAR MODEL STATE TRIGGER validate_registration_plate_exists")
 
-    def validate_status_check_free_places_registration_placte_exists(self, arg):
+    def validate_plate_booking_duplicate(self, arg):
+
+
+        if self.pk is None:  #EXECUTED DURING CREATING
+
+            query = Car.objects.filter(booking=self.booking)
+            query = query.filter(
+                Q(booking=self.booking.code) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+            if query.filter(registration_plate=self.old_registration_plate).exists():
+                raise ValidationError('Car with that reservation number is on the booking list')
+
+
+        else: #EXECUTED DURING UPDATE ONLY
+
+            if self.registration_plate!="":
+                query = Car.objects.filter(
+                    Q(booking=self.booking.code) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+                if query.filter(registration_plate=self.registration_plate).exists():
+                    raise ValidationError('Car with that reservation number is on the booking list')
+
 
         # self.state == "ACTIVE" or self.state == "RESERVED" or self.state == "RESERVED_L"):
 
         print("clean()CAR MODEL TRIGGER validate_status_check_free_places_registration_placte_exists")
 
-        if not self.pk is None:  ### EXECUTED WHEN UPDATING OBJECT
-            print("CHECKING NOT NONE")  ##
-        if self.pk is None:  ### EXECUTED WHEN CREATING NEW OBJECT
-            print("CHECKING NONE")
-            if self.status == "ACTIVE":
-                print("EXECUTED")
-                query = Car.objects.filter(booking=self.booking)
-                query = query.filter(
-                    Q(booking=self.booking.code) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-                if query.filter(registration_plate=self.registration_plate).exists():
-                    raise ValidationError('Car with that reservation number is on the booking list')
-                else:
-                    return False
-                self.validate_if_place_available(self)
 
     def clean_exclude_register_plate_exist_and_validate_registration_plate_signs(self, arg):
 
@@ -573,7 +594,7 @@ class Car(models.Model):
         self.validate_states(self)
         self.validate_if_booking_none(self)
         self.validate_if_place_available_excluded_registration_plate_exists(self)
-        self.validate_minutes(self)
+        self.validate_minutes_min_30(self)
         if self.Date_To.replace(tzinfo=None).replace(second=0, microsecond=0) <= dt.datetime.now().replace(second=0,
                                                                                                            microsecond=0):
             raise ValidationError("Value of Date_To must be higher or equal to current time")
@@ -582,18 +603,31 @@ class Car(models.Model):
         name = self.registration_plate
 
     def clean(self):
+        from django.core.exceptions import ValidationError
+
+        self.validate_plate_booking_duplicate(self)
 
         print("(clean)TRIGGER CAR ACTIVATED")
-        from django.core.exceptions import ValidationError
-        self.validate_status_check_free_places_registration_placte_exists(self)
-        self.validate_current_time(self)
-        if self.Date_To.replace(tzinfo=None).replace(second=0, microsecond=0) <= dt.datetime.now().replace(second=0,
-                                                                                                           microsecond=0):
-            raise ValidationError("Value of Date_To must be higher or equal to current time")
-        self.validate_states(self)
+        ## TIME VALIDATIONS:
         self.validate_if_booking_none(self)
+        self.validate_minutes_min_30(self)
         self.validate_registration_plate_signs(self)
-        self.validate_minutes(self)
+        if self.pk is None:  ### EXECUTED WHEN CREATING NEW OBJECT
+            self.validate_Date_To_Higher_or_equal_to_current_time(self)
+            self.validate_if_place_available(self)
+            self.validate_plate_booking_duplicate(self)
+
+        if not self.pk is None:### EXECUTED WHEN UPDATING OBJECTS
+            self.validate_plate_booking_duplicate(self)
+            self.validate_states(self)
+
+
+
+
+
+
+
+
         if self.old_status == 'ACTIVE' and self.status == 'RESERVED_L':
             raise ValidationError('You cannot change active reservation to rerserved_L state')
         name = self.registration_plate
@@ -687,7 +721,6 @@ def model_add(sender, instance, **kwargs):
 
     user = Booking.objects.get(pk=instance).created_by
 
-
     if has_group_v2(user, "Client_mobile"):
         return
     else:
@@ -706,7 +739,6 @@ def model_add(sender, instance, **kwargs):
         Booking.objects.filter(code=instance.code).update(active=True)
         Booking.objects.filter(code=instance.code).update(number_of_cars=instance.number_of_cars)
         Booking.objects.filter(code=instance.code).update(Cost=instance.get_Cost_sum(instance))
-
 
         print("Reveiver after all")
         Booking.objects.filter(pk=instance).update(number_of_cars=Car.objects.filter(
