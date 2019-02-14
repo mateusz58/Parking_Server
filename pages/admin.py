@@ -51,9 +51,8 @@ class Tabular_Cars(admin.TabularInline):
 
     def get_formset(self, request, obj=None, **kwargs):
 
-        print("obj value:" + str(obj))
+
         Tabular_Cars.obj = obj
-        print("Tabular cars get_formset:" + str(Tabular_Cars.obj))
         if obj is None:
             print("Tabular cars initiate")
             Tabular_Cars.proxy = True
@@ -69,6 +68,7 @@ class Tabular_Cars(admin.TabularInline):
                 return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
             else:
                 print("Tabular cars second else called obj value:" + str(obj))
+                obj=0
                 return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
 
     def get_max_num(self, request, obj=None, **kwargs):
@@ -192,43 +192,6 @@ class Booking_admin(admin.ModelAdmin):
 
     def get_id(self, obj):
         return obj.id
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for instance in instances:
-            # Do something with `instance`
-            instance.save()
-        formset.save_m2m()
-
-    def response_add(self, request, new_object):
-        obj = self.after_saving_model_and_related_inlines(new_object)
-        Booking.objects.filter(pk=obj).update(number_of_cars=Car.objects.filter(
-            Q(booking=obj) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
-        return super(Booking_admin, self).response_add(request, obj)
-
-    def response_change(self, request, obj):
-        obj = self.after_saving_model_and_related_inlines(obj)
-        Booking.objects.filter(pk=obj).update(number_of_cars=Car.objects.filter(
-            Q(booking=obj) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
-        return super(Booking_admin, self).response_change(request, obj)
-
-    def after_saving_model_and_related_inlines(self, obj):
-        # print (obj.related_set.all())
-        # now we have what we need here... :)
-
-        print("Booking admin called" + str(obj))
-
-        print("Booking admin called" + str(self))
-
-        print("Booking admin id" + str(obj.id))
-
-        Booking.objects.filter(pk=obj).update(number_of_cars=Car.objects.filter(
-            Q(booking=obj) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
-
-        # Booking.objects.filter(pk=self.booking.code).update(number_of_cars=Car.objects.filter(
-        #     Q(booking=self.booking) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
-
-        return obj
 
     # def change_view(self, request, object_id, form_url='', extra_context=None):
     #     self.inlines = [AttachmentInlineReadOnly, ]

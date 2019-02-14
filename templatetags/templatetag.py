@@ -18,11 +18,11 @@ def has_group_v2(user, group_name):
         return False
 
 
-
-
-@register.filter
-def is_false(arg):
-    return arg is False
+def has_group_v3(user, group_name):
+    if CustomUser.objects.get(email=user).groups.filter(name=group_name).exists():
+        return True
+    else:
+        return False
 
 
 @register.filter(name='is_active')

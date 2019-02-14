@@ -158,7 +158,7 @@ class Booking(models.Model):
 
     def validate_if_place_available_excluded_registration_plate_exists(self, arg):
         date_from = self.Date_From.replace(tzinfo=None)
-        date_to = self.Date_To
+        date_to = self.Date_To.replace(tzinfo=None)
         duration = self.Date_To.replace(
             tzinfo=None) - self.Date_From.replace(tzinfo=None)
         duration_s = duration.total_seconds()
@@ -738,8 +738,11 @@ def model_add(sender, instance, **kwargs):
     obj.refresh_from_db()
 
     user = instance.created_by
+    l=[]
+    for g in user.groups.all():
+        l.append(g.name)
 
-    if has_group_v2(user, "Client_mobile"):
+    if l.__contains__("Parking_manager"):
         return
     else:
 
