@@ -14,6 +14,7 @@ from djangox_project.logger import logger
 from pages.admin_actions import make_active, make_cancelled, make_expired, make_reserved, make_expired_e, \
     make_reserved_l, Booking_set_inactive
 from pages.models import Parking, Booking, Car
+from templatetags.templatetag import has_group_v2
 from users.models import CustomUser
 from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
 
@@ -24,7 +25,6 @@ from merged_inlines.admin import MergedInlineAdmin
 class Tabular_Cars(admin.TabularInline):
     model = Car
     extra = 8
-
 
     list_display = ['get_id', 'Cost', 'Date_From', 'Date_To',
                     'registration_plate', 'status', 'get_number', ]
@@ -68,7 +68,7 @@ class Tabular_Cars(admin.TabularInline):
                 Tabular_Cars.proxy = False
                 return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
             else:
-                print("Tabular cars second else called obj value:"+str(obj))
+                print("Tabular cars second else called obj value:" + str(obj))
                 return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
 
     def get_max_num(self, request, obj=None, **kwargs):
@@ -83,7 +83,7 @@ class Tabular_Cars(admin.TabularInline):
                 self.max_num = Booking.objects.get(pk=self.temp).number_of_cars
                 return self.max_num
             except Exception as e:
-                print("Exception get_max_num:"+str(e))
+                print("Exception get_max_num:" + str(e))
                 return 0
 
     # def get_min_num(self, request, obj=None, **kwargs):
@@ -118,10 +118,19 @@ class Parking_Admin(admin.ModelAdmin):
 
     def get_queryset(self, request):
 
-        if not CustomUser.objects.get(email=request.user).is_superuser:
+        user = request.user
 
-            query = Parking.objects.filter(user_parking=request.user)
-            return query
+        query = CustomUser.objects.filter(username=user).get().username
+
+        l = []
+
+        for g in request.user.groups.all():
+            l.append(g.name)
+
+        if l.__contains__("Parking_manager"):
+
+            return Parking.objects.filter(user_parking=user)
+
         else:
             return Parking.objects.all()
 
@@ -136,8 +145,6 @@ class Parking_Admin(admin.ModelAdmin):
         modeladmin.Parking_city_order.short_description = "Order by city name"
 
 
-
-
 class Booking_admin(admin.ModelAdmin):
     model = Booking
     actions = [Booking_set_inactive]
@@ -147,25 +154,39 @@ class Booking_admin(admin.ModelAdmin):
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('active')
     )
-    #
-    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
-    #     id=Parking.objects.get(user_parking=request.user)
-    #     if db_field.name == "parking":
-    #         kwargs["queryset"] = Booking.objects.filter(parking=id)
-    #     return super().formfield_for_foreignkey(db_field, request, **kwargs)
-    #
-    #
-    #     #
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        name = Parking.objects.get(user_parking=request.user).parking_name
+        if db_field.name == "parking":
+            kwargs["queryset"] = Parking.objects.filter(parking_name__exact=str(name))
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+        #
 
     def get_queryset(self, request):
 
-        if not CustomUser.objects.get(email=request.user).is_superuser:
+        user = request.user
 
-            query = Booking.objects.filter(parking__user_parking=request.user)
-            return query
+        query = CustomUser.objects.filter(username=user).get().username
+
+        l = []
+
+
+        for g in request.user.groups.all():
+            l.append(g.name)
+
+        if l.__contains__("Parking_manager"):
+
+            return Booking.objects.filter(parking__user_parking=user)
+
         else:
             return Booking.objects.all()
+
+        # if has_group_v2(request.user, "Parking_manager"):
+        #
+        #     query = Booking.objects.filter(parking__user_parking=request.user)
+        #     return query
+        # else:
 
     inlines = [Tabular_Cars, ]
 
@@ -231,17 +252,24 @@ class Car_admin(admin.ModelAdmin):
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('status'),
     )
-
     def get_queryset(self, request):
 
-        if not CustomUser.objects.get(email=request.user).is_superuser:
+        user = request.user
 
-            query = Car.objects.filter(booking__parking__user_parking=request.user)
-            return query
+        query = CustomUser.objects.filter(username=user).get().username
+
+        l = []
+
+
+        for g in request.user.groups.all():
+            l.append(g.name)
+
+        if l.__contains__("Parking_manager"):
+
+            return Car.objects.filter(booking__parking__user_parking=user)
+
         else:
             return Car.objects.all()
-
-
     def get_actions(self, request):
         actions = super().get_actions(request)
         if 'delete_selected' in actions:

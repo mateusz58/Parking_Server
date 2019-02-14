@@ -9,8 +9,8 @@ hed = {'Authorization': 'Token ' + auth_token,
         "registration-plate":"use38yy7gr,uzcb2r345"
        }
 data={
-        "parking": 1,
-        "user": 2,
+        "parking": 2,
+        "user": 3,
         "number_of_cars":2
 }
 base="http://127.0.0.1:8000"

@@ -94,8 +94,8 @@ class CustomAuthToken(ObtainAuthToken):
 
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        if not is_user_active(user):
-            raise UNAUTHORIZED("Unable to log in ,you must activate your account by clicking activation link that you received on email")
+
+        print("Checking out")
         if not has_group_v2(user,"Client_mobile"):
             raise UNAUTHORIZED("Unable to log in with provided credentials.")
 
