@@ -2,14 +2,14 @@ import requests
 # USER   # "id": 12,
 
 value='123'
-auth_token='2edb54b1e8124ece31e6414e5228ee7ce512a6c2'
+auth_token='ac0d1629c8e02089b303e1e2d87c9215cea35f74'
 hed = {'Authorization': 'Token ' + auth_token,
         'date-from':'2019-02-16T16:46:19Z',
         "date-to": "2019-02-17T17:56:20Z",
         "registration-plate":"use38yy7gr,uzcb2r345"
        }
 data={
-        "parking": 4,
+        "parking": 1,
         "user": 2,
         "number_of_cars":2
 }

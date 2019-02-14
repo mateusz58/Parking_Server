@@ -102,7 +102,7 @@ def validate_registration_plate_exists(self, arg):
     query = Car.objects.filter(booking=self.booking)
 
     query = query.filter(
-        Q(booking=self.booking.code) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+        Q(booking=self.booking.id) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
     if query.filter(registration_plate=self.registration_plate).exists():
         return True
     else:

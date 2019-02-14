@@ -34,7 +34,7 @@ from Basic_Functions.String_processing import check_query_string, is_all_items_u
 from Basic_Functions.Time_convert import convert_string_date_time
 from Basic_Functions.Time_difference import is_overlapped
 from TRIGGERS.FREE_PLACES_UPDATE import free_places_update
-from TRIGGERS.UPDATER import main_updater
+# from TRIGGERS.UPDATER import main_updater
 from customexceptions import FORBIDDEN
 from decorators import group_required
 from templatetags.templatetag import has_group, has_group_v2
@@ -333,16 +333,16 @@ class Booking_View(CreateAPIView, ListAPIView):
         if sum_after_request > Parking.objects.get(pk=self.request.data['parking']).number_of_places:
             raise FORBIDDEN(
                 "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
-                    Parking.objects.get(pk=self.request.data['parking']).number_of_places - sum))
+                    Parking.objects.get(pk=self.request.data['parking']).number_of_places - len(variations)))
 
         modify = serializer.save()
 
         user_id = CustomUser.objects.get(email=str(self.request.user))
-        book = Booking.objects.filter(code=modify.code).update(user=user_id)
-        booking_instance = Booking.objects.get(pk=modify.code)
+        book = Booking.objects.filter(id=modify.id).update(user=user_id)
+        booking_instance = Booking.objects.get(pk=modify.id)
         booking_instance.refresh_from_db()
 
-        Booking.objects.filter(pk=modify.code).update(user=user_id)
+        Booking.objects.filter(pk=modify.id).update(user=user_id)
         if not int(self.request.data['number_of_cars']) == len(registration_plate_list):
             raise FORBIDDEN(
                 "Number of provided registration numbers are not equal to number of parking places you want to register ")
@@ -359,7 +359,7 @@ class Booking_View(CreateAPIView, ListAPIView):
             i = i + 1
             user_id = CustomUser.objects.get(email=str(self.request.user))
             user_id.refresh_from_db()
-            Booking.objects.filter(code=modify.code).update(user=user_id)
+            Booking.objects.filter(id=modify.id).update(user=user_id)
 
 class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated | ReadOnly,)
@@ -394,7 +394,7 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdat
                 # Booking.objects.filter(code=obj.code).update(active=False)
 
                 serializer.is_valid(raise_exception=True)
-                obj = Booking.objects.get(code=obj.code)
+                obj = Booking.objects.get(id=obj.id)
                 obj.active = False
                 obj.save()
                 return Response(serializer.data)

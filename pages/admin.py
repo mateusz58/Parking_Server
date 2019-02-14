@@ -141,25 +141,21 @@ class Parking_Admin(admin.ModelAdmin):
 class Booking_admin(admin.ModelAdmin):
     model = Booking
     actions = [Booking_set_inactive]
-    # list_display = ['code', 'parking','Date_From','Date_To','Cost','registration_plate','status']
-    list_display = ['code', 'Date_From', 'Date_To', 'user', 'parking', 'Cost', 'number_of_cars', 'active', ]
-    search_fields = ('code', 'user__email',)
+    # list_display = ['id', 'parking','Date_From','Date_To','Cost','registration_plate','status']
+    list_display = ['id', 'Date_From', 'Date_To', 'user', 'parking', 'Cost', 'number_of_cars', 'active', ]
+    search_fields = ('id', 'user__email',)
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('active')
     )
-
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        id=Parking.objects.get(user_parking=request.user)
-        query=Booking.objects.filter(parking=id)
-        if db_field.name == "parking":
-            kwargs["queryset"] = Booking.objects.filter(parking=id)
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
-
-
-
-
-
-        #
+    #
+    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
+    #     id=Parking.objects.get(user_parking=request.user)
+    #     if db_field.name == "parking":
+    #         kwargs["queryset"] = Booking.objects.filter(parking=id)
+    #     return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    #
+    #
+    #     #
 
 
     def get_queryset(self, request):
@@ -203,7 +199,7 @@ class Booking_admin(admin.ModelAdmin):
 
         print("Booking admin called" + str(self))
 
-        print("Booking admin id" + str(obj.code))
+        print("Booking admin id" + str(obj.id))
 
         Booking.objects.filter(pk=obj).update(number_of_cars=Car.objects.filter(
             Q(booking=obj) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
@@ -261,7 +257,7 @@ class Car_admin(admin.ModelAdmin):
             return ['status']
 
     def get_booking(self, obj):
-        return obj.booking.code
+        return obj.booking.id
 
     def get_id(self, obj):
         return obj.id

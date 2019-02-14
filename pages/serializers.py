@@ -48,9 +48,9 @@ class Booking_Serializer_delete(serializers.ModelSerializer):
 
     class Meta:
                 model = Booking
-                fields = ('code', 'parking','Cost', 'user',
+                fields = ('id', 'parking','Cost', 'user',
                           'number_of_cars','active')
-                read_only_fields = ('code', 'parking','Cost', 'user',
+                read_only_fields = ('id', 'parking','Cost', 'user',
                           'number_of_cars')
 
 
@@ -60,8 +60,8 @@ class Booking_Serializer(serializers.ModelSerializer):
 
     class Meta:
                 model = Booking
-                fields = ('code', 'parking','Cost', 'user','number_of_cars','active',)
-                read_only_fields = ('code',)
+                fields = ('id', 'parking','Cost', 'user','number_of_cars','active',)
+                read_only_fields = ('id',)
 
 
 
@@ -84,8 +84,8 @@ class Car_booking_Serializer(serializers.ModelSerializer):
     booking = Car_Serializer(many=True)
     class Meta:
         model = Booking
-        fields =('code', 'parking','Cost', 'user','number_of_cars','booking','Date_From', 'Date_To','active')
-        read_only_fields = ('code', 'parking','Cost', 'user','booking')
+        fields =('id', 'parking','Cost', 'user','number_of_cars','booking','Date_From', 'Date_To','active')
+        read_only_fields = ('id', 'parking','Cost', 'user','booking')
 
 #
 # class Car_booking_Serializer(serializers.ModelSerializer):

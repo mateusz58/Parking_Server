@@ -20,7 +20,7 @@ def calculate_cost(query):
 
 def calculate_count(Booking_object):
 
-    query=Car.objects.filter(booking=Booking_object.code)
+    query=Car.objects.filter(booking=Booking_object.id)
     count=0
     for record in query:
         if record.status=='ACTIVE':
@@ -34,7 +34,7 @@ def calculate_count(Booking_object):
 
 
 def Booking_calculate_cost(Car_object):
-    query = Car.objects.filter(booking=Car_object.code)
+    query = Car.objects.filter(booking=Car_object.id)
     count = 0
     for record in query:
         if record.status == 'ACTIVE':

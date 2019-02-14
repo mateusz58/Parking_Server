@@ -34,7 +34,7 @@ def trigger_booking_post(self):
     ##HEADER TEST
     # print(headers["domain"])
     user_id = CustomUser.objects.get(email=str(self.request.user)).id
-    Booking.objects.filter(pk=self.booking.code).update(number_of_cars=self.booking.number_of_cars+1)
-    Booking.objects.filter(pk=self.booking.code).update(Cost=get_Cost_Custom(self)+self.booking.Cost)
+    Booking.objects.filter(pk=self.booking.id).update(number_of_cars=self.booking.number_of_cars+1)
+    Booking.objects.filter(pk=self.booking.id).update(Cost=get_Cost_Custom(self)+self.booking.Cost)
 
 

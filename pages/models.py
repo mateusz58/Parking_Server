@@ -113,7 +113,7 @@ class Parking(models.Model):
         return self.parking_name
 
 class Booking(models.Model):
-    code = models.BigAutoField(primary_key=True, editable=False)
+    id = models.BigAutoField(primary_key=True, editable=False)
     parking = models.ForeignKey(Parking, related_name='parking', on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, related_name='user', null=True, on_delete=models.CASCADE, editable=False)
     Cost = models.FloatField(editable=False, default=0)
@@ -207,7 +207,7 @@ class Booking(models.Model):
 
     def calculate_number_of_cars(self, arg):
 
-        query = Car.objects.filter(booking=self.code)
+        query = Car.objects.filter(booking=self.id)
         count = 0
         for record in query:
             if record.status == 'ACTIVE':
@@ -222,7 +222,7 @@ class Booking(models.Model):
 
     def calculate_cost_booking(self, arg):
 
-        query = Car.objects.filter(booking=self.code)
+        query = Car.objects.filter(booking=self.id)
         sum = 0
         for record in query:
             if record.status == 'ACTIVE':
@@ -256,8 +256,8 @@ class Booking(models.Model):
         if not self.active:
             self.Cost=0
             self.number_of_cars=0
-            Car.objects.filter(booking=self.code).update(status="CANCELLED")
-            Car.objects.filter(booking=self.code).update(Cost=0)
+            Car.objects.filter(booking=self.id).update(status="CANCELLED")
+            Car.objects.filter(booking=self.id).update(Cost=0)
 
         user = get_current_user()
         if user and not user.pk:
@@ -584,7 +584,7 @@ class Car(models.Model):
 
             query = Car.objects.filter(booking=self.booking)
             query = query.filter(
-                Q(booking=self.booking.code) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+                Q(booking=self.booking.id) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
             if query.filter(registration_plate=self.old_registration_plate).exists():
                 raise ValidationError('Car with that reservation number is on the booking list')
 
@@ -594,7 +594,7 @@ class Car(models.Model):
             if self.registration_plate!="":
 
                 query = Car.objects.filter(
-                    Q(booking=self.booking.code) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+                    Q(booking=self.booking.id) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
                 query=query.exclude(id=self.id)
                 if query.filter(registration_plate=self.registration_plate).exists():
                     raise ValidationError('Car with that reservation number is on the booking list')
@@ -674,22 +674,22 @@ class Car(models.Model):
             Car.objects.filter(pk=self.id).update(Cost=Cost)
 
         car = Car.objects.filter(
-            Q(booking=Booking.objects.get(pk=self.booking.code)) & Q(status='ACTIVE') | Q(status='RESERVED') | Q(
+            Q(booking=Booking.objects.get(pk=self.booking.id)) & Q(status='ACTIVE') | Q(status='RESERVED') | Q(
                 status='RESERVED_L'))
         if not car.exists():
-            Booking.objects.filter(pk=self.booking.code).update(active=False)
+            Booking.objects.filter(pk=self.booking.id).update(active=False)
             print("NO dates with that citeria")
 
         else:
             print("(save)TRIGGER FOR DATE FROM AND DATE TO")
             earliest = car.earliest('Date_From').Date_From
             latest = car.latest('Date_To').Date_To
-            Booking.objects.filter(pk=self.booking.code).update(Date_From=earliest)
-            Booking.objects.filter(pk=self.booking.code).update(Date_To=latest)
+            Booking.objects.filter(pk=self.booking.id).update(Date_From=earliest)
+            Booking.objects.filter(pk=self.booking.id).update(Date_To=latest)
 
         if self.status == "CANCELLED":
             Car.objects.filter(id=self.id).update(Cost=0)
-        Booking.objects.filter(pk=self.booking.code).update(number_of_cars=Car.objects.filter(
+        Booking.objects.filter(pk=self.booking.id).update(number_of_cars=Car.objects.filter(
             Q(booking=self.booking) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
 
         if Car.objects.filter(
@@ -697,23 +697,23 @@ class Car(models.Model):
                         Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L') | Q(status='EXPIRED') | Q(
                     status='EXPIRED_E'))).exists():
 
-            Booking.objects.filter(code=self.booking.code).update(Cost=Car.objects.filter(
+            Booking.objects.filter(id=self.booking.id).update(Cost=Car.objects.filter(
                 Q(booking=self.booking) & (
                         Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L') | Q(status='EXPIRED') | Q(
                     status='EXPIRED_E'))).aggregate(Sum('Cost'))['Cost__sum'])
 
         else:
-            Booking.objects.filter(code=self.booking.code).update(Cost=0)
+            Booking.objects.filter(id=self.booking.id).update(Cost=0)
 
         if not Car.objects.filter(Q(booking=self.booking) & (
                 Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).exists():
-            Booking.objects.filter(pk=self.booking.code).update(active=False)
+            Booking.objects.filter(pk=self.booking.id).update(active=False)
 
 
 @receiver(pre_delete, sender=Booking)
 def model_Booking_delete(sender, instance, **kwargs):
     try:
-        print("Receiver for object:" + str(instance.code))
+        print("Receiver for object:" + str(instance.id))
         Car.objects.filter(booking=instance).delete()
     except Exception as e:
         print(str(e))
@@ -734,7 +734,7 @@ def model_add(sender, instance, **kwargs):
 
     print("Receiver Model_add called post_save Booking")
 
-    obj = Booking.objects.get(code=instance.code)
+    obj = Booking.objects.get(id=instance.id)
     obj.refresh_from_db()
 
     user = instance.created_by
@@ -748,17 +748,17 @@ def model_add(sender, instance, **kwargs):
         for x in range(instance.number_of_cars):
             try:
 
-                Car(registration_plate="", booking=Booking.objects.get(code=instance.code),
+                Car(registration_plate="", booking=Booking.objects.get(id=instance.id),
                     Date_From=instance.Date_From,
                     Date_To=instance.Date_To, Cost=instance.get_Cost_single(instance)).save()
             except Exception as e:
                 print("BOOKING EXCEPTION:" + str(e))
                 continue
 
-        Booking.objects.filter(code=obj.code).update(Cost=instance.get_Cost_sum(instance))
+        Booking.objects.filter(id=obj.id).update(Cost=instance.get_Cost_sum(instance))
 
         print("Reveiver after all")
-        Booking.objects.filter(code=obj.code).update(number_of_cars=Car.objects.filter(
+        Booking.objects.filter(id=obj.id).update(number_of_cars=Car.objects.filter(
             Q(booking=obj) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
 
 

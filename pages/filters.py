@@ -42,7 +42,7 @@ class UserFilter(django_filters.FilterSet):
 
 
 class BookingFilter(django_filters.FilterSet):
-    code = django_filters.CharFilter(field_name='code',lookup_expr='icontains')
+    id = django_filters.CharFilter(field_name='id',lookup_expr='icontains')
     # registration_plate = django_filters.CharFilter(field_name='registration_plate',lookup_expr='icontains')
     Cost=django_filters.NumberFilter()
     # release_year_From = django_filters.NumberFilter(field_name='Date_From', lookup_expr='year')
@@ -66,7 +66,7 @@ class BookingFilter(django_filters.FilterSet):
 
 
 
-        fields = ['code', 'parking','user','Cost',]
+        fields = ['id', 'parking','user','Cost',]
         # fields = {
         #     'code': ['exact',],
         #     'parking': ['icontains',],
