@@ -136,6 +136,8 @@ class Parking_Admin(admin.ModelAdmin):
         modeladmin.Parking_city_order.short_description = "Order by city name"
 
 
+
+
 class Booking_admin(admin.ModelAdmin):
     model = Booking
     actions = [Booking_set_inactive]
@@ -145,6 +147,20 @@ class Booking_admin(admin.ModelAdmin):
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('active')
     )
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        id=Parking.objects.get(user_parking=request.user)
+        query=Booking.objects.filter(parking=id)
+        if db_field.name == "parking":
+            kwargs["queryset"] = Booking.objects.filter(parking=id)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+
+
+
+        #
+
 
     def get_queryset(self, request):
 
