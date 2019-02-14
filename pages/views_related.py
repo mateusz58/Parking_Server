@@ -47,7 +47,8 @@ class Update_Car_booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUp
         print("obj.user  VALUE:" + str(obj.user) + "CustomUser.objects.get(email=self.request.user).id VALUE" + str(
             CustomUser.objects.get(email=self.request.user).email))
         print("obj.status  VALUE:" + str(obj.status))
-        return str(obj.user) == str(CustomUser.objects.get(email=self.request.user).email)
+        user=self.request.user
+        return str(obj.user) ==user
 
 class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPIView):
         permission_classes = (IsAuthenticated | ReadOnly,)
@@ -69,6 +70,8 @@ class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPI
             if has_group_v2(self.request.user, "Client_mobile"):
                 if str(self.request.data['status']) == "CANCELLED":
                     if str(obj.status) == "ACTIVE":
+                        car = Car.objects.get(pk=obj)
+                        car.status="CANCELLED"
                         free_places_update_v2(obj)
                         serializer.save()
                     else:

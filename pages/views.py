@@ -2,6 +2,7 @@ from collections import namedtuple
 
 from django import template
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db.migrations import serializer
 from django.views.generic import TemplateView, CreateView
 from django.conf.urls import url
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
@@ -56,7 +57,7 @@ from rest_framework.parsers import JSONParser
 from django.views.generic import TemplateView
 from rest_framework.exceptions import APIException
 from pages.serializers import User_Serializer, Booking_Serializer, Parking_Serializer, Parking_Serializer_Coordinates, \
-    User_Serializer_Login_Email, Booking_Serializer_delete, Car_Serializer
+    User_Serializer_Login_Email, Booking_Serializer_delete, Car_Serializer, Car_Serializer_update
 from users.models import CustomUser
 from rest_framework.decorators import api_view
 from datetime import datetime
@@ -370,9 +371,41 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdat
         obj = self.get_object()
         # print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
         if has_group_v2(self.request.user, "Client_mobile"):
-            return str(obj.user.email) == str(CustomUser.objects.get(email=self.request.user))
+            user=self.request.user
+            if obj.user == user:
+
+                return True
+            else:
+                raise FORBIDDEN("You do not have permission to view that")
+
         else:
             raise FORBIDDEN("You do not have permission to view that")
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        obj = self.get_object()
+        serializer = self.get_serializer(obj, data=request.data, partial=partial)
+        if not self.request.data['active']:
+            count_query_active_cancelled = Car.objects.filter(
+                Q(booking=obj) & (Q(status='ACTIVE') | Q(status='CANCELLED'))).count()
+            count_query_all = Car.objects.filter(booking=obj).count()
+            if count_query_active_cancelled == count_query_all:
+
+                # Booking.objects.filter(code=obj.code).update(active=False)
+
+                serializer.is_valid(raise_exception=True)
+                obj = Booking.objects.get(code=obj.code)
+                obj.active = False
+                obj.save()
+                return Response(serializer.data)
+
+            else:
+                raise FORBIDDEN("You do not have permission to cancel that bookings")
+
+        else:
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+
 
 
 # @permission_required('GET_booking_API', raise_exception=True)
@@ -393,7 +426,7 @@ class Booking_View_logged(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        if has_group(self.request.user, "Client_mobile"):
+        if has_group(user, "Client_mobile"):
             queryset = Booking.objects.all()
             return queryset.filter(user__email=self.request.user)
 
@@ -407,4 +440,57 @@ class Car_View(generics.ListAPIView):
         queryset = Car.objects.all()
         return queryset
 
-#
+
+
+class Car_View_logged(generics.ListAPIView):
+    serializer_class = Car_Serializer
+    model = Car
+
+    def get_queryset(self):
+        user = self.request.user
+        if has_group(user, "Client_mobile"):
+            queryset = Car.objects.all()
+            return queryset.filter(booking__user__email=self.request.user)
+
+
+class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPIView):
+    permission_classes = (IsAuthenticated)
+    serializer_class = Car_Serializer_update
+    model = Car
+    queryset = Car.objects.all()
+
+    def test_func(self):
+        obj = self.get_object()
+        # print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
+        if has_group_v2(self.request.user, "Client_mobile"):
+            user=self.request.user
+            if obj.user == user:
+
+                return True
+            else:
+                raise FORBIDDEN("You do not have permission to view that")
+
+        else:
+            raise FORBIDDEN("You do not have permission to view that")
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        obj = self.get_object()
+        serializer = self.get_serializer(obj, data=request.data, partial=partial)
+        if self.request.data['status']=='CANCELLED':
+
+                # Booking.objects.filter(code=obj.code).update(active=False)
+                try:
+                    serializer.is_valid(raise_exception=True)
+                    obj = Car.objects.get(id=obj.id)
+                    obj.status='CANCELLED'
+                    obj.clean()
+                    obj.save()
+                except:
+                    raise FORBIDDEN("You do not have permission to cancel that bookings")
+
+                return Response(serializer.data)
+
+        else:
+            raise FORBIDDEN("Valid operation you can only change status to cancelled")
+

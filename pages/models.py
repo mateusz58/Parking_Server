@@ -31,7 +31,18 @@ def free_places_update_v2(Car_object):
     _b1 = _b1.filter(Q(Date_From__lt=dt.datetime.now()) & Q(Date_To__gt=dt.datetime.now()) & Q(
         booking__parking=Car_object.booking.parking) & (
                              Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-    free_places = Parking.objects.get(pk=Car_object.booking.parking.id).number_of_places - check_query_string(_b1)
+    free_places = Parking.objects.get(pk=Car_object.booking.parking).number_of_places - check_query_string(_b1)
+    print("Booking_View free_places:" + str(free_places))
+    Parking.objects.filter(pk=Car_object.booking.parking.id).save(free_places=free_places)
+
+
+
+def free_places_update_booking(Car_object):
+    _b1 = Car.objects
+    count = _b1.filter(Q(Date_From__lt=dt.datetime.now()) & Q(Date_To__gt=dt.datetime.now()) & Q(
+        booking=Car_object.booking) & (
+                             Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count()
+    free_places = Parking.objects.get(pk=Car_object.booking.parking).number_of_places - count
     print("Booking_View free_places:" + str(free_places))
     Parking.objects.filter(pk=Car_object.booking.parking.id).save(free_places=free_places)
 
@@ -44,7 +55,6 @@ STATUS_CHOICES = (
     ('RESERVED_L', 'Reserved Late'),
     ('EXPIRED_E', 'Expired early')
 )
-
 
 class Parking(models.Model):
     id = models.BigAutoField(primary_key=True, editable=False)
@@ -102,7 +112,6 @@ class Parking(models.Model):
     def __str__(self):
         return self.parking_name
 
-
 class Booking(models.Model):
     code = models.BigAutoField(primary_key=True, editable=False)
     parking = models.ForeignKey(Parking, related_name='parking', on_delete=models.CASCADE)
@@ -148,7 +157,7 @@ class Booking(models.Model):
         return Cost
 
     def validate_if_place_available_excluded_registration_plate_exists(self, arg):
-        date_from = self.Date_From
+        date_from = self.Date_From.replace(tzinfo=None)
         date_to = self.Date_To
         duration = self.Date_To.replace(
             tzinfo=None) - self.Date_From.replace(tzinfo=None)
@@ -175,7 +184,7 @@ class Booking(models.Model):
         # variations = [w1, w2, w3, w4, w5]
         sum_before_request = len(variations)
         sum_after_request = len(variations) + self.number_of_cars
-        if sum_after_request > Parking.objects.get(pk=self.request.data['parking']).number_of_places:
+        if sum_after_request > Parking.objects.get(id=self.parking.id).number_of_places:
             raise ValidationError(
                 "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
                     Parking.objects.get(pk=self.booking.parking).number_of_places - sum_before_request))
@@ -231,33 +240,40 @@ class Booking(models.Model):
         return round(sum, 2)
 
     def __int__(self):
-        self.old_active = self.active
-        return self.code
+        pass
+
 
     def clean(self):
 
-        if self.old_active == False and self.active == True:
-            raise ValidationError("You can only cancel booking")
+
         self.validate_minutes(self)
         self.validate_current_time(self)
         self.validate_if_place_available_excluded_registration_plate_exists(self)
-    def cancel_all(self, arg):
-        if self.active == False:
-            try:
-                Car.objects.filter(booking=self.code).update(state="CANCELLED")
-                Booking.objects.filter(code=self.code).update(Cost=0)
-                Booking.objects.filter(code=self.code).update(number_of_cars=0)
-            except:
-                pass
+
     def save(self, **kwargs):
         print("save()TRIGGER BOOKING ACTIVATED")
+
+        if not self.active:
+            self.Cost=0
+            self.number_of_cars=0
+            Car.objects.filter(booking=self.code).update(status="CANCELLED")
+            Car.objects.filter(booking=self.code).update(Cost=0)
+
         user = get_current_user()
         if user and not user.pk:
             user = None
         if not self.pk:
             self.created_by = user
         self.modified_by = user
+        # if self.old_active == False and self.active == True:
+        #     raise ValidationError("You can only cancel booking")
+
         return super(Booking, self).save(**kwargs)
+
+
+
+
+
 
 class Car(models.Model):
     id = models.BigAutoField(primary_key=True, editable=False)
@@ -719,13 +735,13 @@ def model_add(sender, instance, **kwargs):
     obj = Booking.objects.get(code=instance.code)
     obj.refresh_from_db()
 
-    user = Booking.objects.get(pk=instance).created_by
+    user = instance.created_by
 
     if has_group_v2(user, "Client_mobile"):
         return
     else:
 
-        Booking.objects.filter(pk=instance).update(user=user)
+        # Booking.objects.filter(pk=instance).update(user=user)
 
         for x in range(instance.number_of_cars):
             try:
@@ -736,13 +752,15 @@ def model_add(sender, instance, **kwargs):
             except Exception as e:
                 print("BOOKING EXCEPTION:" + str(e))
                 continue
-        Booking.objects.filter(code=instance.code).update(active=True)
-        Booking.objects.filter(code=instance.code).update(number_of_cars=instance.number_of_cars)
-        Booking.objects.filter(code=instance.code).update(Cost=instance.get_Cost_sum(instance))
+
+        Booking.objects.filter(code=obj.code).update(Cost=instance.get_Cost_sum(instance))
 
         print("Reveiver after all")
-        Booking.objects.filter(pk=instance).update(number_of_cars=Car.objects.filter(
-            Q(booking=instance) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
+        Booking.objects.filter(code=obj.code).update(number_of_cars=Car.objects.filter(
+            Q(booking=obj) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
+
+
+        b=2
     # count = Car.objects.filter(booking=instance).count()
     # if count==0:
     #     raise ValidationError(

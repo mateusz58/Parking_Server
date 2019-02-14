@@ -9,7 +9,7 @@ from users.email_acctivation import activate
 from users.views import login_view, signup_view, CustomRegisterView
 from .views import HomePageView, AboutPageView, Parking_View_Coordinates, Parking_View, Booking_View, User_View, \
     Delete_User_View, Delete_Booking_View, Parking_View_Search, User_View_Search, Booking_View_Search, \
-    Delete_Parking_View, Booking_View_logged, Car_View, redirect_view
+    Delete_Parking_View, Booking_View_logged, Car_View, redirect_view, Car_View_logged
 
 from rest_framework_nested import routers
 from django.views.generic.base import RedirectView
@@ -37,11 +37,16 @@ urlpatterns = [
     # path('api/test/', views.test_detail,name='test'),
    # url(r'^api/snippet/', views.booking_list),
 
-    path('api/car_booking/login', Car_booking_View_logged.as_view()),
+    path('api/booking/logged/<int:pk>', Delete_Booking_View.as_view()),
+    path('api/booking/', Booking_View.as_view()),
+    url(r'api/booking/logged/', Booking_View_logged.as_view()),
+
+    path('api/car_booking/logged/', Car_booking_View_logged.as_view()),
     path('api/car_booking/', Car_booking_View.as_view()),
-    path('api/car_booking/<int:pk>', Update_Car_booking_View.as_view()),
+    path('api/car_booking/logged/<int:pk>', Update_Car_booking_View.as_view()),
     path('api/car/', Car_View.as_view()),
-    path('api/car/<int:pk>', Update_Car_View.as_view()),
+    path('api/car/logged/', Car_View_logged.as_view()),
+    path('api/car/logged/<int:pk>', Update_Car_View.as_view()),
     path('api/parking/', Parking_View.as_view()),
     path('api/parking/<int:pk>', Delete_Parking_View.as_view()),
     path('api/parking_wsp/', Parking_View_Coordinates.as_view()),
@@ -52,10 +57,7 @@ urlpatterns = [
     url(r'api/users/search$', User_View_Search.as_view()),
 
 
-    path('api/booking/<int:pk>', Delete_Booking_View.as_view()),
-    path('api/booking/', Booking_View.as_view()),
-    ### show bookings of logged user only
-    url(r'api/booking/login', Booking_View_logged.as_view()),
+
     ######
 
 ### AUTHENTICATION

@@ -12,7 +12,12 @@ def has_group(user, group_name):
 
 @register.filter(name='has_group_v2')
 def has_group_v2(user, group_name):
-    return CustomUser.objects.get(email=user).groups.filter(name=group_name).exists()
+    if CustomUser.objects.get(email=user).groups.filter(name=group_name).exists():
+        return True
+    else:
+        return False
+
+
 
 
 @register.filter
