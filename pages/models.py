@@ -67,7 +67,7 @@ class Parking(models.Model):
     free_places = models.PositiveIntegerField(default=0, editable=False)
     HOUR_COST = models.FloatField(default=2.0)
     user_parking = models.ForeignKey(CustomUser, related_name='user_parking', null=True, on_delete=models.CASCADE,
-                                     default=0)
+                                     default=0,unique=True)
 
     def clean(self):
         from django.core.exceptions import ValidationError
@@ -592,8 +592,10 @@ class Car(models.Model):
         else: #EXECUTED DURING UPDATE ONLY
 
             if self.registration_plate!="":
+
                 query = Car.objects.filter(
                     Q(booking=self.booking.code) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+                query=query.exclude(id=self.id)
                 if query.filter(registration_plate=self.registration_plate).exists():
                     raise ValidationError('Car with that reservation number is on the booking list')
 
@@ -653,9 +655,9 @@ class Car(models.Model):
         print("(save)TRIGGER CAR ACTIVATED")
 
         self.old_status = self.status
-        Car.objects.filter(pk=self.id).update(Cost=self.get_Cost(self))
 
-        self.Cost = self.get_Cost(self)
+        if not self.status=="CANCEL":
+            self.Cost = self.get_Cost(self)
 
         super(Car, self).save()
 

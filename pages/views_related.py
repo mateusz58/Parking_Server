@@ -29,6 +29,11 @@ from templatetags.templatetag import has_group, has_group_v2
 from users.models import CustomUser
 
 
+
+
+
+
+
 class Car_booking_View(generics.ListAPIView):
     permission_classes = (IsAuthenticated | ReadOnly,)
     serializer_class = Car_booking_Serializer
@@ -37,51 +42,23 @@ class Car_booking_View(generics.ListAPIView):
 
 
 class Update_Car_booking_View(LoginRequiredMixin, UserPassesTestMixin,RetrieveUpdateAPIView):
-    permission_classes = (IsAuthenticated | ReadOnly,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = Car_booking_Serializer
     model = Booking
     queryset = Booking.objects.all()
-
     def test_func(self):
         obj = self.get_object()
-        print("obj.user  VALUE:" + str(obj.user) + "CustomUser.objects.get(email=self.request.user).id VALUE" + str(
-            CustomUser.objects.get(email=self.request.user).email))
-        print("obj.status  VALUE:" + str(obj.status))
-        user=self.request.user
-        return str(obj.user) ==user
+        # print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
+        if has_group_v2(self.request.user, "Client_mobile"):
+            user=self.request.user
+            if obj.user == user:
 
-class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPIView):
-        permission_classes = (IsAuthenticated | ReadOnly,)
-        serializer_class = Car_Serializer
-        model = Car
-        queryset = Car.objects.all()
-        def test_func(self):
-            obj = self.get_object()
-            user=Booking.objects.get(pk=int(obj.booking.code)).user
-            # print("obj.user  VALUE:" + str(obj.user) + "CustomUser.objects.get(email=self.request.user).id VALUE" + str(
-            #     CustomUser.objects.get(email=self.request.user).email))
-            # print("obj.status  VALUE:" + str(obj.status))
-            return str(user) == str(CustomUser.objects.get(email=self.request.user).email)
-
-        def perform_update(self, serializer):
-            obj = self.get_object()
-
-            #### FREE PLACES UPDATE ALGORITHM NOW
-            if has_group_v2(self.request.user, "Client_mobile"):
-                if str(self.request.data['status']) == "CANCELLED":
-                    if str(obj.status) == "ACTIVE":
-                        car = Car.objects.get(pk=obj)
-                        car.status="CANCELLED"
-                        free_places_update_v2(obj)
-                        serializer.save()
-                    else:
-                        free_places_update_v2(obj)
-                        print("UPDATE status:" + str(self.request.data['status']))
-                        raise FORBIDDEN("Error cannot cancel that reservation ")
-                        ## FREE PLACES ALGORIITHM
-                        serializer.save()
+                return True
             else:
-                    raise FORBIDDEN("You cannot change state of that reservation  ")
+                raise FORBIDDEN("You do not have permission to view that")
+
+        else:
+            raise FORBIDDEN("You do not have permission to view that")
 
 
 class Car_booking_View_logged(generics.ListAPIView):

@@ -116,6 +116,15 @@ class Parking_Admin(admin.ModelAdmin):
     search_fields = ('parking_name', 'parking_Street', 'Tabular cars obj:parking_City')
     list_filter = ('parking_name', 'parking_Street', 'parking_City')
 
+    def get_queryset(self, request):
+
+        if not CustomUser.objects.get(email=request.user).is_superuser:
+
+            query = Parking.objects.filter(user_parking=request.user)
+            return query
+        else:
+            return Parking.objects.all()
+
     def get_readonly_fields(self, request, obj=None):
         if obj:
             return ['parking_Street', 'parking_City', 'parking_name', 'number_of_places', 'x', 'y', 'user_parking', ]
@@ -136,6 +145,16 @@ class Booking_admin(admin.ModelAdmin):
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('active')
     )
+
+    def get_queryset(self, request):
+
+        if not CustomUser.objects.get(email=request.user).is_superuser:
+
+            query = Booking.objects.filter(parking__user_parking=request.user)
+            return query
+        else:
+            return Booking.objects.all()
+
     inlines = [Tabular_Cars, ]
 
     def get_id(self, obj):
@@ -200,6 +219,16 @@ class Car_admin(admin.ModelAdmin):
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('status'),
     )
+
+    def get_queryset(self, request):
+
+        if not CustomUser.objects.get(email=request.user).is_superuser:
+
+            query = Car.objects.filter(booking__parking__user_parking=request.user)
+            return query
+        else:
+            return Car.objects.all()
+
 
     def get_actions(self, request):
         actions = super().get_actions(request)

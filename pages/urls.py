@@ -4,12 +4,12 @@ from django.urls import path, include
 from allauth.account.views import confirm_email
 from decorators import group_required
 from pages import views
-from pages.views_related import Car_booking_View, Update_Car_booking_View, Update_Car_View, Car_booking_View_logged
+from pages.views_related import Car_booking_View, Update_Car_booking_View,Car_booking_View_logged
 from users.email_acctivation import activate
 from users.views import login_view, signup_view, CustomRegisterView
 from .views import HomePageView, AboutPageView, Parking_View_Coordinates, Parking_View, Booking_View, User_View, \
     Delete_User_View, Delete_Booking_View, Parking_View_Search, User_View_Search, Booking_View_Search, \
-    Delete_Parking_View, Booking_View_logged, Car_View, redirect_view, Car_View_logged
+    Delete_Parking_View, Booking_View_logged, Car_View, redirect_view, Car_View_logged, Update_Car_View
 
 from rest_framework_nested import routers
 from django.views.generic.base import RedirectView

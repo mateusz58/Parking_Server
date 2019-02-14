@@ -454,7 +454,7 @@ class Car_View_logged(generics.ListAPIView):
 
 
 class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPIView):
-    permission_classes = (IsAuthenticated)
+    permission_classes = (IsAuthenticated,)
     serializer_class = Car_Serializer_update
     model = Car
     queryset = Car.objects.all()
@@ -464,7 +464,7 @@ class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPI
         # print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
         if has_group_v2(self.request.user, "Client_mobile"):
             user=self.request.user
-            if obj.user == user:
+            if obj.booking.user == user:
 
                 return True
             else:
