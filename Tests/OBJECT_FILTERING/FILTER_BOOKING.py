@@ -9,7 +9,7 @@ from users.models import CustomUser
 from django.contrib.auth.models import Group
 from django.db import connection
 # CHANGES
-from pages.models import Parking, Booking, CustomUser, Car
+from pages.models import Parking, Booking, CustomUser, Car, model_add
 from django.utils import timezone
 import re
 
@@ -384,10 +384,21 @@ time2 = datetime(2019, 2, 16, 16, 0, 00).replace(tzinfo=None)
 
 
 
-Booking.objects.filter(booking__parking__user=user1)
+# Booking.objects.filter(booking__parking__user=user1)
 
 
+from django.db.models.signals import post_save, pre_save
 
+# disable signal
+# post_save.disconnect(model_add, sender=Booking)
+
+# Your code implementation goes here.
+
+# re-enable signal
+post_save.connect(model_add, sender=Booking)
+
+
+pre_save.connect(model_add, sender=Booking)
 
 
 

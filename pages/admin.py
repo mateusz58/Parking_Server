@@ -78,18 +78,6 @@ class Tabular_Cars(admin.TabularInline):
                 print("Exception get_max_num:" + str(e))
                 return 0
 
-    # def get_min_num(self, request, obj=None, **kwargs):
-    #     if obj == 0:
-    #         return 0
-    #     else:
-    #
-    #
-    #         print("Tabular get_max_num cars Called when adding:" + str(self.temp))
-    #         # print("PARENT min_num" + str(self.booking.number_of_cars))
-    #         # Booking.objects.get(pk=self.booking).number_of_cars
-    #         self.min_num = Booking.objects.get(pk=self.temp).number_of_cars
-    #
-    #         return self.min_num
 
     def get_extra(self, request, obj=None, **kwargs):
         """Dynamically sets the number of extra forms. 0 if the related object
@@ -149,6 +137,15 @@ class Booking_admin(admin.ModelAdmin):
 
     )
 
+    def save_formset(self, request, form, formset, change=True):
+        change=True
+        instances = formset.save(commit=False)
+        for instance in instances:
+            # Do something with `instance`
+            instance.save()
+        formset.save_m2m()
+
+
     def after_saving_model_and_related_inlines(self, obj):
         # now we have what we need here... :)
 
@@ -195,7 +192,6 @@ class Booking_admin(admin.ModelAdmin):
         query = CustomUser.objects.filter(username=user).get().username
 
         l = []
-
 
         for g in request.user.groups.all():
             l.append(g.name)
@@ -302,6 +298,8 @@ from django.contrib import admin
 admin.site.register(Parking, Parking_Admin)
 admin.site.register(Booking, Booking_admin)
 admin.site.register(Car, Car_admin)
+
+admin.site.disable_action('delete_selected')
 
 admin.sites.AdminSite.site_header = 'Parking management system'
 admin.sites.AdminSite.site_title = 'Parking management system'

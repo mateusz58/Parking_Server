@@ -131,6 +131,20 @@ class Booking(models.Model):
     modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True,
                                     default=None, on_delete=models.CASCADE, related_name='modified_by', editable=False)
 
+    def __init__(self, *args, **kwargs):
+
+        super(Booking, self).__init__(*args, **kwargs)
+        print("init")
+
+        if self.pk is not None:
+            print("__init__ Booking Update")
+            post_save.disconnect(model_add, sender=Booking)
+        else:
+            print("__init__ Booking Create ")
+            post_save.connect(model_add, sender=Booking)
+
+        pass
+        pass
     def get_Cost_sum(self, arg):
         print("CAR MODEL STATE TRIGGER get_Cost")
         time1 = self.Date_From.replace(tzinfo=None)
@@ -187,8 +201,9 @@ class Booking(models.Model):
         sum_after_request = len(variations) + self.number_of_cars
         if sum_after_request > Parking.objects.get(id=self.parking.id).number_of_places:
             raise ValidationError(
-                "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
-                    Parking.objects.get(pk=self.booking.parking).number_of_places - sum_before_request))
+                "Not enough free places in that period of time,maximum number of places you can reserve in that "
+                "period of time is:" + str(
+                    Parking.objects.get(id=self.parking.id).number_of_places - sum_before_request))
 
     def validate_minutes(self, arg):
         print("CAR MODEL STATE TRIGGER validate_minutes")
@@ -239,9 +254,6 @@ class Booking(models.Model):
 
         print("CAR MODEL ID:" + str(self.id) + "STATE TRIGGER calculate_cost_booking for value:" + str(round(sum, 2)))
         return round(sum, 2)
-
-    def __int__(self):
-        pass
 
     def clean(self):
 
@@ -588,7 +600,8 @@ class Car(models.Model):
                 query = query.filter(
                     Q(booking=self.booking.id) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
                 if query.filter(registration_plate=self.old_registration_plate).exists():
-                    raise ValidationError("Car with that reservation number:"+str(self.old_registration_plate)+" is on the booking list")
+                    raise ValidationError("Car with that reservation number:" + str(
+                        self.old_registration_plate) + " is on the booking list")
 
 
         else:  # EXECUTED DURING UPDATE ONLY
@@ -722,9 +735,25 @@ def model_Parking_delete(sender, instance, **kwargs):
         print(str(e))
 
 
+@receiver(pre_save, sender=Booking)
+def model_add(sender, instance, **kwargs):
+
+
+    print("presave")
+
+    if instance.pk is None:
+        print("Object created")
+
+    if not instance.pk is None:
+        print("Object updated")
+
+
+
+
 @receiver(post_save, sender=Booking)
 def model_add(sender, instance, **kwargs):
     import inspect, os
+
 
     print("Receiver Model_add called post_save Booking")
 
@@ -751,10 +780,9 @@ def model_add(sender, instance, **kwargs):
 
             except Exception as e:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
-                continue
+                # continue
 
         for x in range(instance.number_of_cars):
-
             Car(registration_plate="", booking=Booking.objects.get(id=instance.id),
                 Date_From=instance.Date_From,
                 Date_To=instance.Date_To, Cost=instance.get_Cost_single(instance)).save()
