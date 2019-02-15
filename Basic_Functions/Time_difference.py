@@ -21,7 +21,14 @@ from collections import namedtuple
 #
 
 def is_overlapped(r1, r2):
-    if max(r1.start, r2.start) < min(r1.end, r2.end):
+
+    r1_start_notzinfo=r1.start.replace(tzinfo=None)
+    r1_end_notzinfo = r1.end.replace(tzinfo=None)
+
+    r2_start_notzinfo = r2.start.replace(tzinfo=None)
+    r2_end_notzinfo = r2.end.replace(tzinfo=None)
+
+    if max(r1_start_notzinfo, r2_start_notzinfo) < min(r1_end_notzinfo, r2_end_notzinfo):
         return True
     else:
         return False

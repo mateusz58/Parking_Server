@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.shortcuts import redirect
 from django.urls import path, include
 from allauth.account.views import confirm_email
-from decorators import group_required
+# from decorators import group_required
 from pages import views
 from pages.views_related import Car_booking_View, Update_Car_booking_View,Car_booking_View_logged
 from users.email_acctivation import activate

@@ -22,53 +22,45 @@ from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
 from merged_inlines.admin import MergedInlineAdmin
 
 
+
 class Tabular_Cars(admin.TabularInline):
     model = Car
-    extra = 8
+    extra = 5
 
-    list_display = ['get_id', 'Cost', 'Date_From', 'Date_To',
-                    'registration_plate', 'status', 'get_number', ]
 
-    # list_display = ['Cost','Date_From', 'Date_To',
-    #                 'registration_plate', 'status', ]
+    # list_display = ['get_id', 'Cost',
+    #                 'registration_plate', 'status', 'get_number', ]
+
+    list_display = ['Cost','Date_From', 'Date_To',
+                    'registration_plate', 'status', ]
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ['id', 'booking', 'Date_From', 'Date_To']
+            return ['id', 'booking','Cost']
         else:
             return []
 
-    def get_number(self, obj):
-        return obj.booking.number_of_cars
-
-    get_number.short_description = 'Number of Cars'
+    # get_number.short_description = 'Number of Cars'
 
     def get_id(self, obj):
         return obj.id
 
     get_id.short_description = 'Car id'
     proxy = False
-    temp = 0
 
     def get_formset(self, request, obj=None, **kwargs):
 
 
-        Tabular_Cars.obj = obj
         if obj is None:
             print("Tabular cars initiate")
             Tabular_Cars.proxy = True
             obj = 0
             return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
         else:
-            if Tabular_Cars.proxy and self.temp == 0:
                 print("Tabular cars else")
                 self.booking = obj
                 self.temp = self.booking
                 # Booking.objects.filter(pk=self.booking).update(number_of_cars=0)
                 Tabular_Cars.proxy = False
-                return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
-            else:
-                print("Tabular cars second else called obj value:" + str(obj))
-                obj=0
                 return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
 
     def get_max_num(self, request, obj=None, **kwargs):
@@ -99,14 +91,14 @@ class Tabular_Cars(admin.TabularInline):
     #
     #         return self.min_num
 
-    # def get_extra(self, request, obj=None, **kwargs):
-    #     """Dynamically sets the number of extra forms. 0 if the related object
-    #     already exists or the extra configuration otherwise."""
-    #
-    #     if obj:
-    #         # Don't add any extra forms if the related object already exists.
-    #         return 0
-    #     return self.extra
+    def get_extra(self, request, obj=None, **kwargs):
+        """Dynamically sets the number of extra forms. 0 if the related object
+        already exists or the extra configuration otherwise."""
+
+        if obj:
+            # Don't add any extra forms if the related object already exists.
+            return 0
+        return self.extra
 
 
 class Parking_Admin(admin.ModelAdmin):
@@ -144,16 +136,49 @@ class Parking_Admin(admin.ModelAdmin):
         Parking.ordering = ['parking_City']
         modeladmin.Parking_city_order.short_description = "Order by city name"
 
-
 class Booking_admin(admin.ModelAdmin):
     model = Booking
-    actions = [Booking_set_inactive]
+    inlines = [Tabular_Cars]
+    # actions = [Booking_set_inactive]
     # list_display = ['id', 'parking','Date_From','Date_To','Cost','registration_plate','status']
-    list_display = ['id', 'Date_From', 'Date_To', 'user', 'parking', 'Cost', 'number_of_cars', 'active', ]
+    list_display = ['id', 'user', 'parking', 'Cost', 'number_of_cars', 'active', ]
     search_fields = ('id', 'user__email',)
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('active')
+
+
     )
+
+    def after_saving_model_and_related_inlines(self, obj):
+        # now we have what we need here... :)
+
+        car_count=Car.objects.filter(
+            Q(booking=obj.id) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count()
+
+
+
+        if Booking.objects.filter(id=obj.id).exists():
+            Booking.objects.filter(id=obj.id).update(number_of_cars=car_count)
+            return obj
+        else:
+            return obj
+        # Booking.objects.filter(pk=self.booking.code).update(number_of_cars=Car.objects.filter(
+        #     Q(booking=self.booking) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
+
+
+    def response_add(self, request, new_object):
+        obj = self.after_saving_model_and_related_inlines(new_object)
+        Booking.objects.filter(id=obj.id).update(number_of_cars=Car.objects.filter(
+            Q(booking=obj) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
+        return super(Booking_admin, self).response_add(request, obj)
+
+    def response_change(self, request, obj):
+        obj = self.after_saving_model_and_related_inlines(obj)
+        Booking.objects.filter(id=obj.id).update(number_of_cars=Car.objects.filter(
+            Q(booking=obj) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
+        return super(Booking_admin, self).response_change(request, obj)
+
+
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         name = Parking.objects.get(user_parking=request.user).parking_name
@@ -188,8 +213,6 @@ class Booking_admin(admin.ModelAdmin):
         #     return query
         # else:
 
-    inlines = [Tabular_Cars, ]
-
     def get_id(self, obj):
         return obj.id
 
@@ -206,7 +229,7 @@ class Booking_admin(admin.ModelAdmin):
 
 class Car_admin(admin.ModelAdmin):
     actions = [make_active, make_cancelled, make_expired, make_reserved, make_expired_e, make_reserved_l]
-    list_display = ['get_id', 'get_booking', 'Cost', 'get_Cost', 'get_number', 'get_user', 'Date_From', 'Date_To',
+    list_display = ['get_id', 'get_booking', 'Cost', 'get_Cost', 'get_number', 'get_user',
                     'registration_plate', 'status', ]
     ordering = ['Date_From']
     search_fields = ('registration_plate',)

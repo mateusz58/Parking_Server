@@ -36,7 +36,7 @@ from Basic_Functions.Time_difference import is_overlapped
 from TRIGGERS.FREE_PLACES_UPDATE import free_places_update
 # from TRIGGERS.UPDATER import main_updater
 from customexceptions import FORBIDDEN
-from decorators import group_required
+# from decorators import group_required
 from templatetags.templatetag import has_group, has_group_v2
 from .filters import UserFilter, BookingFilter
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
