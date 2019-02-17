@@ -66,7 +66,7 @@ def validate_if_place_available(self, arg):
         sum = sum + check_query_string(variations[i])
         i += 1
     sum_after_request = sum + 1
-    if sum_after_request > Parking.objects.get(pk=self.booking.parking.id).number_of_places:
+    if sum_after_request > Parking.objects.get(pk=self.booking.parking.id).number_of_places
         raise ValidationError(
             "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
                 self.booking.parking.number_of_places - sum))

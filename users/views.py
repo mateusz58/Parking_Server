@@ -14,7 +14,7 @@ from django.utils.http import urlsafe_base64_encode
 
 from Responses.reponses import user_inactive, user_not_in_group
 from customexceptions import UNAUTHORIZED
-from templatetags.templatetag import has_group, is_user_active, has_group_v2
+from templatetags.templatetag import has_group, is_user_active, has_group_v2, has_group_v4
 from django.contrib.auth.models import Group
 
 from users.forms import CustomUserCreationForm
@@ -28,13 +28,19 @@ from rest_auth.registration.views import RegisterView,VerifyEmailView
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
-        user=request.user
+
         # print(user)
-        if form.is_valid() and has_group(form.get_user(), "Parking_manager"):
+        if form.is_valid():
             print(" LOGIN Condition satisfied")
             # log the user in
             # has_group(request.user, "Parking_manager")
             user = form.get_user()
+
+            l = []
+            for g in user.groups.all():
+                l.append(g.name)
+
+
             login(request, user)
             if 'next' in request.POST:
                 return redirect(request.POST.get('next'))
@@ -96,7 +102,7 @@ class CustomAuthToken(ObtainAuthToken):
         user = serializer.validated_data['user']
 
         print("Checking out")
-        if not has_group_v2(user,"Client_mobile"):
+        if not has_group_v4(user,"Client_mobile"):
             raise UNAUTHORIZED("Unable to log in with provided credentials.")
 
         token, created = Token.objects.get_or_create(user=user)

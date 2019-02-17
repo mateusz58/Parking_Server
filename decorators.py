@@ -1,40 +1,40 @@
-# from django.utils import six
-# from django.core.exceptions import PermissionDenied
-# from django.contrib.auth.decorators import user_passes_test
-# # def login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url=None):
-# #     """
-# #     Decorator for views that checks that the user is logged in, redirecting
-# #     to the log-in page if necessary.
-# #     """
-# #     actual_decorator = user_passes_test(
-# #         lambda u: u.is_authenticated,
-# #         login_url=login_url,
-# #         redirect_field_name=redirect_field_name
-# #     )
-# #     if function:
-# #         return actual_decorator(function)
-# #     return actual_decorator
-#
-#
-# def group_required(group, login_url='login', raise_exception=False):
+from django.utils import six
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import user_passes_test
+# def login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url=None):
 #     """
-#     Decorator for views that checks whether a user has a group permission,
-#     redirecting to the log-in page if necessary.
-#     If the raise_exception parameter is given the PermissionDenied exception
-#     is raised.
+#     Decorator for views that checks that the user is logged in, redirecting
+#     to the log-in page if necessary.
 #     """
-#     def check_perms(user):
-#         if isinstance(group, six.string_types):
-#             groups = (group, )
-#         else:
-#             groups = group
-#         # First check if the user has the permission (even anon users)
-#
-#         if user.groups.filter(name__in=groups).exists():
-#             return True
-#         # In case the 403 handler should be called raise the exception
-#         if raise_exception:
-#             raise PermissionDenied
-#         # As the last resort, show the login form
-#         return False
-#     return user_passes_test(check_perms, login_url=login_url)
+#     actual_decorator = user_passes_test(
+#         lambda u: u.is_authenticated,
+#         login_url=login_url,
+#         redirect_field_name=redirect_field_name
+#     )
+#     if function:
+#         return actual_decorator(function)
+#     return actual_decorator
+
+
+def group_required(group, login_url='login', raise_exception=False):
+    """
+    Decorator for views that checks whether a user has a group permission,
+    redirecting to the log-in page if necessary.
+    If the raise_exception parameter is given the PermissionDenied exception
+    is raised.
+    """
+    def check_perms(user):
+        if isinstance(group, six.string_types):
+            groups = (group, )
+        else:
+            groups = group
+        # First check if the user has the permission (even anon users)
+
+        if user.groups.filter(name__in=groups).exists():
+            return True
+        # In case the 403 handler should be called raise the exception
+        if raise_exception:
+            raise PermissionDenied
+        # As the last resort, show the login form
+        return False
+    return user_passes_test(check_perms, login_url=login_url)

@@ -1,5 +1,7 @@
 import random
 
+from admin_totals.admin import ModelAdminTotals
+from advanced_filters.admin import AdminAdvancedFiltersMixin
 from django.contrib import admin
 
 # Register your models here.
@@ -23,19 +25,25 @@ from merged_inlines.admin import MergedInlineAdmin
 
 
 
+
+
+
+
 class Tabular_Cars(admin.TabularInline):
     model = Car
     extra = 5
 
 
+
     # list_display = ['get_id', 'Cost',
     #                 'registration_plate', 'status', 'get_number', ]
 
-    list_display = ['Cost','Date_From', 'Date_To',
+    list_display = ['Cost', 'Date_From', 'Date_To',
                     'registration_plate', 'status', ]
+
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ['id', 'booking','Cost']
+            return ['id', 'booking', 'Cost']
         else:
             return []
 
@@ -49,19 +57,18 @@ class Tabular_Cars(admin.TabularInline):
 
     def get_formset(self, request, obj=None, **kwargs):
 
-
         if obj is None:
             print("Tabular cars initiate")
             Tabular_Cars.proxy = True
             obj = 0
             return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
         else:
-                print("Tabular cars else")
-                self.booking = obj
-                self.temp = self.booking
-                # Booking.objects.filter(pk=self.booking).update(number_of_cars=0)
-                Tabular_Cars.proxy = False
-                return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
+            print("Tabular cars else")
+            self.booking = obj
+            self.temp = self.booking
+            # Booking.objects.filter(pk=self.booking).update(number_of_cars=0)
+            Tabular_Cars.proxy = False
+            return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
 
     def get_max_num(self, request, obj=None, **kwargs):
 
@@ -77,7 +84,6 @@ class Tabular_Cars(admin.TabularInline):
             except Exception as e:
                 print("Exception get_max_num:" + str(e))
                 return 0
-
 
     def get_extra(self, request, obj=None, **kwargs):
         """Dynamically sets the number of extra forms. 0 if the related object
@@ -124,35 +130,46 @@ class Parking_Admin(admin.ModelAdmin):
         Parking.ordering = ['parking_City']
         modeladmin.Parking_city_order.short_description = "Order by city name"
 
-class Booking_admin(admin.ModelAdmin):
+
+class Booking_admin(AdminAdvancedFiltersMixin,ModelAdminTotals ,admin.ModelAdmin):
     model = Booking
     inlines = [Tabular_Cars]
+    list_totals = [('Cost', lambda field: Coalesce(Sum(field), 0)), ]
+    list_display = ['Cost']
+
     # actions = [Booking_set_inactive]
     # list_display = ['id', 'parking','Date_From','Date_To','Cost','registration_plate','status']
-    list_display = ['id', 'user', 'parking', 'Cost', 'number_of_cars', 'active', ]
+    list_display = ['id', 'user', 'parking', 'Cost', 'number_of_cars', 'active', 'Date_From', 'Date_To', ]
     search_fields = ('id', 'user__email',)
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('active')
+    )
 
+
+    # specify which fields can be selected in the advanced filter
+    # creation form
+    advanced_filter_fields = (
+        'Cost',
+        'active',
+        'number_of_cars',
+        # even use related fields as lookup fields
+        'user__email',
 
     )
 
     def save_formset(self, request, form, formset, change=True):
-        change=True
+        change = True
         instances = formset.save(commit=False)
         for instance in instances:
             # Do something with `instance`
             instance.save()
         formset.save_m2m()
 
-
     def after_saving_model_and_related_inlines(self, obj):
         # now we have what we need here... :)
 
-        car_count=Car.objects.filter(
+        car_count = Car.objects.filter(
             Q(booking=obj.id) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count()
-
-
 
         if Booking.objects.filter(id=obj.id).exists():
             Booking.objects.filter(id=obj.id).update(number_of_cars=car_count)
@@ -161,7 +178,6 @@ class Booking_admin(admin.ModelAdmin):
             return obj
         # Booking.objects.filter(pk=self.booking.code).update(number_of_cars=Car.objects.filter(
         #     Q(booking=self.booking) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
-
 
     def response_add(self, request, new_object):
         obj = self.after_saving_model_and_related_inlines(new_object)
@@ -174,8 +190,6 @@ class Booking_admin(admin.ModelAdmin):
         Booking.objects.filter(id=obj.id).update(number_of_cars=Car.objects.filter(
             Q(booking=obj) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
         return super(Booking_admin, self).response_change(request, obj)
-
-
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         name = Parking.objects.get(user_parking=request.user).parking_name
@@ -223,17 +237,26 @@ class Booking_admin(admin.ModelAdmin):
             return []
 
 
-class Car_admin(admin.ModelAdmin):
+class Car_admin(AdminAdvancedFiltersMixin,admin.ModelAdmin):
+
+
     actions = [make_active, make_cancelled, make_expired, make_reserved, make_expired_e, make_reserved_l]
     list_display = ['get_id', 'get_booking', 'Cost', 'get_Cost', 'get_number', 'get_user',
-                    'registration_plate', 'status', ]
+                    'registration_plate', 'status','Date_From','Date_To', ]
     ordering = ['Date_From']
-    search_fields = ('registration_plate',)
+    search_fields = ('id','registration_plate',)
     list_filter = ('status',)
     list_totals = [('Cost', lambda field: Coalesce(Sum(field), 0)), ]
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('status'),
     )
+
+    advanced_filter_fields = (
+        'Cost',
+        'status',
+        'registration_plate',
+    )
+
     def get_queryset(self, request):
 
         user = request.user
@@ -241,7 +264,6 @@ class Car_admin(admin.ModelAdmin):
         query = CustomUser.objects.filter(username=user).get().username
 
         l = []
-
 
         for g in request.user.groups.all():
             l.append(g.name)
@@ -252,6 +274,7 @@ class Car_admin(admin.ModelAdmin):
 
         else:
             return Car.objects.all()
+
     def get_actions(self, request):
         actions = super().get_actions(request)
         if 'delete_selected' in actions:
@@ -291,6 +314,12 @@ class Car_admin(admin.ModelAdmin):
     def Date_order(modeladmin, request, queryset):
         Car.ordering = ['Date_From']
         modeladmin.Parking_city_order.short_description = "Order by Date From"
+
+from admin_totals.admin import ModelAdminTotals
+from django.contrib import admin
+from django.db.models import Sum, Avg
+from django.db.models.functions import Coalesce
+
 
 
 from django.contrib import admin

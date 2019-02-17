@@ -1,3 +1,4 @@
+from django.conf.urls import url
 from django.contrib import admin
 ##from .router import router
 
@@ -17,5 +18,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('django.contrib.auth.urls')),
     path('accounts/', include('allauth.urls')),
-    path('', include('pages.urls'))
+    path('', include('pages.urls')),
+    url(r'^advanced_filters/', include('advanced_filters.urls'))
 ]

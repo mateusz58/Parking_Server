@@ -25,7 +25,26 @@ def has_group_v3(user, group_name):
         return False
 
 
+def has_group_v4(user, group_name):
+
+    l = []
+    for g in user.groups.all():
+        l.append(g.name)
+
+    if l.__contains__(group_name):
+        return True
+    else:
+        return False
+
+
+
+
 @register.filter(name='is_active')
 def is_user_active(user):
     return CustomUser.objects.get(email=user).is_active
 
+
+
+@register.filter
+def is_false(arg):
+    return arg is False

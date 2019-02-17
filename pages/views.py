@@ -34,9 +34,9 @@ from Basic_Functions.String_processing import check_query_string, is_all_items_u
 from Basic_Functions.Time_convert import convert_string_date_time
 from Basic_Functions.Time_difference import is_overlapped
 from TRIGGERS.FREE_PLACES_UPDATE import free_places_update
-# from TRIGGERS.UPDATER import main_updater
+from TRIGGERS.UPDATER import main_updater
 from customexceptions import FORBIDDEN
-# from decorators import group_required
+from decorators import group_required
 from templatetags.templatetag import has_group, has_group_v2
 from .filters import UserFilter, BookingFilter
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
@@ -64,7 +64,6 @@ from datetime import datetime
 
 from django.db.models import Q, Sum
 import re
-
 
 
 #
@@ -99,15 +98,10 @@ class AboutPageView(TemplateView):
 def redirect_view(request):
     user = request.user
     requested_user = user
-    user_get_id = CustomUser.objects.get(email=requested_user).id
-    # user_get = CustomUser.objects.get(email=requested_user)
-
-    print("USER" + str(user))
-    group_user = user.groups.filter(name='Parking_manager')
-
-    print(group_user.exists())
-
-    query_user_parking = Parking.objects.filter(user_parking__email=user)
+    l=[]
+    for g in user.groups.all():
+        l.append(g.name)
+    query_user_parking = Parking.objects.filter(user_parking__username=user)
     print(query_user_parking.exists())
     permission_classes = (IsAuthenticated,)
     # booking_list = Booking.objects.all()
@@ -117,14 +111,12 @@ def redirect_view(request):
     #     messages.info(request,'You are not authorized to access this section. Contact the administrator to access this section!')
     #     return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
 
-    if not group_user.exists():
-        print("Empty1")
+    if not l.__contains__("Parking_manager"):
         from django.contrib import messages
         messages.info(request,
                       'You are not authorized to access this section. Contact the administrator to access this section!')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
     if not query_user_parking.exists():
-        print("Empty2")
         from django.contrib import messages
         messages.info(request,
                       'You are not authorized to access this section. Contact the administrator to access this section!')
@@ -132,10 +124,8 @@ def redirect_view(request):
     ## redirect to admin site
     else:
         from django.contrib import messages
-        parking_filtered = Parking.objects.get(user_parking=user_get_id)
-        booking_filtered = Booking.objects.filter(parking=parking_filtered)
+        booking_filtered = Booking.objects.filter(parking=query_user_parking)
         # return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})
-        print("RESPONSE")
         response = redirect('/admin/')
         return response
 
@@ -149,7 +139,6 @@ def redirect_view(request):
 class ReadOnly(BasePermission):
     def has_permission(self, request, view):
         return request.method in SAFE_METHODS
-
 
 ## JSON VIEWS
 # @permission_required('GET_Users_API', raise_exception=True)
@@ -304,17 +293,17 @@ class Booking_View(CreateAPIView, ListAPIView):
 
         query = _b1.filter(Q(
             booking__parking=self.request.data['parking']) & (
-                                Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+                                   Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
 
         Range = namedtuple('Range', ['start', 'end'])
-        variations=[]
+        variations = []
         for record in query:
             r1 = Range(start=date_from,
                        end=date_to)
             r2 = Range(start=record.Date_From.replace(tzinfo=None),
                        end=record.Date_To.replace(tzinfo=None))
 
-            if is_overlapped(r1,r2):
+            if is_overlapped(r1, r2):
                 variations.append(record)
 
         # variations = [w1, w2, w3, w4, w5]
@@ -323,7 +312,7 @@ class Booking_View(CreateAPIView, ListAPIView):
 
             for x in variations:
 
-                if(x.registration_plate==str(registration_plate_list[i])):
+                if (x.registration_plate == str(registration_plate_list[i])):
                     raise FORBIDDEN("Car with registration number:" + str(
                         registration_plate_list[i]) + " have already registered parking place in that period of time")
 
@@ -331,9 +320,11 @@ class Booking_View(CreateAPIView, ListAPIView):
         i = 0
         sum_after_request = len(variations) + self.request.data['number_of_cars']
         if sum_after_request > Parking.objects.get(pk=self.request.data['parking']).number_of_places:
+            max_number_places = Parking.objects.get(pk=self.request.data['parking']).number_of_places
+            if max_number_places < 0:
+                max_number_places = 0
             raise FORBIDDEN(
-                "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
-                    Parking.objects.get(pk=self.request.data['parking']).number_of_places - len(variations)))
+                "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(max_number_places))
 
         modify = serializer.save()
 
@@ -361,6 +352,7 @@ class Booking_View(CreateAPIView, ListAPIView):
             user_id.refresh_from_db()
             Booking.objects.filter(id=modify.id).update(user=user_id)
 
+
 class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated | ReadOnly,)
     serializer_class = Booking_Serializer_delete
@@ -371,7 +363,7 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdat
         obj = self.get_object()
         # print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
         if has_group_v2(self.request.user, "Client_mobile"):
-            user=self.request.user
+            user = self.request.user
             if obj.user == user:
 
                 return True
@@ -407,7 +399,6 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdat
             self.perform_update(serializer)
 
 
-
 # @permission_required('GET_booking_API', raise_exception=True)
 class Booking_View_Search(generics.ListAPIView):
     serializer_class = Booking_Serializer
@@ -441,7 +432,6 @@ class Car_View(generics.ListAPIView):
         return queryset
 
 
-
 class Car_View_logged(generics.ListAPIView):
     serializer_class = Car_Serializer
     model = Car
@@ -463,7 +453,7 @@ class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPI
         obj = self.get_object()
         # print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
         if has_group_v2(self.request.user, "Client_mobile"):
-            user=self.request.user
+            user = self.request.user
             if obj.booking.user == user:
 
                 return True
@@ -477,20 +467,19 @@ class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPI
         partial = kwargs.pop('partial', False)
         obj = self.get_object()
         serializer = self.get_serializer(obj, data=request.data, partial=partial)
-        if self.request.data['status']=='CANCELLED':
+        if self.request.data['status'] == 'CANCELLED':
 
-                # Booking.objects.filter(code=obj.code).update(active=False)
-                try:
-                    serializer.is_valid(raise_exception=True)
-                    obj = Car.objects.get(id=obj.id)
-                    obj.status='CANCELLED'
-                    obj.clean()
-                    obj.save()
-                except:
-                    raise FORBIDDEN("You do not have permission to cancel that bookings")
+            # Booking.objects.filter(code=obj.code).update(active=False)
+            try:
+                serializer.is_valid(raise_exception=True)
+                obj = Car.objects.get(id=obj.id)
+                obj.status = 'CANCELLED'
+                obj.clean()
+                obj.save()
+            except:
+                raise FORBIDDEN("You do not have permission to cancel that bookings")
 
-                return Response(serializer.data)
+            return Response(serializer.data)
 
         else:
             raise FORBIDDEN("Valid operation you can only change status to cancelled")
-

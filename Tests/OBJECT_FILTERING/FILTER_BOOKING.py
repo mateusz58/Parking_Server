@@ -395,11 +395,11 @@ from django.db.models.signals import post_save, pre_save
 # Your code implementation goes here.
 
 # re-enable signal
-post_save.connect(model_add, sender=Booking)
-
-
-pre_save.connect(model_add, sender=Booking)
-
+# post_save.connect(model_add, sender=Booking)
+#
+#
+# pre_save.connect(model_add, sender=Booking)
+#
 
 
 
@@ -416,3 +416,13 @@ pre_save.connect(model_add, sender=Booking)
 #
 #         continue  ## I thought this would just move on to the next row in 'hkx'
 #
+# print(Parking.objects.get(user_parking=2))
+print(CustomUser.objects.get(id=3))
+# user = "user1@mail.com"
+# l = []
+# for g in user.groups.all():
+#     l.append(g.name)
+#
+# if l.__contains__("Client_mobile"):
+#     print("Contains")
+
