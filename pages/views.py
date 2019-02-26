@@ -35,7 +35,7 @@ from Basic_Functions.Time_convert import convert_string_date_time
 from Basic_Functions.Time_difference import is_overlapped
 from TRIGGERS.FREE_PLACES_UPDATE import free_places_update
 from TRIGGERS.UPDATER import main_updater
-from customexceptions import FORBIDDEN
+from customexceptions import FORBIDDEN, STATUS_CHANGE
 from decorators import group_required
 from templatetags.templatetag import has_group, has_group_v2
 from .filters import UserFilter, BookingFilter
@@ -214,7 +214,7 @@ class Parking_View_Coordinates(CreateAPIView, ListAPIView):
 
 
 class Delete_Parking_View(RetrieveUpdateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (ReadOnly,)
     serializer_class = Parking_Serializer
 
     def get_queryset(self):
@@ -308,7 +308,7 @@ class Booking_View(CreateAPIView, ListAPIView):
 
         # variations = [w1, w2, w3, w4, w5]
 
-        while i < self.request.data['number_of_cars']:
+        while i < int(self.request.data['number_of_cars']):
 
             for x in variations:
 
@@ -318,8 +318,8 @@ class Booking_View(CreateAPIView, ListAPIView):
 
             i = i + 1
         i = 0
-        sum_after_request = len(variations) + self.request.data['number_of_cars']
-        if sum_after_request > Parking.objects.get(pk=self.request.data['parking']).number_of_places:
+        sum_after_request = len(variations) + int(self.request.data['number_of_cars'])
+        if sum_after_request > Parking.objects.get(id=int(self.request.data['parking'])).number_of_places:
             max_number_places = Parking.objects.get(pk=self.request.data['parking']).number_of_places
             if max_number_places < 0:
                 max_number_places = 0
@@ -351,7 +351,7 @@ class Booking_View(CreateAPIView, ListAPIView):
             user_id = CustomUser.objects.get(email=str(self.request.user))
             user_id.refresh_from_db()
             Booking.objects.filter(id=modify.id).update(user=user_id)
-
+            Booking.objects.filter(id=modify.id).update(active=True)
 
 class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated | ReadOnly,)
@@ -439,8 +439,25 @@ class Car_View_logged(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         if has_group(user, "Client_mobile"):
-            queryset = Car.objects.all()
-            return queryset.filter(booking__user__email=self.request.user)
+
+                    try:
+                        car_id=self.request.META['HTTP_CAR_ID']
+                        id=self.request.META['HTTP_CAR_ID']
+                        id_booking = self.request.META['HTTP_BOOKING_ID']
+                        car=Car.objects.get(pk=id)
+                        car.status="CANCELLED"
+                        car.Cost=0
+                        car.save()
+                        raise STATUS_CHANGE("Status has been changed")
+                    except:
+                        pass
+                    finally:
+                        queryset = Car.objects.all()
+                        return queryset.filter(booking__user__email=self.request.user)
+
+        queryset = Car.objects.all()
+        return queryset.filter(booking__user__email=self.request.user)
+
 
 
 class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPIView):
@@ -450,6 +467,10 @@ class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPI
     queryset = Car.objects.all()
 
     def test_func(self):
+
+        if self.request.method == 'GET':
+            print('GET CALLED')
+
         obj = self.get_object()
         # print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
         if has_group_v2(self.request.user, "Client_mobile"):
@@ -467,7 +488,7 @@ class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPI
         partial = kwargs.pop('partial', False)
         obj = self.get_object()
         serializer = self.get_serializer(obj, data=request.data, partial=partial)
-        if self.request.data['status'] == 'CANCELLED':
+        if str(self.request.data['status']).__contains__('CANCELLED'):
 
             # Booking.objects.filter(code=obj.code).update(active=False)
             try:

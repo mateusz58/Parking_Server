@@ -1,4 +1,4 @@
-Django==2.0.13
+django
 absl-py==0.6.1
 admin-totals==1.0.1
 amqp==1.4.9

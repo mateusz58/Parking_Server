@@ -60,7 +60,7 @@ class Booking_Serializer(serializers.ModelSerializer):
 
     class Meta:
                 model = Booking
-                fields = ('id', 'parking','Cost', 'user','number_of_cars','active',)
+                fields = ('id', 'parking','Cost', 'user','number_of_cars','active','Date_From','Date_To',)
                 read_only_fields = ('id',)
 
 
@@ -69,7 +69,7 @@ class Car_Serializer(serializers.ModelSerializer):
 
     class Meta:
         model = Car
-        fields = ( 'id','Date_From', 'Date_To', 'registration_plate', 'booking','status')
+        fields = ( 'id','Date_From', 'Date_To', 'registration_plate', 'booking','status','Cost')
         read_only_fields = ('booking','Date_From','Date_To','id','registration_plate')
 
 
@@ -82,9 +82,29 @@ class Car_Serializer_update(serializers.ModelSerializer):
 
 class Car_booking_Serializer(serializers.ModelSerializer):
     booking = Car_Serializer(many=True)
+
+    def get_Parking_name(self, instance):
+        Parking_name = instance.parking.parking_name
+        return Parking_name
+
+    Parking_name = serializers.SerializerMethodField()
+
+    def get_Parking_street(self, instance):
+        Parking_street = instance.parking.parking_Street
+        return Parking_street
+
+    Parking_street = serializers.SerializerMethodField()
+
+    def get_Parking_city(self, instance):
+        Parking_city = instance.parking.parking_City
+        return Parking_city
+
+    Parking_city = serializers.SerializerMethodField()
+
+
     class Meta:
         model = Booking
-        fields =('id', 'parking','Cost', 'user','number_of_cars','booking','Date_From', 'Date_To','active')
+        fields =('id', 'parking','Cost', 'user','number_of_cars','booking','Date_From', 'Date_To','active','Parking_name','Parking_street','Parking_city',)
         read_only_fields = ('id', 'parking','Cost', 'user','booking')
 
 #

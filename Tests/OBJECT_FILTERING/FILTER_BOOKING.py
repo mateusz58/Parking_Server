@@ -416,8 +416,7 @@ from django.db.models.signals import post_save, pre_save
 #
 #         continue  ## I thought this would just move on to the next row in 'hkx'
 #
-# print(Parking.objects.get(user_parking=2))
-print(CustomUser.objects.get(id=3))
+# print(Parking.objects.get(user_parking=2)
 # user = "user1@mail.com"
 # l = []
 # for g in user.groups.all():
@@ -426,3 +425,8 @@ print(CustomUser.objects.get(id=3))
 # if l.__contains__("Client_mobile"):
 #     print("Contains")
 
+
+
+book=Booking.objects.all()
+
+book.delete()

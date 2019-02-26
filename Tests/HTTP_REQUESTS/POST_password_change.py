@@ -1,12 +1,12 @@
 import requests
 
-auth_token='ad4fa74c251636021cdcd08d233b8a3b21ecc856'
+auth_token='e2dcc0104592247e950fc7c072bc60303cef4acc'
 hed = {'Authorization': 'Token ' + auth_token}
 user="matp321@mail.com"
 data={
-    "new_password1": "matp1795",
-    "new_password2": "matp1795",
-    "old_password": "matp17954"
+    "new_password1": "m",
+    "new_password2": "m",
+    "old_password": "m"
 }
 base="http://192.168.8.106:8000"
 end_point='/api/rest-auth/password/change/'

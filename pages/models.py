@@ -667,11 +667,15 @@ class Car(models.Model):
 
             if self.registration_plate != "Not provided":
 
-                query = Car.objects.filter(
-                    Q(booking=self.booking.id) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-                query = query.exclude(id=self.id)
-                if query.filter(registration_plate=self.registration_plate).exists():
-                    raise ValidationError('Car with that reservation number is on the booking list')
+                if self.old_registration_plate!=self.registration_plate:
+
+                    query = Car.objects.filter(
+                        Q(booking=self.booking.id) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
+                    query = query.exclude(id=self.id)
+                    if query.filter(registration_plate=self.registration_plate).exists():
+                        raise ValidationError("Car with that reservation number"+str(self.registration_plate)+"is on "
+                                                                                                              "the "
+                                                                                                              "booking list")
 
         # self.state == "ACTIVE" or self.state == "RESERVED" or self.state == "RESERVED_L"):
 

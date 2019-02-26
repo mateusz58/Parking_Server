@@ -29,7 +29,7 @@ def hasNumbers(inputString):
 
 
 def update_parking():
-    print("UPDATE PARKING" + str(datetime.now()))
+    # print("UPDATE PARKING" + str(datetime.now()))
     for x in Parking.objects.raw('SELECT pages_parking.id FROM pages_parking'):
         try:
             _b1 = Car.objects
@@ -50,12 +50,13 @@ def update_parking():
                 Parking.objects.filter(pk=x.id).update(free_places=0)
             else:
                 Parking.objects.filter(pk=x.id).update(free_places=parking_free_places)
-        except:
-            continue
+        except Exception as e:
+                print("Exception get_max_num:" + str(e))
+                continue
 
 
 def update_booking():
-    print("UPDATE BOOKING" + str(datetime.now()))
+    # print("UPDATE BOOKING" + str(datetime.now()))
     for x in Car.objects.raw('SELECT * FROM pages_car'):
 
         try:
@@ -67,26 +68,26 @@ def update_booking():
             duration_date_from_in_s = duration_date_from.total_seconds()
             minutes_date_from = divmod(duration_date_from_in_s, 60)[0]
             minutes_date_from = int(minutes_date_from)
-            if minutes_date_from > 15 and Car.objects.get(pk=x.id).status == 'ACTIVE':
+            if minutes_date_from > 15 and Car.objects.get(id=x.id).status == 'ACTIVE':
                 x.status = "CANCELLED"
                 x.Cost=0
-                x.clean()
+                # x.clean()
                 x.save()
                 print("Car ID:" + str(x.id) + "CHANGED STATUS FROM ACTIVE TO CANCELLED AT" + str(datetime.now()))
             if minutes_date_to > 15:
-                if Car.objects.get(pk=x.id).status == 'RESERVED':
+                if Car.objects.get(id=x.id).status == 'RESERVED':
                     x.status = 'RESERVED_L'
                     x.clean()
                     x.save()
                     print("Car ID:" + str(x.id) + "CHANGED STATUS FROM RSERVED TO RESERVED_L AT:" + str(datetime.now()))
                     x.refresh_from_db()
-                if Car.objects.get(pk=x.id).status == 'RESERVED_L':
-                    x.clean()
+                if Car.objects.get(id=x.id).status == 'RESERVED_L':
+                    # x.clean()
                     x.save()
                     print("Car ID:" + str(x.id) + "WITH STATUS RESERVED_L CHANGED DATE TO:" + str(datetime.now()))
                     x.refresh_from_db()
-                if Car.objects.get(pk=x.id).status == 'EXPIRED_E':
-                    x.clean()
+                if Car.objects.get(id=x.id).status == 'EXPIRED_E':
+                    # x.clean()
                     x.save()
                     x.refresh_from_db()
                     print("Car ID:" + str(x.id) + " WITH STATE EXPIRED_E CHANGED DATE TO:" + str(datetime.now()))

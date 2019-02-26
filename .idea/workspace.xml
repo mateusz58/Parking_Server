@@ -1,0 +1,1742 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/pages/views.py" line="137" mnemonic="V" />
+    <bookmark url="file://$PROJECT_DIR$/pages/models.py" line="126" mnemonic="M" />
+    <bookmark url="file://$PROJECT_DIR$/pages/serializers.py" line="25" mnemonic="S" />
+    <bookmark url="file://$PROJECT_DIR$/pages/filters.py" line="42" mnemonic="F" />
+    <bookmark url="file://$PROJECT_DIR$/djangox_project/settings.py" line="205" mnemonic="I" />
+    <bookmark url="file://$PROJECT_DIR$/pages/views.py" line="142" />
+    <bookmark url="file://$PROJECT_DIR$/djangox_project/urls.py" line="17" mnemonic="P" />
+    <bookmark url="file://$PROJECT_DIR$/pages/views.py" line="183" />
+    <bookmark url="file://$PROJECT_DIR$/templates/_base.html" description="as" line="33" mnemonic="1" />
+    <bookmark url="file://$PROJECT_DIR$/Tests/OBJECT_FILTERING/FILTER_BOOKING.py" line="45" mnemonic="Z" />
+    <bookmark url="file://$PROJECT_DIR$/users/views.py" line="33" mnemonic="X" />
+    <bookmark url="file://$PROJECT_DIR$/users/views.py" line="97" mnemonic="2" />
+    <bookmark url="file://$PROJECT_DIR$/Responses/reponses.py" line="6" />
+    <bookmark url="file://$PROJECT_DIR$/pages/admin.py" line="69" mnemonic="A" />
+    <bookmark url="file://$PROJECT_DIR$/djangox_project/settings.py" line="39" mnemonic="U" />
+    <bookmark url="file://$PROJECT_DIR$/pages/urls.py" line="57" />
+    <bookmark url="file://$PROJECT_DIR$/pages/views.py" line="459" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a496f5c8-e7ca-49e2-b1ac-f62fd420c1ba" name="Default" comment="Added:&#10;&#10;-ALL COMPLETED">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Procfile" beforeDir="false" afterPath="$PROJECT_DIR$/Procfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TRIGGERS/UPDATER.py" beforeDir="false" afterPath="$PROJECT_DIR$/TRIGGERS/UPDATER.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/GET_booking_login.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/GET_booking_login.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/GET_car_booking_login.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/GET_car_booking_login.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/GET_car_logged.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/GET_car_logged.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_booking_v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_booking_v3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_logout.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_logout.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_password_change.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_password_change.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_register_user.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_register_user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/OBJECT_FILTERING/FILTER_BOOKING.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/OBJECT_FILTERING/FILTER_BOOKING.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customexceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/customexceptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/djangox_project/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangox_project/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/djangox_project/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangox_project/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime.txt" beforeDir="false" afterPath="$PROJECT_DIR$/runtime.txt" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/djangox$manage.coverage" NAME="background_tasker Coverage Results" MODIFIED="1550117781393" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/djangox$views.coverage" NAME="views Coverage Results" MODIFIED="1550122320970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pages" />
+    <SUITE FILE_PATH="coverage/djangox$background_tasker.coverage" NAME="background_tasker Coverage Results" MODIFIED="1550884061790" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/djangox$models.coverage" NAME="models Coverage Results" MODIFIED="1550122150341" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pages" />
+    <SUITE FILE_PATH="coverage/djangox$UPDATER.coverage" NAME="UPDATER Coverage Results" MODIFIED="1550060192032" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="db.sqlite3" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="db.sqlite3" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="db.sqlite3" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="main: schema" type="981a47c2:SqliteImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="db.sqlite3" type="feb32156:DbDataSourceImpl" />
+        <item name="collations" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="djangox" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/djangox_project/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="341">
+              <caret line="216" selection-start-line="216" selection-end-line="216" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/requirements.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="11" column="22" lean-forward="true" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/djangox_project/wsgi.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Basic_Functions/requirements.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="213">
+              <caret line="89" column="24" selection-start-line="89" selection-start-column="24" selection-end-line="89" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Procfile">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="26" selection-start-column="26" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>has_group_v2</find>
+      <find>This field is required.</find>
+      <find>&quot;&quot;</find>
+      <find>raise valid</find>
+      <find>UPDATER</find>
+      <find>totals</find>
+      <find>api/car</find>
+      <find>Car with that reservation number is on the booking list</find>
+      <find>Wrong registration number of car</find>
+      <find>Wrong registration number of car,car registration number can consist only of numbers and letters characters</find>
+      <find>redirectview</find>
+      <find>about</find>
+      <find>HTTP</find>
+      <find>self.request.META</find>
+      <find>save</find>
+      <find>FORBIDDEN</find>
+      <find>raise</find>
+      <find>C</find>
+      <find>update</find>
+      <find>objects.fi</find>
+      <find>djangox</find>
+      <find>database</find>
+      <find>STATIC_URL</find>
+      <find>STATIC_ROOT</find>
+      <find>STATIC_ROOT</find>
+      <find>STATICFILES_DIRS</find>
+      <find>STATICFILES_STORAGE</find>
+      <find>pyad</find>
+      <find>pywin32</find>
+      <find>djangox_project</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>customuser</replace>
+      <replace>Date_From</replace>
+      <replace>x.id</replace>
+      <replace>convert_string_date_time(self.request.data['Date_From'])</replace>
+      <replace>.Date_To.replace(tzinfo=None)</replace>
+      <replace>user42</replace>
+      <replace>user43</replace>
+      <replace>convert_string_date_time(self.request.data['Date_To'])</replace>
+      <replace>user44</replace>
+      <replace>FORBIDDEN</replace>
+      <replace>convert_string_date_time(self.request.META['HTTP_DATE_FROM'])</replace>
+      <replace>convert_string_date_time(self.request.META['HTTP_DATE_TO'])</replace>
+      <replace>registration_plate_list[i3]</replace>
+      <replace>Car</replace>
+      <replace>i</replace>
+      <replace>self.status</replace>
+      <replace>self.registration_plate</replace>
+      <replace>self.booking.parking.id</replace>
+      <replace>duration</replace>
+      <replace>duration_s</replace>
+      <replace>self.old_state</replace>
+      <replace>x</replace>
+      <replace>duration_minutes</replace>
+      <replace>self</replace>
+      <replace>Longitude</replace>
+      <replace>old_status</replace>
+      <replace>ValidationError</replace>
+      <replace>number_of_cars</replace>
+      <replace>self.Date_To</replace>
+      <replace>self.Date_From</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="PUSH_TAGS">
+      <GitPushTagMode />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/djangox_project/logger.py" />
+        <option value="$PROJECT_DIR$/Tests/ASSERTS/assert_triggers.py" />
+        <option value="$PROJECT_DIR$/pages/admin_actions.py" />
+        <option value="$PROJECT_DIR$/Basic_Functions/String_processing.py" />
+        <option value="$PROJECT_DIR$/Basic_Functions/SQL_FUNCTIONS.py" />
+        <option value="$PROJECT_DIR$/pages/forms.py" />
+        <option value="$PROJECT_DIR$/Tests/HTTP_REQUESTS/PUT_CAR.py" />
+        <option value="$PROJECT_DIR$/pages/views_related.py" />
+        <option value="$PROJECT_DIR$/pages/migrations/0001_initial.py" />
+        <option value="$PROJECT_DIR$/TRIGGERS/CALCULATE_COST.py" />
+        <option value="$PROJECT_DIR$/TRIGGERS/BOOKING_POST.py" />
+        <option value="$PROJECT_DIR$/templates/filter/booking_list_v3.html" />
+        <option value="$PROJECT_DIR$/templates/filter/booking_list_v2.html" />
+        <option value="$PROJECT_DIR$/templates/filter/booking_list.html" />
+        <option value="$PROJECT_DIR$/pages/filters.py" />
+        <option value="$PROJECT_DIR$/OLD.py" />
+        <option value="$PROJECT_DIR$/IMPORTANT_DATABASE_CHANGES/Add_To_group.py" />
+        <option value="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_login.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
+        <option value="$PROJECT_DIR$/Basic_Functions/Time_difference.py" />
+        <option value="$PROJECT_DIR$/Signals_change/disable_signals.py" />
+        <option value="$PROJECT_DIR$/Validators/Booking_validator.py" />
+        <option value="$PROJECT_DIR$/decorators.py" />
+        <option value="$PROJECT_DIR$/Basic_Functions/Authentication.py" />
+        <option value="$PROJECT_DIR$/templatetags/templatetag.py" />
+        <option value="$PROJECT_DIR$/users/views.py" />
+        <option value="$PROJECT_DIR$/djangox_project/urls.py" />
+        <option value="$PROJECT_DIR$/pages/admin.py" />
+        <option value="$PROJECT_DIR$/Tests/HTTP_REQUESTS/GET_booking.py" />
+        <option value="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_logout.py" />
+        <option value="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_register_user.py" />
+        <option value="$PROJECT_DIR$/Tests/HTTP_REQUESTS/GET_booking_login.py" />
+        <option value="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_password_change.py" />
+        <option value="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_booking_v3.py" />
+        <option value="$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_login_v2.py" />
+        <option value="$PROJECT_DIR$/Tests/HTTP_REQUESTS/GET_car_booking_login.py" />
+        <option value="$PROJECT_DIR$/pages/serializers.py" />
+        <option value="$PROJECT_DIR$/pages/models.py" />
+        <option value="$PROJECT_DIR$/TRIGGERS/UPDATER.py" />
+        <option value="$PROJECT_DIR$/pages/urls.py" />
+        <option value="$PROJECT_DIR$/templates/_base.html" />
+        <option value="$PROJECT_DIR$/customexceptions.py" />
+        <option value="$PROJECT_DIR$/Tests/HTTP_REQUESTS/GET_car_logged.py" />
+        <option value="$PROJECT_DIR$/Tests/OBJECT_FILTERING/FILTER_BOOKING.py" />
+        <option value="$PROJECT_DIR$/pages/views.py" />
+        <option value="$PROJECT_DIR$/runtime.txt" />
+        <option value="$PROJECT_DIR$/djangox_project/wsgi.py" />
+        <option value="$PROJECT_DIR$/djangox_project/settings.py" />
+        <option value="$PROJECT_DIR$/Basic_Functions/requirements.txt" />
+        <option value="$PROJECT_DIR$/Procfile" />
+        <option value="$PROJECT_DIR$/requirements.txt" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-7" />
+    <option name="width" value="1294" />
+    <option name="height" value="1047" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="djangox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="djangox" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="djangox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="djangox" type="462c0819:PsiDirectoryNode" />
+              <item name="Basic_Functions" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="djangox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="djangox" type="462c0819:PsiDirectoryNode" />
+              <item name="djangox_project" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SearchEverywhereHistoryKey" value="confirm_email&#9;null&#9;null&#10;Delete_Parking_View&#9;null&#9;null&#10;get_user&#9;null&#9;null&#10;login_required&#9;null&#9;null&#10;permission_required&#9;null&#9;null" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="database.console.LAST_STATE" value="false" />
+    <property name="database.data.extractors.current.id" value="SQL Inserts" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/pages/models.py" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\Google drive\Projects_programming\Python\django_projects\djangox\djangox_project" />
+      <recent name="F:\Google drive\Projects_programming\Python\django_projects\djangox\IMPORTANT_DATABASE_CHANGES" />
+      <recent name="F:\Google drive\Projects_programming\Python\django_projects\djangox\Tests\CURSOR" />
+      <recent name="F:\Google drive\Projects_programming\Python\django_projects\djangox\Tests\TIME_OPERATIONS" />
+      <recent name="F:\Google drive\Projects_programming\Python\django_projects\djangox\Tests\OBJECT_FILTERING" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\Google drive\Projects_programming\Python\django_projects\djangox\Tests\HTTP_REQUESTS" />
+      <recent name="F:\Google drive\Projects_programming\Python\django_projects\djangox" />
+      <recent name="F:\Google drive\Projects_programming\Python\django_projects\djangox\templates\filter" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Django server.djangox">
+    <configuration name="UPDATER" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="djangox" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/djangox_project" />
+      <option name="PARAMETERS" value="shell &lt;TRIGGERS/UPDATER.py" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="background_tasker" type="PythonConfigurationType" factoryName="Python">
+      <module name="djangox" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\django2\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/manage.py" />
+      <option name="PARAMETERS" value="process_tasks" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="models" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="djangox" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/pages" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pages/models.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="views" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="djangox" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/pages" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pages/views.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Tasker" type="Python.DjangoServer" factoryName="Django server" singleton="false">
+      <module name="djangox" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="djangox_project.settings" />
+      </envs>
+      <option name="SDK_HOME" value="C:\django2\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="127.0.0.1" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="true" />
+      <option name="customRunCommand" value="process_tasks" />
+      <method v="2" />
+    </configuration>
+    <configuration name="djangox" type="Python.DjangoServer" factoryName="Django server">
+      <module name="djangox" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="djangox_project.settings" />
+      </envs>
+      <option name="SDK_HOME" value="C:\django2\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="192.168.8.106" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="true" />
+      <option name="customRunCommand" value="runserver" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <module name="djangox" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;.&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Django server.djangox" />
+      <item itemvalue="Django server.Tasker" />
+      <item itemvalue="Python.background_tasker" />
+      <item itemvalue="Python.UPDATER" />
+      <item itemvalue="Python.models" />
+      <item itemvalue="Python.views" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.views" />
+        <item itemvalue="Python.models" />
+        <item itemvalue="Python.UPDATER" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a496f5c8-e7ca-49e2-b1ac-f62fd420c1ba" name="Default" comment="" />
+      <created>1547257767665</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1547257767665</updated>
+      <workItem from="1549830011617" duration="824000" />
+      <workItem from="1549830851378" duration="135786000" />
+      <workItem from="1550025241857" duration="110892000" />
+      <workItem from="1550198575411" duration="123855000" />
+      <workItem from="1551052205157" duration="1467000" />
+      <workItem from="1551113744039" duration="3191000" />
+      <workItem from="1551161286320" duration="3942000" />
+    </task>
+    <task id="LOCAL-00010" summary="Added:&#10;&#10;-CANNOT LOGIN">
+      <created>1548121319187</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1548121319192</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Added:&#10;&#10;-EMAIL CONFIRMATION&#10;&#10;-RESET PASSWORD&#10;&#10;-CHANGE PASSWORD&#10;&#10;-AUTOMATICALLY CHANGE COST AND NUMBER OF HOURS&#10;&#10;-CHANGE COST WHEN CHANGED DATE FROM AND DATE TO">
+      <created>1549045987101</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1549045987108</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added:&#10;&#10;-RAW SQL TESTS">
+      <created>1549068112648</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1549068112648</updated>
+    </task>
+    <task id="LOCAL-00013" summary="BEFORE UPDATE SERIALIZERS">
+      <created>1549198291592</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1549198291592</updated>
+    </task>
+    <task id="LOCAL-00014" summary="WORKS:&#10;&#10;-Generating COST&#10;-NOT WROKING PROPERLY ALGORITHM FOR COUNTING FREE_PLACES">
+      <created>1549216535475</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1549216535475</updated>
+    </task>
+    <task id="LOCAL-00015" summary="WORKS:&#10;&#10;-Generating COST&#10;-ALGORITHM COUNTING FREE PLACES NOT INCLUDED">
+      <created>1549219237813</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1549219237813</updated>
+    </task>
+    <task id="LOCAL-00016" summary="WORKS:&#10;&#10;-UPDATER WORK IN PROGRESS HAVE TO REPAIR TZINFO PROBLEM">
+      <created>1549307397910</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1549307397910</updated>
+    </task>
+    <task id="LOCAL-00017" summary="WORKS:&#10;&#10;-CORRECTED TIME ZONE PROBLEM&#10;-SUPPRESSED RunTime warning for UPDATER">
+      <created>1549308903598</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1549308903598</updated>
+    </task>
+    <task id="LOCAL-00018" summary="WORKS:&#10;&#10;-CORRECTED TIME ZONE PROBLEM&#10;-SUPPRESSED RunTime warning for UPDATER&#10;-UPDATER FULLY WORKS&#10;-USER UPDATE RESTRICTIONS">
+      <created>1549389302834</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1549389302834</updated>
+    </task>
+    <task id="LOCAL-00019" summary="WORKS:&#10;&#10;-EXCEPTION HANDLING&#10;-">
+      <created>1549411225105</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1549411225105</updated>
+    </task>
+    <task id="LOCAL-00020" summary="ADDED:&#10;&#10;-CUSTOM REGISTER&#10;-ASSIGNING USER TO CLIENT MOBILE AUTOMATICALLY&#10;-CHECKING IF USER IS IN GROUP CLIENT MOBILE">
+      <created>1549423631230</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1549423631230</updated>
+    </task>
+    <task id="LOCAL-00021" summary="ADDED:&#10;&#10;-CHANGED API EXCETION TO FORBIDDEN">
+      <created>1549424096138</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1549424096138</updated>
+    </task>
+    <task id="LOCAL-00022" summary="ADDED:&#10;&#10;-BEFORE DB UPDATE">
+      <created>1549425633009</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1549425633009</updated>
+    </task>
+    <task id="LOCAL-00023" summary="ADDED:&#10;&#10;-BEFORE MIGRATE">
+      <created>1549426142396</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1549426142396</updated>
+    </task>
+    <task id="LOCAL-00024" summary="ADDED:&#10;&#10;-EMAIL CONFIMRATION CHANGED SITE">
+      <created>1549481614236</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1549481614236</updated>
+    </task>
+    <task id="LOCAL-00025" summary="ADDED:&#10;&#10;&#10;-PARKING HISTORY FILTERED PARKINGS">
+      <created>1549488944725</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1549488944725</updated>
+    </task>
+    <task id="LOCAL-00026" summary="ADDED:&#10;&#10;&#10;-VALIDATION FOR REIGSTRATION PLATE">
+      <created>1549496418018</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1549496418018</updated>
+    </task>
+    <task id="LOCAL-00027" summary="ADDED:&#10;&#10;&#10;-VALIDATION FOR REIGSTRATION PLATE* CORRECTED">
+      <created>1549499405831</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1549499405831</updated>
+    </task>
+    <task id="LOCAL-00028" summary="HEADER:&#10;&#10;-HEADER TESTING">
+      <created>1549512640837</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1549512640837</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Added:&#10;&#10;-Car model along with serializer and view">
+      <created>1549568517311</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1549568517311</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Added:&#10;&#10;-ADDING TO DATABASE">
+      <created>1549581090924</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1549581090924</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Added:&#10;&#10;-POST QUERY MODIFIED">
+      <created>1549583647273</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1549583647273</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Added:&#10;&#10;-CORRECTED REGISTRATION">
+      <created>1549589095499</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1549589095499</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Added:&#10;&#10;-ADDED CUSTOM JSON VIEW">
+      <created>1549591606793</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1549591606793</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Added:&#10;&#10;-FILTERED VIEW FOR CARS">
+      <created>1549596638823</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1549596638823</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Added:&#10;&#10;-PRE MIGRATIONS">
+      <created>1549670270476</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1549670270476</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Added:&#10;&#10;-ADDED RANGE FILTERS&#10;-CORRECTED SOME TRIGGERS">
+      <created>1549773757721</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1549773757721</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Added:&#10;&#10;-REDIRECT TO ADMIN SITE">
+      <created>1549787446255</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1549787446255</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Added:&#10;&#10;-VALIDATION FOR STATES">
+      <created>1549798083826</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1549798083826</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Added:&#10;&#10;-NO MERGED INLINES">
+      <created>1549799660765</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1549799660765</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Added:&#10;&#10;-CORRECTED FORMSET&#10;&#10;-INLINES NOW SHOW LIMITED AMMOUNT">
+      <created>1549870540985</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1549870540985</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Added:&#10;&#10;-INLINES WORKING">
+      <created>1549874663762</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1549874663762</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Added:&#10;&#10;-INLINES CORRECTED">
+      <created>1549878982343</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1549878982343</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Added:&#10;&#10;-DELETION OF BOOKINGS AND CARS CORRECTED">
+      <created>1549945875378</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1549945875378</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Added:&#10;&#10;-FULL CONSISTENCY&#10;-WORKING DELTETING&#10;-AUTOMATICALLY CHANGING COST AND ETC">
+      <created>1549972863340</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1549972863340</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Added:&#10;&#10;-BEFORE CHANGING INLINES">
+      <created>1549974041416</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1549974041416</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Added:&#10;&#10;-BEFORE AUTO ADD INLINES">
+      <created>1549977260278</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1549977260278</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Added:&#10;&#10;-INLINES MODIFICATION">
+      <created>1550012562877</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1550012562910</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Added:&#10;&#10;-Please correct the error below error">
+      <created>1550046634750</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1550046634750</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Added:&#10;&#10;-Registration plate problem corrected&#10;-time overlapse corrected&#10;-Updater corrected&#10;-Background task added">
+      <created>1550112149926</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1550112149926</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Added:&#10;&#10;-REST API CORRECTED">
+      <created>1550134477400</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1550134477402</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Added:&#10;&#10;-FILTER QUERY SET FOR CHOSEN USER">
+      <created>1550140149519</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1550140149519</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Added:&#10;&#10;-pre code change">
+      <created>1550146453215</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1550146453215</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Added:&#10;&#10;-corrected cmall error">
+      <created>1550150127637</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1550150127637</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Added:&#10;&#10;-Query set filter and drop down meny foreign key filter">
+      <created>1550157925295</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1550157925295</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Added:&#10;&#10;-Formset not working properly">
+      <created>1550159005350</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1550159005350</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Added:&#10;&#10;-Corrected small problems&#10;-still new forms are added">
+      <created>1550208182213</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1550208182214</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Added:&#10;&#10;-SIGNALS WORKING FINE">
+      <created>1550225274214</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1550225274214</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Added:&#10;&#10;-ALL COMPLETED">
+      <created>1550374022953</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1550374022953</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="379957000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="0" width="1294" height="1047" extended-state="0" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7810651" visible="true" weight="0.4141005" />
+      <window_info id="Structure" order="1" weight="0.25" />
+      <window_info id="Favorites" order="2" sideWeight="0.21893491" side_tool="true" weight="0.23290938" />
+      <window_info anchor="bottom" id="Database Console" order="0" sideWeight="0.5540541" weight="0.32827735" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" sideWeight="0.4944085" weight="0.32822758" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.4900636" weight="0.6378556" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.61750406" weight="0.48249453" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.32827735" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.76629573" weight="0.8808234" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.7836305" visible="true" weight="0.2986871" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32932165" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.21636952" side_tool="true" visible="true" weight="0.2986871" />
+      <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Data View" order="3" weight="0.2937202" />
+      <window_info anchor="right" id="Database" order="4" weight="0.23792017" />
+      <window_info anchor="right" id="SciView" order="5" weight="0.22852512" />
+      <window_info anchor="right" id="Database Changes" order="6" weight="0.029392118" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.29011345" />
+      <window_info id="Structure" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Event Log" order="0" sideWeight="0.5032415" side_tool="true" visible="true" weight="0.36870897" />
+      <window_info anchor="bottom" id="Version Control" order="1" />
+      <window_info anchor="bottom" id="Python Console" order="2" />
+      <window_info anchor="bottom" id="Terminal" order="3" sideWeight="0.49675852" visible="true" weight="0.36870897" />
+      <window_info anchor="bottom" id="Message" order="4" />
+      <window_info anchor="bottom" id="Find" order="5" />
+      <window_info anchor="bottom" id="Run" order="6" />
+      <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="10" />
+      <window_info anchor="right" id="Database" order="0" />
+      <window_info anchor="right" id="Data View" order="1" />
+      <window_info anchor="right" id="Commander" order="2" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added:&#10;&#10;-FILTERED VIEW FOR CARS" />
+    <MESSAGE value="Added:&#10;&#10;-PRE MIGRATIONS" />
+    <MESSAGE value="Added:&#10;&#10;-ADDED RANGE FILTERS&#10;-CORRECTED SOME TRIGGERS" />
+    <MESSAGE value="Added:&#10;&#10;-REDIRECT TO ADMIN SITE" />
+    <MESSAGE value="Added:&#10;&#10;-VALIDATION FOR STATES" />
+    <MESSAGE value="Added:&#10;&#10;-NO MERGED INLINES" />
+    <MESSAGE value="Added:&#10;&#10;-CORRECTED FORMSET&#10;&#10;-INLINES NOW SHOW LIMITED AMMOUNT" />
+    <MESSAGE value="Added:&#10;&#10;-INLINES WORKING" />
+    <MESSAGE value="Added:&#10;&#10;-INLINES CORRECTED" />
+    <MESSAGE value="Added:&#10;&#10;-DELETION OF BOOKINGS AND CARS CORRECTED" />
+    <MESSAGE value="Added:&#10;&#10;-FULL CONSISTENCY&#10;-WORKING DELTETING&#10;-AUTOMATICALLY CHANGING COST AND ETC" />
+    <MESSAGE value="Added:&#10;&#10;-BEFORE CHANGING INLINES" />
+    <MESSAGE value="Added:&#10;&#10;-BEFORE AUTO ADD INLINES" />
+    <MESSAGE value="Added:&#10;&#10;-INLINES MODIFICATION" />
+    <MESSAGE value="Added:&#10;&#10;-Please correct the error below error" />
+    <MESSAGE value="Added:&#10;&#10;-Registration plate problem corrected&#10;-time overlapse corrected&#10;-Updater corrected&#10;-Background task added" />
+    <MESSAGE value="Added:&#10;&#10;-REST API CORRECTED" />
+    <MESSAGE value="Added:&#10;&#10;-FILTER QUERY SET FOR CHOSEN USER" />
+    <MESSAGE value="Added:&#10;&#10;-pre code change" />
+    <MESSAGE value="Added:&#10;&#10;-corrected cmall error" />
+    <MESSAGE value="Added:&#10;&#10;-Query set filter and drop down meny foreign key filter" />
+    <MESSAGE value="Added:&#10;&#10;-Formset not working properly" />
+    <MESSAGE value="Added:&#10;&#10;-Corrected small problems&#10;-still new forms are added" />
+    <MESSAGE value="Added:&#10;&#10;-SIGNALS WORKING FINE" />
+    <MESSAGE value="Added:&#10;&#10;-ALL COMPLETED" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added:&#10;&#10;-ALL COMPLETED" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/admin.py</url>
+          <line>70</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/views.py</url>
+          <line>326</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/TRIGGERS/UPDATER.py</url>
+          <line>31</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/TRIGGERS/UPDATER.py</url>
+          <line>59</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/TRIGGERS/UPDATER.py</url>
+          <line>65</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/TRIGGERS/UPDATER.py</url>
+          <line>45</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/TRIGGERS/UPDATER.py</url>
+          <line>49</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/TRIGGERS/UPDATER.py</url>
+          <line>42</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/models.py</url>
+          <line>306</line>
+          <option name="timeStamp" value="71" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/models.py</url>
+          <line>296</line>
+          <option name="timeStamp" value="75" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/models.py</url>
+          <option name="group" value="Admin_Formset" />
+          <line>698</line>
+          <option name="timeStamp" value="76" />
+          <group>Admin_Formset</group>
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/views.py</url>
+          <line>97</line>
+          <option name="timeStamp" value="91" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/views.py</url>
+          <line>245</line>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/views.py</url>
+          <line>377</line>
+          <option name="timeStamp" value="108" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/admin.py</url>
+          <line>134</line>
+          <option name="timeStamp" value="120" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/admin.py</url>
+          <line>145</line>
+          <option name="timeStamp" value="122" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/admin.py</url>
+          <line>233</line>
+          <option name="timeStamp" value="153" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/admin.py</url>
+          <line>44</line>
+          <option name="timeStamp" value="170" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/admin.py</url>
+          <option name="group" value="Admin_Formset" />
+          <line>170</line>
+          <option name="timeStamp" value="183" />
+          <group>Admin_Formset</group>
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/admin.py</url>
+          <option name="group" value="Admin_Formset" />
+          <line>161</line>
+          <option name="timeStamp" value="193" />
+          <group>Admin_Formset</group>
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/admin.py</url>
+          <option name="group" value="Admin_Formset" />
+          <line>182</line>
+          <option name="timeStamp" value="194" />
+          <group>Admin_Formset</group>
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/admin.py</url>
+          <option name="group" value="Admin_Formset" />
+          <line>188</line>
+          <option name="timeStamp" value="195" />
+          <group>Admin_Formset</group>
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/models.py</url>
+          <line>806</line>
+          <option name="timeStamp" value="217" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/models.py</url>
+          <line>809</line>
+          <option name="timeStamp" value="218" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/models.py</url>
+          <line>804</line>
+          <option name="timeStamp" value="219" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/models.py</url>
+          <line>819</line>
+          <option name="timeStamp" value="220" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/admin.py</url>
+          <line>81</line>
+          <option name="timeStamp" value="221" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/models.py</url>
+          <line>203</line>
+          <option name="timeStamp" value="228" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/models.py</url>
+          <line>234</line>
+          <option name="timeStamp" value="229" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/models.py</url>
+          <line>141</line>
+          <option name="timeStamp" value="248" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/views.py</url>
+          <line>242</line>
+          <option name="timeStamp" value="250" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/views.py</url>
+          <line>275</line>
+          <option name="timeStamp" value="251" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pages/views.py</url>
+          <line>310</line>
+          <option name="timeStamp" value="252" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/TRIGGERS/UPDATER.py</url>
+          <line>90</line>
+          <option name="timeStamp" value="263" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Python.DjangoServer">
+        <watch expression="instance.pk" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>sum</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>booking__parking__user_parking</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/templates/_base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="43" column="48" selection-start-line="43" selection-start-column="48" selection-end-line="43" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/HTTP_REQUESTS/GET_car_booking_login.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="11" column="46" selection-start-line="11" selection-start-column="46" selection-end-line="11" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/site-packages/rest_framework/mixins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/site-packages/rest_framework/generics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="200" selection-start-line="200" selection-end-line="200" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/site-packages/rest_framework/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="494" selection-start-line="494" selection-end-line="494" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/site-packages/django/views/generic/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="68" selection-start-line="68" selection-end-line="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/site-packages/django/views/decorators/csrf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="433">
+          <caret line="53" selection-start-line="53" selection-end-line="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/site-packages/crum/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="96" selection-start-line="96" selection-end-line="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/site-packages/django/utils/deprecation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="94" selection-start-line="94" selection-end-line="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/site-packages/django/core/handlers/exception.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/site-packages/django/core/handlers/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="80" selection-start-line="80" selection-end-line="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/site-packages/django/core/handlers/wsgi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="145" selection-start-line="145" selection-end-line="145" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/site-packages/django/contrib/staticfiles/handlers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="65" selection-start-line="65" selection-end-line="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/wsgiref/handlers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="136" selection-start-line="136" selection-end-line="136" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/site-packages/django/core/servers/basehttp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="153" selection-start-line="153" selection-end-line="153" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/threading.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="890" column="33" lean-forward="true" selection-start-line="890" selection-start-column="33" selection-end-line="890" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/customexceptions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36/Lib/socketserver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="638" selection-start-line="638" selection-end-line="638" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/djangox_project/custom_middleware.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-51">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://DATABASE/f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.pages_booking">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>DATABASE</ID>
+          <OriginalElement>f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.pages_booking</OriginalElement>
+          <nodes>
+            <node x="-239.7008146983925" y="365.7667920713017">f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.pages_parking</node>
+            <node x="-141.62125884421184" y="684.703592305355">f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.pages_car</node>
+            <node x="167.46893428670649" y="252.77285658993247">f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.users_customuser</node>
+            <node x="122.00069604598463" y="645.0229627637616">f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.pages_booking</node>
+          </nodes>
+          <notes />
+          <edges>
+            <edge source="f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.pages_car" target="f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.pages_booking">
+              <point x="0.0" y="-92.5" />
+              <point x="0.0" y="147.5" />
+            </edge>
+            <edge source="f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.pages_parking" target="f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.users_customuser">
+              <point x="0.0" y="-125.5" />
+              <point x="121.5" y="303.0" />
+              <point x="166.32142857142856" y="303.0" />
+              <point x="-65.25" y="136.5" />
+            </edge>
+            <edge source="f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.pages_booking" target="f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.pages_parking">
+              <point x="-86.625" y="-147.5" />
+              <point x="135.25" y="604.0" />
+              <point x="121.5" y="604.0" />
+              <point x="0.0" y="125.5" />
+            </edge>
+            <edge source="f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.pages_booking" target="f039e97d-e1e7-46de-b682-1ada9ecd3e7e.TABLE:main.users_customuser">
+              <point x="86.625" y="-147.5" />
+              <point x="308.5" y="604.0" />
+              <point x="275.5" y="604.0" />
+              <point x="275.5" y="303.0" />
+              <point x="296.82142857142856" y="303.0" />
+              <point x="65.25" y="136.5" />
+            </edge>
+          </edges>
+          <settings layout="Hierarchic Group" zoom="1.0650766609880749" x="185.0" y="374.0" />
+          <SelectedNodes />
+          <Categories>
+            <Category>Key columns</Category>
+            <Category>Columns</Category>
+          </Categories>
+          <SCOPE>All</SCOPE>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1718">
+          <caret line="358" column="19" lean-forward="true" selection-start-line="358" selection-start-column="19" selection-end-line="358" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/OBJECT_FILTERING/FILTER_BOOKING.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6851">
+          <caret line="416" column="38" selection-start-line="416" selection-start-column="38" selection-end-line="416" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1496">
+          <caret line="761" column="38" selection-start-line="761" selection-start-column="38" selection-end-line="761" selection-end-column="38" />
+          <folding>
+            <element signature="e#1024#1553#0" />
+            <element signature="e#1604#2110#0" />
+            <element signature="e#2136#2319#0" />
+            <element signature="e#2323#2353#0" />
+            <element signature="e#2805#5162#0" />
+            <element signature="e#3481#4553#0" />
+            <element signature="e#4579#4632#0" />
+            <element signature="e#4736#5105#0" />
+            <element signature="e#5138#5162#0" />
+            <element signature="e#5198#12889#0" />
+            <element signature="e#6374#6650#0" />
+            <element signature="e#6693#7223#0" />
+            <element signature="e#7269#7777#0" />
+            <element signature="e#7871#9877#0" />
+            <element signature="e#8970#9246#0" />
+            <element signature="e#9678#9877#0" />
+            <element signature="e#9717#9851#0" />
+            <element signature="e#9924#10266#0" />
+            <element signature="e#10318#10641#0" />
+            <element signature="e#10697#11148#0" />
+            <element signature="e#10800#11023#0" />
+            <element signature="e#11202#11859#0" />
+            <element signature="e#11303#11710#0" />
+            <element signature="e#11891#12213#0" />
+            <element signature="e#12253#12889#0" />
+            <element signature="e#12337#12524#0" />
+            <element signature="e#12716#12770#0" />
+            <element signature="e#13645#13872#0" />
+            <element signature="e#13928#14086#0" />
+            <element signature="e#14179#15741#0" />
+            <element signature="e#14841#15117#0" />
+            <element signature="e#15562#15741#0" />
+            <element signature="e#15800#17971#0" />
+            <element signature="e#16738#17363#0" />
+            <element signature="e#16989#17363#0" />
+            <element signature="e#17059#17320#0" />
+            <element signature="e#17140#17320#0" />
+            <element signature="e#17793#17971#0" />
+            <element signature="e#18034#21698#0" />
+            <element signature="e#19802#19970#0" />
+            <element signature="e#20064#20232#0" />
+            <element signature="e#20326#20494#0" />
+            <element signature="e#20588#20756#0" />
+            <element signature="e#20850#21018#0" />
+            <element signature="e#21097#21213#0" />
+            <element signature="e#21520#21698#0" />
+            <element signature="e#21752#22101#0" />
+            <element signature="e#22107#22173#0" />
+            <element signature="e#22646#24634#0" />
+            <element signature="e#22754#23694#0" />
+            <element signature="e#22820#23694#0" />
+            <element signature="e#22887#23071#0" />
+            <element signature="e#22934#23070#0" />
+            <element signature="e#23145#23351#0" />
+            <element signature="e#23427#23694#0" />
+            <element signature="e#23721#24634#0" />
+            <element signature="e#23787#24634#0" />
+            <element signature="e#23854#24011#0" />
+            <element signature="e#24085#24291#0" />
+            <element signature="e#24367#24634#0" />
+            <element signature="e#24673#25189#0" />
+            <element signature="e#25245#25701#0" />
+            <element signature="e#25353#25576#0" />
+            <element signature="e#25755#26417#0" />
+            <element signature="e#25861#26268#0" />
+            <element signature="e#26464#28906#0" />
+            <element signature="e#28168#28408#0" />
+            <element signature="e#28462#28659#0" />
+            <element signature="e#28712#28906#0" />
+            <element signature="e#28972#29039#0" />
+            <element signature="e#29103#30824#0" />
+            <element signature="e#29239#29768#0" />
+            <element signature="e#29306#29768#0" />
+            <element signature="e#29622#29768#0" />
+            <element signature="e#29829#30626#0" />
+            <element signature="e#29892#30626#0" />
+            <element signature="e#29970#30626#0" />
+            <element signature="e#30289#30626#0" />
+            <element signature="e#30375#30625#0" />
+            <element signature="e#30928#31627#0" />
+            <element signature="e#31658#32877#0" />
+            <element signature="e#31972#32442#0" />
+            <element signature="e#32038#32075#0" />
+            <element signature="e#32524#32670#0" />
+            <element signature="e#33172#33410#0" />
+            <element signature="e#33463#33627#0" />
+            <element signature="e#33854#33965#0" />
+            <element signature="e#33993#34311#0" />
+            <element signature="e#35612#35776#0" />
+            <element signature="e#35625#35727#0" />
+            <element signature="e#35875#36043#0" />
+            <element signature="e#35888#35994#0" />
+            <element signature="e#36129#36271#0" />
+            <element signature="e#36358#38115#0" />
+            <element signature="e#36683#37846#0" />
+            <element signature="e#36820#37232#0" />
+            <element signature="e#36841#37069#0" />
+            <element signature="e#37122#37232#0" />
+            <element signature="e#37295#37514#0" />
+            <element signature="e#37851#37905#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_login_v2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="27" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/HTTP_REQUESTS/PUT_CAR.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/login_register_REST.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="57" selection-start-line="16" selection-start-column="57" selection-end-line="16" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/filters.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/apps.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/admin_actions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-255">
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/views_related.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="515">
+          <caret line="60" column="17" lean-forward="true" selection-start-line="60" selection-start-column="17" selection-end-line="60" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/HTTP_REQUESTS/GET_booking_login.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/HTTP_REQUESTS/GET_car_logged.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_login.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_parking.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_password_reset.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_password_change.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_register_user.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_booking.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_booking2.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/HTTP_REQUESTS/POST_booking_v3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/runtime.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="14" lean-forward="true" selection-start-column="14" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LICENSE">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/djangox_project/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="216" selection-start-line="216" selection-end-line="216" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Pipfile">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Pipfile.lock">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="45" column="32" selection-start-line="45" selection-start-column="32" selection-end-line="45" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Basic_Functions/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="89" column="24" selection-start-line="89" selection-start-column="24" selection-end-line="89" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Procfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="26" selection-start-column="26" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/djangox_project/wsgi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="22" lean-forward="true" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

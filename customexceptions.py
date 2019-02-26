@@ -35,9 +35,6 @@
 
 
 
-
-
-
 class BaseCustomException(Exception):
     status_code = None
     error_message = None
@@ -54,6 +51,8 @@ class UNAUTHORIZED(BaseCustomException):
     status_code = 401
 class FORBIDDEN(BaseCustomException):
     status_code = 403
+class STATUS_CHANGE(BaseCustomException):
+    status_code = 200
 
 # ## HOW To USE
 # from django.http import JsonResponse
