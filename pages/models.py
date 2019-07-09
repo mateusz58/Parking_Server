@@ -55,33 +55,6 @@ STATUS_CHOICES = (
     ('EXPIRED_E', 'Expired early')
 )
 
-# STATUS_CHOICES_CANCELLED = (
-# )
-#
-# STATUS_CHOICES_RESERVED = (
-#     ('EXPIRED', 'Expired'),
-#     ('RESERVED_L', 'Reserved Late'),
-#     ('EXPIRED_E', 'Expired early')
-# )
-#
-# STATUS_CHOICES_RESERVED_L = (
-#     ('EXPIRED', 'Expired'),
-#
-# )
-# STATUS_CHOICES_EXPIRED_E = (
-#
-# )
-#
-# STATUS_CHOICES_EXPIRED = (
-#
-# )
-# STATUS_CHOICES_ACTIVE = (
-#     ('ACTIVE', 'Active'),
-#     ('RESERVED', 'Reserved'),
-#     ('CANCELLED', 'Cancelled'),
-# )
-
-
 class Parking(models.Model):
     id = models.BigAutoField(primary_key=True, editable=False)
     parking_name = models.CharField(max_length=30, unique=True)
