@@ -1,20 +1,18 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, get_user_model
+from django.contrib.auth import login
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from rest_framework.exceptions import APIException
-# Create your views here.
+
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
-from Responses.reponses import user_inactive, user_not_in_group
-from customexceptions import UNAUTHORIZED
-from templatetags.templatetag import has_group, is_user_active, has_group_v2, has_group_v4
+from exceptions.httpExceptionsHandler import UNAUTHORIZED
+from templatetags.templatetag import has_group_v4
 from django.contrib.auth.models import Group
 
 from users.forms import CustomUserCreationForm
@@ -22,24 +20,19 @@ from users.models import CustomUser
 from users.tokens import account_activation_token
 from django.core.mail import EmailMessage
 from rest_framework import status
-from rest_auth.views import LoginView
-from rest_auth.registration.views import RegisterView,VerifyEmailView
-#### PARKING MANAGER
+from rest_auth.registration.views import RegisterView
+
+
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
-
-        # print(user)
         if form.is_valid():
             print(" LOGIN Condition satisfied")
-            # log the user in
-            # has_group(request.user, "Parking_manager")
             user = form.get_user()
 
             l = []
             for g in user.groups.all():
                 l.append(g.name)
-
 
             login(request, user)
             if 'next' in request.POST:
@@ -49,20 +42,18 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'account/login.html', { 'form': form })
- # and has_group(request.user, "Parking_manager"):
 
-## PARKING MANAGER
 def signup_view(request):
 
     if request.method == 'POST':
          form = CustomUserCreationForm(request.POST)
          if form.is_valid():
              print(" REGISTER Condition satisfied")
-             # hashed_password = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt())
-             # print("Primary key of user"+str(pk))
+
+
              user = form.save()
              user.is_active = False
-             # print("USER ACTIVE"+user.is_active)
+
              group = Group.objects.get(name='Parking_manager')
              user.groups.add(group)
              user.save()
@@ -84,20 +75,16 @@ def signup_view(request):
              user.is_active = False
              print("Primary key of user" + str(user.id))
              return HttpResponse('Please confirm your email address to complete the registration')
-             ## log the user in
-             # login(request, user)
-             # return redirect('home')
+
     else:
         form = CustomUserCreationForm()
     return render(request, 'account/signup.html', { 'form': form })
-
 
 class CustomAuthToken(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
-
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
 
@@ -112,7 +99,6 @@ class CustomAuthToken(ObtainAuthToken):
             'email': user.email
         })
 
-
 class CustomRegisterView(RegisterView):
         def create(self, request, *args, **kwargs):
             response = super().create(request, *args, **kwargs)
@@ -120,9 +106,7 @@ class CustomRegisterView(RegisterView):
                 print("Request_check"+str(self.request.data['email']))
                 user=str(self.request.data['email'])
                 user = CustomUser.objects.get(email=user).id
-                # CustomUser.objects.filter(pk=user).update(is_active=False)
+
                 my_group = Group.objects.get(name='Client_mobile')
                 my_group.user_set.add(user)
             return response
-
-

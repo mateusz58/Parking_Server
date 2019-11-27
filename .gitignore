@@ -1,2 +1,7 @@
 notes.md
 .vscode
+
+#json files
+*.json
+#database files
+*.sqlite3

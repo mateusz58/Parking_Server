@@ -33,5 +33,5 @@ logging.config.dictConfig({
     }
 })
 
-# This retrieves a Python logging instance (or creates it)
+
 logger = logging.getLogger(__name__)
