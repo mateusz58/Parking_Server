@@ -1,7 +1,5 @@
 from datetime import datetime
 
-import time
-
 import re
 
 from background_task import background

@@ -1,6 +1,6 @@
 import requests
 
-auth_token='7fc5f4b07051e59162494b80f94ea5ede72906ef'
+auth_token='f4398f50af0af87c6cf460cd354ef834517ebdd4'
 hed = {'Authorization': 'Token ' + auth_token}
 data={
     "parking_name": "Parking1",
@@ -9,7 +9,8 @@ data={
     "x": 121.0,
     "y": 271.0,
 }
-url = 'http://127.0.0.1:8000/api/parking/'
-response = requests.post(url, json=data, headers=hed)
+base = "http://192.168.8.103:8000"
+end_point = '/api/parking/'
+response = requests.post(base+end_point, json=data, headers=hed)
 print(response)
 print(response.json())

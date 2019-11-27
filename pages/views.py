@@ -26,6 +26,9 @@ from datetime import datetime
 
 from django.db.models import Q
 
+import logging
+
+log = logging.getLogger(__name__)
 
 class HomePageView(TemplateView):
     template_name = 'pages/home.html'
@@ -50,6 +53,7 @@ def redirect_view(request):
         from django.contrib import messages
         messages.info(request,
                       'You are not authorized to access this section. Contact the administrator to access this section!')
+
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
     if not query_user_parking.exists():
         from django.contrib import messages
@@ -86,14 +90,12 @@ class Delete_User_View(RetrieveUpdateDestroyAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = User_Serializer
 
-
 class User_View_Email_login(CreateAPIView, ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = User_Serializer
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
-
 
 class User_View_Search(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
@@ -181,30 +183,30 @@ class Booking_View(CreateAPIView, ListAPIView):
         duration_s = duration.total_seconds()
         minutes = divmod(duration_s, 60)[0]
         minutes = int(minutes)
-        print("Minutes" + str(minutes))
         i = 0
         while i < len(registration_plate_list):
             if not str(registration_plate_list[i]).isalnum():
                 raise FORBIDDEN(
                     "Wrong registration number of car,car registration number can consist only of numbers and letters characters")
-            if len(registration_plate_list[i]) < 6:
-                raise FORBIDDEN("Wrong registration number of car:" + str(registration_plate_list[
-                                                                              i]) + ",car registration number must consist of at least 6 characters and maximum 10 characters")
-            if len(registration_plate_list[i]) > 10:
+            if len(registration_plate_list[i]) < 6 or len(registration_plate_list[i]) > 10:
                 raise FORBIDDEN("Wrong registration number of car:" + str(registration_plate_list[
                                                                               i]) + ",car registration number must consist of at least 6 characters and maximum 10 characters")
             i = i + 1
         i = 0
         if len(registration_plate_list) < 1:
+            log.error("You cannot register register parking place for less than one car")
             raise FORBIDDEN("You cannot register register parking place for less than one car")
         if minutes < 30:
+            log.error("You cannot register parking place for less than 30 minutes")
             raise FORBIDDEN("You cannot register parking place for less than 30 minutes")
         if convert_string_date_time(self.request.META['HTTP_DATE_TO']).replace(tzinfo=None) < convert_string_date_time(
                 self.request.META['HTTP_DATE_FROM']).replace(tzinfo=None):
+            log.error("Value of Date_From must be higher than Date_To")
             raise FORBIDDEN("Value of Date_From must be higher than Date_To")
         if convert_string_date_time(self.request.META['HTTP_DATE_FROM']).replace(tzinfo=None) < datetime.now():
             raise FORBIDDEN("Value of Date_From must be higher than current time")
         if minutes < 30:
+            log.error("Value of Date_From must be higher than Date_To")
             raise FORBIDDEN("You cannot register parking place for less than 30 minutes")
         _b1 = Car.objects
 
@@ -228,6 +230,8 @@ class Booking_View(CreateAPIView, ListAPIView):
             for x in variations:
 
                 if (x.registration_plate == str(registration_plate_list[i])):
+                    log.error("Car with registration number:" + str(
+                        registration_plate_list[i]) + " have already registered parking place in that period of time")
                     raise FORBIDDEN("Car with registration number:" + str(
                         registration_plate_list[i]) + " have already registered parking place in that period of time")
 
@@ -238,6 +242,9 @@ class Booking_View(CreateAPIView, ListAPIView):
             max_number_places = Parking.objects.get(pk=self.request.data['parking']).number_of_places
             if max_number_places < 0:
                 max_number_places = 0
+            log.error((
+                "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
+                    max_number_places)))
             raise FORBIDDEN(
                 "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
                     max_number_places))
@@ -251,6 +258,7 @@ class Booking_View(CreateAPIView, ListAPIView):
 
         Booking.objects.filter(pk=modify.id).update(user=user_id)
         if not int(self.request.data['number_of_cars']) == len(registration_plate_list):
+            log.error("Number of provided registration numbers are not equal to number of parking places you want to register ")
             raise FORBIDDEN(
                 "Number of provided registration numbers are not equal to number of parking places you want to register ")
         i = 0
@@ -284,9 +292,11 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdat
 
                 return True
             else:
+                log.error("You do not have permission to view that")
                 raise FORBIDDEN("You do not have permission to view that")
 
         else:
+            log.error("You do not have permission to view that")
             raise FORBIDDEN("You do not have permission to view that")
 
     def update(self, request, *args, **kwargs):
@@ -306,6 +316,7 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdat
                 return Response(serializer.data)
 
             else:
+                log.error("You do not have permission to cancel that bookings")
                 raise FORBIDDEN("You do not have permission to cancel that bookings")
 
         else:
@@ -391,9 +402,11 @@ class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPI
 
                 return True
             else:
+                log.error("You do not have permission to view that")
                 raise FORBIDDEN("You do not have permission to view that")
 
         else:
+            log.error("You do not have permission to view that")
             raise FORBIDDEN("You do not have permission to view that")
 
     def update(self, request, *args, **kwargs):
@@ -409,9 +422,11 @@ class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPI
                 obj.clean()
                 obj.save()
             except:
+                log.error("You do not have permission to cancel that bookings")
                 raise FORBIDDEN("You do not have permission to cancel that bookings")
 
             return Response(serializer.data)
 
         else:
+            log.error("Valid operation you can only change status to cancelled")
             raise FORBIDDEN("Valid operation you can only change status to cancelled")

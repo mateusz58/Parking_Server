@@ -4,14 +4,10 @@ import requests
 data={
     "username": "user2@mail.com",
     "email": "user2@mail.com",
-    "password1": "matp1794",
-    "password2": "matp17954",
+    "password1": "admin",
+    "password2": "admin",
 }
-base="http://192.168.8.106:8000"
-
-
-
-
+base="http://192.168.8.103:8000"
 end_point_custom='/api/registration_custom/'
 
 url = base+end_point_custom
