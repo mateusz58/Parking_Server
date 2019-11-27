@@ -1,4 +1,0 @@
-
-In order to to execute Tests you need to execute following command  from the main folder
-
-python manage.py shell < Tests/FILTER_BOOKING.py

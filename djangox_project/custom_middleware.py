@@ -1,6 +1,5 @@
 import traceback
 from django.http import JsonResponse
-from django.http import HttpResponse
 
 def is_registered(exception):
     try:
@@ -25,6 +24,5 @@ class RequestExceptionHandler(object):
             status = 500
             exception_dict = {'errorMessage': 'Unexpected Error!'}
 
-        error_message = exception_dict['errorMessage']
         traceback.print_exc()
         return JsonResponse(exception_dict, status=status)

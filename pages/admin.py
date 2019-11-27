@@ -1,42 +1,18 @@
-import random
-
 from admin_totals.admin import ModelAdminTotals
 from advanced_filters.admin import AdminAdvancedFiltersMixin
 from django.contrib import admin
+from django.db.models import Q
+from rangefilter.filter import DateTimeRangeFilter
 
-# Register your models here.
-from django.contrib.admin import AdminSite, ModelAdmin
-from django.db.models import Sum, Q
-from django.db.models.functions import Coalesce
-from django.forms import forms
-from django.urls import resolve
-from django.utils.translation import ugettext_lazy
-
-from djangox_project.logger import logger
-from pages.admin_actions import make_active, make_cancelled, make_expired, make_reserved, make_expired_e, \
-    make_reserved_l, Booking_set_inactive
+from pages.adminActions import make_active, make_cancelled, make_expired, make_reserved, make_expired_e, \
+    make_reserved_l
 from pages.models import Parking, Booking, Car
-from templatetags.templatetag import has_group_v2
 from users.models import CustomUser
-from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
-
-#
-from merged_inlines.admin import MergedInlineAdmin
-
-
-
-
-
 
 
 class Tabular_Cars(admin.TabularInline):
     model = Car
     extra = 5
-
-
-
-    # list_display = ['get_id', 'Cost',
-    #                 'registration_plate', 'status', 'get_number', ]
 
     list_display = ['Cost', 'Date_From', 'Date_To',
                     'registration_plate', 'status', ]
@@ -46,8 +22,6 @@ class Tabular_Cars(admin.TabularInline):
             return ['id', 'booking', 'Cost']
         else:
             return []
-
-    # get_number.short_description = 'Number of Cars'
 
     def get_id(self, obj):
         return obj.id
@@ -66,7 +40,7 @@ class Tabular_Cars(admin.TabularInline):
             print("Tabular cars else")
             self.booking = obj
             self.temp = self.booking
-            # Booking.objects.filter(pk=self.booking).update(number_of_cars=0)
+
             Tabular_Cars.proxy = False
             return super(Tabular_Cars, self).get_formset(request, obj, **kwargs)
 
@@ -86,11 +60,8 @@ class Tabular_Cars(admin.TabularInline):
                 return 0
 
     def get_extra(self, request, obj=None, **kwargs):
-        """Dynamically sets the number of extra forms. 0 if the related object
-        already exists or the extra configuration otherwise."""
 
         if obj:
-            # Don't add any extra forms if the related object already exists.
             return 0
         return self.extra
 
@@ -131,28 +102,22 @@ class Parking_Admin(admin.ModelAdmin):
         modeladmin.Parking_city_order.short_description = "Order by city name"
 
 
-class Booking_admin(AdminAdvancedFiltersMixin,ModelAdminTotals ,admin.ModelAdmin):
+class Booking_admin(AdminAdvancedFiltersMixin, ModelAdminTotals, admin.ModelAdmin):
     model = Booking
     inlines = [Tabular_Cars]
     list_totals = [('Cost', lambda field: Coalesce(Sum(field), 0)), ]
     list_display = ['Cost']
 
-    # actions = [Booking_set_inactive]
-    # list_display = ['id', 'parking','Date_From','Date_To','Cost','registration_plate','status']
     list_display = ['id', 'user', 'parking', 'Cost', 'number_of_cars', 'active', 'Date_From', 'Date_To', ]
     search_fields = ('id', 'user__email',)
     list_filter = (
         ('Date_From', DateTimeRangeFilter), ('Date_To', DateTimeRangeFilter), ('active')
     )
 
-
-    # specify which fields can be selected in the advanced filter
-    # creation form
     advanced_filter_fields = (
         'Cost',
         'active',
         'number_of_cars',
-        # even use related fields as lookup fields
         'user__email',
 
     )
@@ -161,13 +126,10 @@ class Booking_admin(AdminAdvancedFiltersMixin,ModelAdminTotals ,admin.ModelAdmin
         change = True
         instances = formset.save(commit=False)
         for instance in instances:
-            # Do something with `instance`
             instance.save()
         formset.save_m2m()
 
     def after_saving_model_and_related_inlines(self, obj):
-        # now we have what we need here... :)
-
         car_count = Car.objects.filter(
             Q(booking=obj.id) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count()
 
@@ -176,8 +138,6 @@ class Booking_admin(AdminAdvancedFiltersMixin,ModelAdminTotals ,admin.ModelAdmin
             return obj
         else:
             return obj
-        # Booking.objects.filter(pk=self.booking.code).update(number_of_cars=Car.objects.filter(
-        #     Q(booking=self.booking) & (Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L'))).count())
 
     def response_add(self, request, new_object):
         obj = self.after_saving_model_and_related_inlines(new_object)
@@ -197,8 +157,6 @@ class Booking_admin(AdminAdvancedFiltersMixin,ModelAdminTotals ,admin.ModelAdmin
             kwargs["queryset"] = Parking.objects.filter(parking_name__exact=str(name))
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
-        #
-
     def get_queryset(self, request):
 
         user = request.user
@@ -217,18 +175,8 @@ class Booking_admin(AdminAdvancedFiltersMixin,ModelAdminTotals ,admin.ModelAdmin
         else:
             return Booking.objects.all()
 
-        # if has_group_v2(request.user, "Parking_manager"):
-        #
-        #     query = Booking.objects.filter(parking__user_parking=request.user)
-        #     return query
-        # else:
-
     def get_id(self, obj):
         return obj.id
-
-    # def change_view(self, request, object_id, form_url='', extra_context=None):
-    #     self.inlines = [AttachmentInlineReadOnly, ]
-    #     return super(InlineReadOnly, self).change_view(request, object_id, form_url, extra_context)
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
@@ -237,14 +185,12 @@ class Booking_admin(AdminAdvancedFiltersMixin,ModelAdminTotals ,admin.ModelAdmin
             return []
 
 
-class Car_admin(AdminAdvancedFiltersMixin,admin.ModelAdmin):
-
-
+class Car_admin(AdminAdvancedFiltersMixin, admin.ModelAdmin):
     actions = [make_active, make_cancelled, make_expired, make_reserved, make_expired_e, make_reserved_l]
     list_display = ['get_id', 'get_booking', 'Cost', 'get_Cost', 'get_number', 'get_user',
-                    'registration_plate', 'status','Date_From','Date_To', ]
+                    'registration_plate', 'status', 'Date_From', 'Date_To', ]
     ordering = ['Date_From']
-    search_fields = ('id','registration_plate',)
+    search_fields = ('id', 'registration_plate',)
     list_filter = ('status',)
     list_totals = [('Cost', lambda field: Coalesce(Sum(field), 0)), ]
     list_filter = (
@@ -281,8 +227,6 @@ class Car_admin(AdminAdvancedFiltersMixin,admin.ModelAdmin):
             del actions['delete_selected']
         return actions
 
-    # list_display = ['Cost','Date_From', 'Date_To',
-    #                 'registration_plate', 'status', ]
     def get_readonly_fields(self, request, obj=None):
         if obj:
             return ['booking', 'Date_To', 'Date_From', ]
@@ -305,8 +249,8 @@ class Car_admin(AdminAdvancedFiltersMixin,admin.ModelAdmin):
         return obj.booking.user
 
     get_booking.short_description = 'Kod'
-    get_Cost.admin_order_field = 'Cost'  # Allows column order sorting
-    get_Cost.short_description = 'Cost booking'  # Renames column head
+    get_Cost.admin_order_field = 'Cost'
+    get_Cost.short_description = 'Cost booking'
     get_user.short_description = 'User'
     get_id.short_description = 'Car id'
     get_number.short_description = 'Number of Cars'
@@ -315,12 +259,9 @@ class Car_admin(AdminAdvancedFiltersMixin,admin.ModelAdmin):
         Car.ordering = ['Date_From']
         modeladmin.Parking_city_order.short_description = "Order by Date From"
 
-from admin_totals.admin import ModelAdminTotals
-from django.contrib import admin
-from django.db.models import Sum, Avg
+
+from django.db.models import Sum
 from django.db.models.functions import Coalesce
-
-
 
 from django.contrib import admin
 
@@ -333,7 +274,3 @@ admin.site.disable_action('delete_selected')
 admin.sites.AdminSite.site_header = 'Parking management system'
 admin.sites.AdminSite.site_title = 'Parking management system'
 admin.sites.AdminSite.index_title = 'Parking management system'
-
-# admin.site.site_header = "'Parking management system'"
-# admin.site.site_title = "'Parking management system'"
-# admin.site.index_title = "'Parking management system'"

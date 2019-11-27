@@ -1,90 +1,31 @@
 from collections import namedtuple
 
-from django import template
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.db.migrations import serializer
-from django.views.generic import TemplateView, CreateView
-from django.conf.urls import url
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from django.http import HttpResponse, HttpResponseRedirect, request
-from django.shortcuts import render, redirect
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from django.shortcuts import render
-from django.conf import settings
-##from snippets.models import Location
-from django.contrib.auth.models import User
-##from snippets.serializers import LocationSerializer,UserSerializer
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.authtoken.models import Token
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_202_ACCEPTED
-from oauth2client import client, crypt
-from rest_framework import routers
-from django.contrib.auth.models import User
-from django.shortcuts import render
-from rest_framework.generics import GenericAPIView
-from rest_framework.mixins import ListModelMixin
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 
-from Basic_Functions.String_processing import check_query_string, is_all_items_unique
-from Basic_Functions.Time_convert import convert_string_date_time
-from Basic_Functions.Time_difference import is_overlapped
-from TRIGGERS.FREE_PLACES_UPDATE import free_places_update
-from TRIGGERS.UPDATER import main_updater
-from customexceptions import FORBIDDEN, STATUS_CHANGE
-from decorators import group_required
+from helper.String_processing import is_all_items_unique
+from helper.timeConvert import convert_string_date_time
+from helper.calculateTimeDifference import is_overlapped
+from exceptions.httpExceptionsHandler import FORBIDDEN, STATUS_CHANGE
 from templatetags.templatetag import has_group, has_group_v2
-from .filters import UserFilter, BookingFilter
-from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
-from rest_framework.decorators import authentication_classes, permission_classes
-#
-from rest_framework import viewsets, permissions, filters, generics, authentication, status, routers
-from rest_framework.generics import CreateAPIView, ListAPIView, get_object_or_404, RetrieveUpdateDestroyAPIView, \
+from rest_framework.permissions import BasePermission, SAFE_METHODS
+
+from rest_framework import generics
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, \
     RetrieveUpdateAPIView
-from django.utils.decorators import method_decorator
-from rest_framework import viewsets
-from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from pages.models import Parking, Booking, Car
-from django.contrib.auth.decorators import login_required, permission_required
-from rest_framework.parsers import JSONParser
+from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
-from rest_framework.exceptions import APIException
 from pages.serializers import User_Serializer, Booking_Serializer, Parking_Serializer, Parking_Serializer_Coordinates, \
     User_Serializer_Login_Email, Booking_Serializer_delete, Car_Serializer, Car_Serializer_update
 from users.models import CustomUser
-from rest_framework.decorators import api_view
 from datetime import datetime
 
-from django.db.models import Q, Sum
-import re
+from django.db.models import Q
 
-
-#
-# class Filter_booking_view(CreateView):
-#
-#     def filter_booking_view(request):
-#         permission_classes = (IsAuthenticated,)
-#         booking_list = Booking.objects.all()
-#         booking_filter = BookingFilter(request.GET, queryset=booking_list)
-#         return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})
-#
-# def is_member(user):
-#     return user.groups.filter(name='Parking_manager').exists()
-# class IsParking_Manager(permissions.BasePermission):
-#
-# @user_passes_test(lambda u: u.groups.filter(name='companyGroup').exists())
-#
-# ##SNIPPET VIEWSET
-#
-
-##HOME PAGE VIEW
 
 class HomePageView(TemplateView):
     template_name = 'pages/home.html'
@@ -98,18 +39,12 @@ class AboutPageView(TemplateView):
 def redirect_view(request):
     user = request.user
     requested_user = user
-    l=[]
+    l = []
     for g in user.groups.all():
         l.append(g.name)
     query_user_parking = Parking.objects.filter(user_parking__username=user)
     print(query_user_parking.exists())
     permission_classes = (IsAuthenticated,)
-    # booking_list = Booking.objects.all()
-
-    # if not user_get.is_staff():
-    #     from django.contrib import messages
-    #     messages.info(request,'You are not authorized to access this section. Contact the administrator to access this section!')
-    #     return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
 
     if not l.__contains__("Parking_manager"):
         from django.contrib import messages
@@ -121,27 +56,20 @@ def redirect_view(request):
         messages.info(request,
                       'You are not authorized to access this section. Contact the administrator to access this section!')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'home'))
-    ## redirect to admin site
+
     else:
         from django.contrib import messages
         booking_filtered = Booking.objects.filter(parking=query_user_parking)
-        # return render(request, 'filter/booking_list_v2.html', {'filter': booking_filter})
+
         response = redirect('/admin/')
         return response
 
 
-#
-# def filter_booking_view(request):
-#
-
-#         response = redirect('/admin/')
-#         return response
 class ReadOnly(BasePermission):
     def has_permission(self, request, view):
         return request.method in SAFE_METHODS
 
-## JSON VIEWS
-# @permission_required('GET_Users_API', raise_exception=True)
+
 class User_View(CreateAPIView, ListAPIView):
     permission_classes = (IsAuthenticated | ReadOnly,)
     queryset = CustomUser.objects.all()
@@ -154,13 +82,11 @@ class User_View(CreateAPIView, ListAPIView):
         return self.create(request, *args, **kwargs)
 
 
-# @permission_required('Update_Users_API', raise_exception=True)
 class Delete_User_View(RetrieveUpdateDestroyAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = User_Serializer
 
 
-# @permission_required('GET_Users_API', raise_exception=True)
 class User_View_Email_login(CreateAPIView, ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = User_Serializer
@@ -169,7 +95,6 @@ class User_View_Email_login(CreateAPIView, ListAPIView):
         return self.create(request, *args, **kwargs)
 
 
-# @permission_required('GET_Users_API', raise_exception=True)
 class User_View_Search(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = User_Serializer_Login_Email
@@ -183,14 +108,12 @@ class User_View_Search(generics.ListAPIView):
         return queryset
 
 
-# @permission_required('GET_Parking_API', raise_exception=True)
 class Parking_View(CreateAPIView, ListAPIView):
     permission_classes = (ReadOnly,)
     queryset = Parking.objects.all()
     serializer_class = Parking_Serializer
 
 
-# @permission_required('GET_Parking_API', raise_exception=True)
 class Parking_View_Search(generics.ListAPIView):
     permission_classes = (ReadOnly,)
     serializer_class = Parking_Serializer
@@ -218,7 +141,6 @@ class Delete_Parking_View(RetrieveUpdateAPIView):
     serializer_class = Parking_Serializer
 
     def get_queryset(self):
-        # user_id=CustomUser.objects.get(email=self.request.user).id
         queryset = Parking.objects.all()
         parking_name_v = self.request.query_params.get('parking_name', None)
 
@@ -286,11 +208,6 @@ class Booking_View(CreateAPIView, ListAPIView):
             raise FORBIDDEN("You cannot register parking place for less than 30 minutes")
         _b1 = Car.objects
 
-        # w1 = _b1.filter(Q(Date_From__lt=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(
-        #     Date_To__gt=convert_string_date_time(self.request.META['HTTP_DATE_FROM'])) & Q(
-        #     booking__parking=self.request.data['parking']) & (
-        #                         Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
-
         query = _b1.filter(Q(
             booking__parking=self.request.data['parking']) & (
                                    Q(status='ACTIVE') | Q(status='RESERVED') | Q(status='RESERVED_L')))
@@ -305,8 +222,6 @@ class Booking_View(CreateAPIView, ListAPIView):
 
             if is_overlapped(r1, r2):
                 variations.append(record)
-
-        # variations = [w1, w2, w3, w4, w5]
 
         while i < int(self.request.data['number_of_cars']):
 
@@ -324,7 +239,8 @@ class Booking_View(CreateAPIView, ListAPIView):
             if max_number_places < 0:
                 max_number_places = 0
             raise FORBIDDEN(
-                "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(max_number_places))
+                "Not enough free places in that period of time,maximum number of places you can reserve is:" + str(
+                    max_number_places))
 
         modify = serializer.save()
 
@@ -353,6 +269,7 @@ class Booking_View(CreateAPIView, ListAPIView):
             Booking.objects.filter(id=modify.id).update(user=user_id)
             Booking.objects.filter(id=modify.id).update(active=True)
 
+
 class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated | ReadOnly,)
     serializer_class = Booking_Serializer_delete
@@ -361,7 +278,6 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdat
 
     def test_func(self):
         obj = self.get_object()
-        # print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
         if has_group_v2(self.request.user, "Client_mobile"):
             user = self.request.user
             if obj.user == user:
@@ -383,8 +299,6 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdat
             count_query_all = Car.objects.filter(booking=obj).count()
             if count_query_active_cancelled == count_query_all:
 
-                # Booking.objects.filter(code=obj.code).update(active=False)
-
                 serializer.is_valid(raise_exception=True)
                 obj = Booking.objects.get(id=obj.id)
                 obj.active = False
@@ -399,7 +313,6 @@ class Delete_Booking_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdat
             self.perform_update(serializer)
 
 
-# @permission_required('GET_booking_API', raise_exception=True)
 class Booking_View_Search(generics.ListAPIView):
     serializer_class = Booking_Serializer
 
@@ -440,24 +353,23 @@ class Car_View_logged(generics.ListAPIView):
         user = self.request.user
         if has_group(user, "Client_mobile"):
 
-                    try:
-                        car_id=self.request.META['HTTP_CAR_ID']
-                        id=self.request.META['HTTP_CAR_ID']
-                        id_booking = self.request.META['HTTP_BOOKING_ID']
-                        car=Car.objects.get(pk=id)
-                        car.status="CANCELLED"
-                        car.Cost=0
-                        car.save()
-                        raise STATUS_CHANGE("Status has been changed")
-                    except:
-                        pass
-                    finally:
-                        queryset = Car.objects.all()
-                        return queryset.filter(booking__user__email=self.request.user)
+            try:
+                car_id = self.request.META['HTTP_CAR_ID']
+                id = self.request.META['HTTP_CAR_ID']
+                id_booking = self.request.META['HTTP_BOOKING_ID']
+                car = Car.objects.get(pk=id)
+                car.status = "CANCELLED"
+                car.Cost = 0
+                car.save()
+                raise STATUS_CHANGE("Status has been changed")
+            except:
+                pass
+            finally:
+                queryset = Car.objects.all()
+                return queryset.filter(booking__user__email=self.request.user)
 
         queryset = Car.objects.all()
         return queryset.filter(booking__user__email=self.request.user)
-
 
 
 class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPIView):
@@ -472,7 +384,7 @@ class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPI
             print('GET CALLED')
 
         obj = self.get_object()
-        # print("obj.user  VALUE:"+str(obj.user)+"CustomUser.objects.get(email=self.request.user).id VALUE"+str(CustomUser.objects.get(email=self.request.user).email))
+
         if has_group_v2(self.request.user, "Client_mobile"):
             user = self.request.user
             if obj.booking.user == user:
@@ -490,7 +402,6 @@ class Update_Car_View(LoginRequiredMixin, UserPassesTestMixin, RetrieveUpdateAPI
         serializer = self.get_serializer(obj, data=request.data, partial=partial)
         if str(self.request.data['status']).__contains__('CANCELLED'):
 
-            # Booking.objects.filter(code=obj.code).update(active=False)
             try:
                 serializer.is_valid(raise_exception=True)
                 obj = Car.objects.get(id=obj.id)
