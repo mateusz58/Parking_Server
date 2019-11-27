@@ -39,7 +39,7 @@ django-rest-auth==0.9.3
 django-rest-framework==0.1.0
 django-url-filter==0.3.11
 django-widget-tweaks==1.4.3
-djangorestframework==3.9.0
+djangorestframework==3.9.1
 djangorestframework-jwt==1.11.0
 drf-nested-routers==0.91
 drf-writable-nested==0.5.1
@@ -50,7 +50,7 @@ gast==0.2.0
 grpcio==1.17.1
 gunicorn==19.9.0
 h5py==2.8.0
-httpie==1.0.2
+httpie==1.0.3
 httplib2==0.12.0
 idna==2.8
 Jinja2==2.10
@@ -67,7 +67,7 @@ packaging==16.8
 pandas==0.23.4
 passlib==1.7.1
 pbr==5.1.1
-Pillow==5.3.0
+Pillow==6.2.0
 poyo==0.4.2
 protobuf==3.6.1
 psycopg2==2.7.6.1
@@ -98,12 +98,12 @@ stevedore==1.30.0
 tensorboard==1.12.1
 tensorflow==1.12.0
 termcolor==1.1.0
-urllib3==1.24.1
+urllib3==1.24.2
 vine==1.1.4
 virtualenv==15.1.0
 virtualenv-clone==0.4.0
 virtualenvwrapper==4.8.2
 virtualenvwrapper-win==1.2.5
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 whichcraft==0.5.2
 whitenoise==3.2.1
