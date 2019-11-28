@@ -1,72 +1,146 @@
-# DjangoX
+<br />
+<p align="center">
+  <a href="">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  </a>
 
-A framework for launching new Django projects quickly. Comes with a complete user authentication flow, custom user model, and social authentication options via Gmail, Facebook, Twitter, etc.
+  <h3 align="center">E-parking web application</h3>
 
-> **NOTE**: This open source project is supported by my two published books [Django for Beginners](https://djangoforbeginners.com/) and [REST APIs with Django](https://restapiswithdjango.com). Both of which have the first few chapters available for free online. Please take a look!
 
-## Features
+## Table of Contents
 
-- For Django 2.1 and Python 3.7
-- Modern virtual environments with [pipenv](https://github.com/pypa/pipenv)
-- Styling with [Bootstrap](https://github.com/twbs/bootstrap) v4.1.3
-- Custom user model
-- Email/password for log in/sign up instead of Django's default username/email/password pattern
-- Social authentication via [django-allauth](https://github.com/pennersr/django-allauth)
-- [django-debug-toolbar](https://github.com/jazzband/django-debug-toolbar)
+- [Table of Contents](#table-of-contents)
+- [About The Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [admin](#admin)
+  - [parking bookings related](#parking-bookings-related)
+  - [User management related](#user-management-related)
+- [Contact](#contact)
 
-## First-time setup
 
-1.  Make sure Python 3.7x and Pipenv are already installed. [See here for help](https://djangoforbeginners.com/initial-setup/).
-2.  Clone the repo and configure the virtualenv:
 
-```
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+![](https://i.ibb.co/mvK5m3H/cars-details.png)
+
+System supporting the management of parking spaces and parkings named E-Parking. It is intended to use as a server application for multiple parkings databases. App communicate  with devices via REST API. 
+
+Application consists of three main components:
+* [Mobile application for parking customers](https://github.com/mateusz58/Google_MAPS.git)
+* web application for parking managers and system administrators
+* Server used for communication with the database
+
+Most notable application features:
+* adding and removing parkings from database
+* booking a reservation for chosen parking for a limited period of time
+* management of system users(only for system administrator)
+* booking managment is restricted only for one parking per user
+* system allows to set a personalized price for each parking
+* it is possible to register more than one parking place at once for many cars on one parking
+* 
+
+Project relational table data structure:
+
+![](https://i.ibb.co/6tgwTrS/realtional-Table.png)
+
+
+### Built With
+* [Django Framework](https://www.djangoproject.com/)
+* [Django REST Framework](https://www.django-rest-framework.org/api-guide/renderers/)
+* [MySql](https://www.mysql.com)
+* [django background task](https://django-background-tasks.readthedocs.io/en/latest/)
+* [django allauth](https://django-allauth.readthedocs.io/en/latest/)
+* [django-admin-range-filter](https://github.com/silentsokolov/django-admin-rangefilter)
+* [django admin totals](https://github.com/douwevandermeij/admin-totals.git)
+* [django url filter](https://github.com/miki725/django-url-filter)
+
+## Getting Started
+
+### Prerequisites
+
+* Make sure Python 3.6x and Pipenv are already installed. See here for help.
+
+### Installation
+
+1. Clone the repo and configure the virtualenv:
+```sh
 $ git clone https://github.com/wsvincent/djangox.git
 $ cd djangox
 $ pipenv install
 $ pipenv shell
 ```
-
-3.  Set up the initial migration for our custom user models in `users` and build the database.
-
-```
+2. Set up initial migration for users and bookings
+```sh
 (djangox) $ python manage.py makemigrations users
 (djangox) $ python manage.py migrate
+(djangox) $ python manage.py makemigrations pages
+(djangox) $ python manage.py migrate
 ```
-
-4.  Create a superuser:
-
-```
+3. Create a superuser
+```sh
 (djangox) $ python manage.py createsuperuser
 ```
+4. Load website at  http://127.0.0.1:8000
 
-5.  Confirm everything is working:
+<!-- USAGE EXAMPLES -->
+## Usage
 
-```
-(djangox) $ python manage.py runserver
-```
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-Load the site at [http://127.0.0.1:8000](http://127.0.0.1:8000).
+_For more examples, please refer to the [Documentation](https://example.com)_
 
-![Home](static/images/home.png)
+## API Reference
 
-![Sign up](static/images/signup.png)
+### Admin panel url
 
-<!-- ![Log in](static/images/login.png)
+  - `admin/*` administration panel for managing parkings
 
-![About](static/images/about.png)
+### Parking bookings related
 
-![Forget password](static/images/forgetpassword.png) -->
+- `api/v1/parking`<br> display/add/delete/modify all parkings stored in database
+- `api/v1/parking/search$`<br> display parkings based on given parameter
+- `api/v1/parking/<int:pk>`<br> display/delete/modify parking based on id
+- `api/v1/booking/logged`<br> diplay all bookings of single user
+- `api/v1/booking/logged/<int:pk>`<br> diplay/delete/modify all bookings of single user
+- `api/v1/booking/`<br> display all bookings
+- `api/v1/car_booking/logged/`<br> display all detailed bookings of user
+- `api/v1/car_booking`<br> display all bookings in detail
+- `api/v1/car_booking/logged/<int:pk>`<br>  display detailed  informations about booking based on id for logged user
+  
+  ### User management related
 
-## Next Steps
+- `api/v1/registration_custom/` <br>
+  add user to database
+- `accounts-rest/registration/account-confirm-email/(?P<key>.+)/$` <br>
+ activation link to activate user
+- `api-token-auth/` log user to to system and return token for authorization
+- `api/users` display/delete all users
+- `api/rest-auth/logout/` log out user from system 
+- `api/users/<int:pk>` search/delete/modify user based on id
+- `api/users/search$` search user based on email
 
-- Use [PostgreSQL locally via Docker](https://wsvincent.com/django-docker-postgresql/)
-- Use [django-environ](https://github.com/joke2k/django-environ) for environment variables
-- Update [EMAIL_BACKEND](https://docs.djangoproject.com/en/2.0/topics/email/#module-django.core.mail) to configure an SMTP backend
-- Make the [admin more secure](https://opensource.com/article/18/1/10-tips-making-django-admin-more-secure)
+## Contact
 
-## Adding Social Authentication
+  - Email:  matp321@gmail.com
 
-- [Configuring Google](https://wsvincent.com/django-allauth-tutorial-custom-user-model/#google-credentials)
-- [Configuring Facebook](http://www.sarahhagstrom.com/2013/09/the-missing-django-allauth-tutorial/#Create_and_configure_a_Facebook_app)
-- [Configuring Github](https://wsvincent.com/django-allauth-tutorial/)
-- `django-allauth` supports [many, many other providers in the official docs](https://django-allauth.readthedocs.io/en/latest/providers.html)
+- Project Link: [https://github.com/mateusz58/Parking_Server.git](https://github.com/your_username/repo_name)
+
+[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=flat-square
+[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=flat-square
+[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
+[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
+[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
+[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=flat-square
+[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
+[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
+[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/othneildrew
+[product-screenshot]: images/screenshot.png

@@ -1,55 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/pages/views.py" line="71" mnemonic="V" />
-    <bookmark url="file://$PROJECT_DIR$/pages/models.py" line="88" mnemonic="M" />
+    <bookmark url="file://$PROJECT_DIR$/pages/views.py" line="113" mnemonic="V" />
+    <bookmark url="file://$PROJECT_DIR$/pages/models.py" line="792" mnemonic="M" />
     <bookmark url="file://$PROJECT_DIR$/pages/serializers.py" line="25" mnemonic="S" />
-    <bookmark url="file://$PROJECT_DIR$/djangox_project/settings.py" line="159" mnemonic="I" />
-    <bookmark url="file://$PROJECT_DIR$/pages/views.py" line="75" />
-    <bookmark url="file://$PROJECT_DIR$/djangox_project/urls.py" line="12" mnemonic="P" />
-    <bookmark url="file://$PROJECT_DIR$/pages/views.py" line="111" />
-    <bookmark url="file://$PROJECT_DIR$/templates/_base.html" description="as" line="33" mnemonic="1" />
-    <bookmark url="file://$PROJECT_DIR$/users/views.py" line="29" mnemonic="X" />
-    <bookmark url="file://$PROJECT_DIR$/users/views.py" line="85" mnemonic="2" />
+    <bookmark url="file://$PROJECT_DIR$/djangox_project/settings.py" line="178" mnemonic="I" />
+    <bookmark url="file://$PROJECT_DIR$/pages/views.py" line="117" />
+    <bookmark url="file://$PROJECT_DIR$/djangox_project/urls.py" line="18" mnemonic="P" />
+    <bookmark url="file://$PROJECT_DIR$/pages/views.py" line="325" />
+    <bookmark url="file://$PROJECT_DIR$/templates/_base.html" description="as" line="40" mnemonic="1" />
+    <bookmark url="file://$PROJECT_DIR$/users/views.py" line="112" mnemonic="2" />
     <bookmark url="file://$PROJECT_DIR$/responses/reponses.py" line="6" />
-    <bookmark url="file://$PROJECT_DIR$/pages/admin.py" line="43" mnemonic="A" />
+    <bookmark url="file://$PROJECT_DIR$/pages/admin.py" line="276" mnemonic="A" />
     <bookmark url="file://$PROJECT_DIR$/djangox_project/settings.py" line="21" mnemonic="U" />
-    <bookmark url="file://$PROJECT_DIR$/pages/urls.py" line="38" />
-    <bookmark url="file://$PROJECT_DIR$/pages/views.py" line="384" />
-    <bookmark url="file://$PROJECT_DIR$/pages/filters.py" line="22" mnemonic="F" />
+    <bookmark url="file://$PROJECT_DIR$/pages/urls.py" line="48" />
+    <bookmark url="file://$PROJECT_DIR$/pages/views.py" line="432" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a496f5c8-e7ca-49e2-b1ac-f62fd420c1ba" name="Default" comment="Added:&#10;&#10;-ALL COMPLETED">
-      <change afterPath="$PROJECT_DIR$/Tests/usersTests/userTest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/cursorSql/cursorSql.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/emailSend.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/emailSend.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/getAllBookings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/getAllBookings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/getBookingLogin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/getBookingLogin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/getCarBookingLogin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/getCarBookingLogin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/getCarLogged.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/getCarLogged.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/getParking.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/getParking.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/postBooking.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/postBooking.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/postBookingV2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/postBookingV3.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/postLogOut.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/postLogOut.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/postLogin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/postLogin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/postLoginV2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/postParking.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/postParking.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/postPasswordChange.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/postPasswordChange.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/postPasswordReset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/postPasswordReset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/postRegisterUser.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/postRegisterUser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/httpRequests/putCar.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/httpRequests/putCar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/forms.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirementsV2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements_v2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/pages/test_booking_View.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/triggers/updater.py" beforeDir="false" afterPath="$PROJECT_DIR$/triggers/updater.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Best-README-Template/BLANK_README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Best-README-Template/images/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Best-README-Template/images/screenshot.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -111,12 +85,8 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Tests/usersTests/userTest.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="19" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="19" />
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -261,7 +231,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
     <option name="width" value="1294" />
     <option name="height" value="1047" />
@@ -272,13 +242,17 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="djangox" type="b2602c69:ProjectViewProjectNode" />
               <item name="djangox" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="djangox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="djangox" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="djangox" type="b2602c69:ProjectViewProjectNode" />
@@ -293,18 +267,13 @@
             <path>
               <item name="djangox" type="b2602c69:ProjectViewProjectNode" />
               <item name="djangox" type="462c0819:PsiDirectoryNode" />
-              <item name="Tests" type="462c0819:PsiDirectoryNode" />
-              <item name="usersTests" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="djangox" type="b2602c69:ProjectViewProjectNode" />
-              <item name="djangox" type="462c0819:PsiDirectoryNode" />
               <item name="triggers" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -539,13 +508,13 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Django server.djangox" />
-      <item itemvalue="Django server.Tasker" />
+      <item itemvalue="Django tests.Test: Tests.usersTests.userTest.userTestSuite" />
+      <item itemvalue="Django tests.Test: Tests.usersTests.userTest.userTestSuite.test_correct" />
       <item itemvalue="Python.background_tasker" />
       <item itemvalue="Python.models" />
       <item itemvalue="Python.views" />
-      <item itemvalue="Django tests.Test: Tests.usersTests.userTest.userTestSuite" />
-      <item itemvalue="Django tests.Test: Tests.usersTests.userTest.userTestSuite.test_correct" />
+      <item itemvalue="Django server.Tasker" />
+      <item itemvalue="Django server.djangox" />
       <item itemvalue="Python tests.Unittests for userTest.SignInViewTest" />
     </list>
     <recent_temporary>
@@ -577,7 +546,8 @@
       <workItem from="1551161286320" duration="3942000" />
       <workItem from="1574809760538" duration="5715000" />
       <workItem from="1574863259052" duration="5417000" />
-      <workItem from="1574872521399" duration="6097000" />
+      <workItem from="1574872521399" duration="6689000" />
+      <workItem from="1574899440204" duration="131000" />
     </task>
     <task id="LOCAL-00010" summary="Added:&#10;&#10;-CANNOT LOGIN">
       <created>1548121319187</created>
@@ -943,7 +913,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="399039000" />
+    <option name="totallyTimeSpent" value="399762000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -955,31 +925,30 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="1294" height="1047" extended-state="0" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7810651" visible="true" weight="0.55024314" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.7810651" visible="true" weight="0.2718601" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.21893491" side_tool="true" weight="0.23290938" />
       <window_info anchor="bottom" id="Database Console" order="0" sideWeight="0.5536566" weight="0.32827735" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" sideWeight="0.4944085" weight="0.32822758" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.8987034" visible="true" weight="0.3522976" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.8987034" weight="0.3522976" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.61750406" weight="0.48249453" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" sideWeight="0.49920508" weight="0.20260021" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.7015103" weight="0.27735645" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.77503973" weight="0.26218852" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.77424484" visible="true" weight="0.26218852" />
       <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49761525" weight="0.32827735" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.101296596" side_tool="true" visible="true" weight="0.3522976" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.22575517" side_tool="true" visible="true" weight="0.26218852" />
       <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
       <window_info anchor="bottom" id="SonarLint" order="13" sideWeight="0.49841017" weight="0.19501625" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Data View" order="3" weight="0.2937202" />
-      <window_info anchor="right" id="Database" order="4" visible="true" weight="0.28606158" />
+      <window_info anchor="right" id="Database" order="4" weight="0.28606158" />
       <window_info anchor="right" id="SciView" order="5" weight="0.22852512" />
       <window_info anchor="right" id="Database Changes" order="6" weight="0.029392118" />
     </layout>
@@ -1090,11 +1059,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/admin.py</url>
-          <line>44</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/triggers/updater.py</url>
           <line>29</line>
           <option name="timeStamp" value="26" />
@@ -1125,124 +1089,14 @@
           <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/models.py</url>
-          <line>265</line>
-          <option name="timeStamp" value="71" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/models.py</url>
-          <line>296</line>
-          <option name="timeStamp" value="75" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/models.py</url>
-          <option name="group" value="Admin_Formset" />
-          <line>698</line>
-          <option name="timeStamp" value="76" />
-          <group>Admin_Formset</group>
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/pages/views.py</url>
-          <line>41</line>
+          <line>83</line>
           <option name="timeStamp" value="91" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/views.py</url>
-          <line>169</line>
-          <option name="timeStamp" value="99" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/views.py</url>
-          <line>304</line>
-          <option name="timeStamp" value="108" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/pages/admin.py</url>
-          <line>105</line>
-          <option name="timeStamp" value="120" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/admin.py</url>
-          <line>114</line>
-          <option name="timeStamp" value="122" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/admin.py</url>
-          <line>181</line>
-          <option name="timeStamp" value="153" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/admin.py</url>
-          <line>20</line>
+          <line>162</line>
           <option name="timeStamp" value="170" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/admin.py</url>
-          <option name="group" value="Admin_Formset" />
-          <line>132</line>
-          <option name="timeStamp" value="183" />
-          <group>Admin_Formset</group>
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/admin.py</url>
-          <option name="group" value="Admin_Formset" />
-          <line>126</line>
-          <option name="timeStamp" value="193" />
-          <group>Admin_Formset</group>
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/admin.py</url>
-          <option name="group" value="Admin_Formset" />
-          <line>142</line>
-          <option name="timeStamp" value="194" />
-          <group>Admin_Formset</group>
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/admin.py</url>
-          <option name="group" value="Admin_Formset" />
-          <line>148</line>
-          <option name="timeStamp" value="195" />
-          <group>Admin_Formset</group>
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/models.py</url>
-          <line>744</line>
-          <option name="timeStamp" value="219" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/admin.py</url>
-          <line>55</line>
-          <option name="timeStamp" value="221" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/models.py</url>
-          <line>203</line>
-          <option name="timeStamp" value="228" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/models.py</url>
-          <line>234</line>
-          <option name="timeStamp" value="229" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/models.py</url>
-          <line>141</line>
-          <option name="timeStamp" value="248" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/views.py</url>
-          <line>166</line>
-          <option name="timeStamp" value="250" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/views.py</url>
-          <line>195</line>
-          <option name="timeStamp" value="251" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/views.py</url>
-          <line>227</line>
-          <option name="timeStamp" value="252" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/triggers/updater.py</url>
@@ -1303,54 +1157,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/responses/reponses.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/validators/carValidators.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/decorators.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="e#0#59#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/validators/carValidators.py" />
+    <entry file="file://$PROJECT_DIR$/decorators.py" />
     <entry file="file://$PROJECT_DIR$/requirements_v2.txt" />
     <entry file="file://$PROJECT_DIR$/requirementsV2.txt" />
-    <entry file="file://$PROJECT_DIR$/validators/bookingValidator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/users/tokens.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="43" lean-forward="true" selection-start-line="8" selection-start-column="43" selection-end-line="8" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#66#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/validators/bookingValidator.py" />
+    <entry file="file://$PROJECT_DIR$/users/tokens.py" />
     <entry file="file://$PROJECT_DIR$/users/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1360,13 +1172,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/users/emailActivation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="3" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/users/emailActivation.py" />
     <entry file="file://$PROJECT_DIR$/users/apps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -1381,30 +1187,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tests/httpRequests/postLogin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tests/httpRequests/postBookingV2.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tests/httpRequests/postBooking.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="636">
-          <caret line="107" lean-forward="true" selection-start-line="107" selection-end-line="107" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/httpRequests/postBookingV2.py" />
+    <entry file="file://$PROJECT_DIR$/requirements.txt" />
     <entry file="file://$PROJECT_DIR$/Tests/httpRequests/emailSend.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -1506,30 +1290,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/exceptions/httpExceptionsHandler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/helper/addToGroup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#0#56#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/serializers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/exceptions/httpExceptionsHandler.py" />
+    <entry file="file://$PROJECT_DIR$/helper/addToGroup.py" />
     <entry file="file://$PROJECT_DIR$/users/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="171">
@@ -1540,16 +1302,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tests/cursorSql/cursorSql.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/cursorSql/cursorSql.py" />
     <entry file="file://$PROJECT_DIR$/users/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -1557,30 +1310,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/users/user_management_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="174" column="25" selection-start-line="174" selection-start-column="25" selection-end-line="174" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/test_booking_View.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/users/user_management_test.py" />
     <entry file="file://$PROJECT_DIR$/pages/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -1591,32 +1321,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/filters.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="534">
-          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/adminActions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/forms.py" />
+    <entry file="file://$PROJECT_DIR$/pages/adminActions.py" />
     <entry file="file://$PROJECT_DIR$/pages/admin.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="539">
@@ -1630,13 +1336,7 @@
     <entry file="file://$PROJECT_DIR$/pages/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/views_related.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="29" column="34" lean-forward="true" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/views_related.py" />
     <entry file="file://$PROJECT_DIR$/triggers/updater.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="499">
@@ -1647,12 +1347,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tests/usersTests/userTest.py">
+    <entry file="file://$PROJECT_DIR$/Tests/usersTests/userTest.py" />
+    <entry file="file://$PROJECT_DIR$/responses/reponses.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="19" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="19" />
+        <state>
+          <folding>
+            <element signature="e#0#33#0" expanded="true" />
+          </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/filters.py" />
+    <entry file="file://$PROJECT_DIR$/pages/serializers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/test_booking_View.py" />
+    <entry file="file://$PROJECT_DIR$/pages/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="432" lean-forward="true" selection-start-line="432" selection-end-line="432" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
