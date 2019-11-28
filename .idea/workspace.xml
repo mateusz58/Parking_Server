@@ -18,12 +18,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a496f5c8-e7ca-49e2-b1ac-f62fd420c1ba" name="Default" comment="Added:&#10;&#10;-ALL COMPLETED">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Best-README-Template/BLANK_README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Best-README-Template/images/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Best-README-Template/images/screenshot.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -86,7 +81,16 @@
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="201">
+                <caret line="103" selection-start-line="103" selection-end-line="103" />
+              </first_editor>
+              <second_editor>
+                <markdownNavigatorState />
+              </second_editor>
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
@@ -177,7 +181,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Validators/bookingValidator.py" />
         <option value="$PROJECT_DIR$/TRIGGERS/stateUpdater.py" />
         <option value="$PROJECT_DIR$/templatetags/templatetag.py" />
         <option value="$PROJECT_DIR$/signals/disableSignal.py" />
@@ -228,6 +231,7 @@
         <option value="$PROJECT_DIR$/pages/test_booking_View.py" />
         <option value="$PROJECT_DIR$/triggers/updater.py" />
         <option value="$PROJECT_DIR$/Tests/usersTests/userTest.py" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -508,13 +512,13 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Django server.djangox" />
+      <item itemvalue="Django server.Tasker" />
       <item itemvalue="Django tests.Test: Tests.usersTests.userTest.userTestSuite" />
       <item itemvalue="Django tests.Test: Tests.usersTests.userTest.userTestSuite.test_correct" />
       <item itemvalue="Python.background_tasker" />
       <item itemvalue="Python.models" />
       <item itemvalue="Python.views" />
-      <item itemvalue="Django server.Tasker" />
-      <item itemvalue="Django server.djangox" />
       <item itemvalue="Python tests.Unittests for userTest.SignInViewTest" />
     </list>
     <recent_temporary>
@@ -548,6 +552,7 @@
       <workItem from="1574863259052" duration="5417000" />
       <workItem from="1574872521399" duration="6689000" />
       <workItem from="1574899440204" duration="131000" />
+      <workItem from="1574899654374" duration="236000" />
     </task>
     <task id="LOCAL-00010" summary="Added:&#10;&#10;-CANNOT LOGIN">
       <created>1548121319187</created>
@@ -913,7 +918,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="399762000" />
+    <option name="totallyTimeSpent" value="399998000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -927,7 +932,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.7810651" visible="true" weight="0.2718601" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7810651" visible="true" weight="0.25953895" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.21893491" side_tool="true" weight="0.23290938" />
       <window_info anchor="bottom" id="Database Console" order="0" sideWeight="0.5536566" weight="0.32827735" />
@@ -939,9 +944,9 @@
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" sideWeight="0.49920508" weight="0.20260021" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.7015103" weight="0.27735645" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.77424484" visible="true" weight="0.26218852" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.7738474" visible="true" weight="0.57746476" />
       <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49761525" weight="0.32827735" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.22575517" side_tool="true" visible="true" weight="0.26218852" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.22615263" side_tool="true" visible="true" weight="0.57746476" />
       <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
       <window_info anchor="bottom" id="SonarLint" order="13" sideWeight="0.49841017" weight="0.19501625" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -1377,7 +1382,17 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="201">
+            <caret line="103" selection-start-line="103" selection-end-line="103" />
+          </first_editor>
+          <second_editor>
+            <markdownNavigatorState />
+          </second_editor>
+        </state>
+      </provider>
     </entry>
   </component>
 </project>
