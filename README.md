@@ -11,12 +11,10 @@
   - [Installation](#installation)
 - [Usage](#usage)
 - [API Reference](#api-reference)
-- [admin](#admin)
-  - [parking bookings related](#parking-bookings-related)
-  - [User management related](#user-management-related)
+    - [Admin panel](#admin)
+    - [parking bookings related](#parking-bookings-related)
+    - [User management related](#user-management-related)
 - [Contact](#contact)
-
-
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -42,7 +40,6 @@ Most notable application features:
 Project relational table data structure:
 
 ![](https://i.ibb.co/6tgwTrS/realtional-Table.png)
-
 
 ### Built With
 * [Django Framework](https://www.djangoproject.com/)
@@ -91,7 +88,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 ## API Reference
 
-### Admin panel url
+### Admin panel
 
   - `admin/*` administration panel for managing parkings
 
