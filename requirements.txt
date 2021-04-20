@@ -71,7 +71,7 @@ Pillow==6.2.0
 poyo==0.4.2
 protobuf==3.6.1
 psycopg2==2.7.6.1
-py==1.4.32
+py==1.10.0
 pyad==0.5.20
 pyasn1==0.4.5
 pyasn1-modules==0.2.3
