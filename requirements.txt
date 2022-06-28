@@ -3,7 +3,7 @@ admin-totals==1.0.1
 amqp==1.4.9
 anyjson==0.3.3
 appdirs==1.4.0
-arrow==0.13.0
+arrow==0.15.1
 astor==0.7.1
 bcrypt==3.1.6
 billiard==3.3.0.23
