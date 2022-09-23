@@ -69,7 +69,7 @@ passlib==1.7.1
 pbr==5.1.1
 Pillow==6.2.0
 poyo==0.4.2
-protobuf==3.6.1
+protobuf==3.18.3
 psycopg2==2.7.6.1
 py==1.4.32
 pyad==0.5.20
